@@ -66,9 +66,12 @@ export function LandingPage({
           >
             <Code2 size={18} strokeWidth={2.4} aria-hidden="true" />
           </button>
-          <span className="landing-code-arrow" aria-hidden="true">
-            ↑
-          </span>
+          <img
+            className="landing-code-arrow"
+            src="/arrow.png"
+            alt=""
+            aria-hidden="true"
+          />
         </span>
       </nav>
     </motion.div>

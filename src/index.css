@@ -208,23 +208,22 @@
 
   .landing-code-arrow {
     position: absolute;
-    top: calc(100% + 5px);
+    top: calc(100% + 9px);
     left: 50%;
-    color: #000000;
-    font-size: clamp(0.95rem, 1.4vw, 1.15rem);
-    font-weight: 700;
-    line-height: 1;
+    width: clamp(14px, 1.6vw, 18px);
+    height: auto;
+    display: block;
     transform: translateX(-50%) translateY(0);
-    animation: landing-arrow-bounce 920ms var(--ease-std) infinite alternate;
+    animation: landing-arrow-bounce 950ms ease-in-out infinite alternate;
   }
 
   @keyframes landing-arrow-bounce {
     from {
-      transform: translateX(-50%) translateY(3px);
+      transform: translateX(-50%) translateY(4px);
     }
 
     to {
-      transform: translateX(-50%) translateY(-2px);
+      transform: translateX(-50%) translateY(0);
     }
   }
 
