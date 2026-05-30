@@ -1184,27 +1184,6 @@
     line-height: 1.5;
   }
 
-  .panel-intro-bullets {
-    list-style: none;
-    display: grid;
-    gap: 14px;
-    margin: 0;
-    padding: 0;
-    color: var(--text);
-  }
-
-  .panel-intro-bullets li {
-    position: relative;
-    padding-left: 20px;
-    line-height: 1.5;
-  }
-
-  .panel-intro-bullets li::before {
-    content: "-";
-    position: absolute;
-    left: 0;
-  }
-
   .panel-muted-copy,
   .panel-timeline-entry p,
   .panel-project-row p {

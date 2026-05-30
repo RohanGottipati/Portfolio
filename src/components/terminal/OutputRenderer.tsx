@@ -97,9 +97,12 @@ function IntroRenderer({ payload }: { payload: IntroPayload }) {
       ) : null}
 
       {payload.bulletLines?.length ? (
-        <ul className="panel-intro-bullets">
+        <ul className="panel-bullet-list">
           {payload.bulletLines.map((line) => (
-            <li key={line}>{line}</li>
+            <li key={line}>
+              <ArrowRight className="bullet-arrow-icon" size={13} />
+              <span>{line}</span>
+            </li>
           ))}
         </ul>
       ) : null}
