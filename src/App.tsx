@@ -130,7 +130,7 @@ const LANDING_LINKS = [
 
 const LANDING_INTRO_ITEMS = [
   "cs @ Wilfrid Laurier University",
-  "swe @ DOUBL · production code, backend systems & AI",
+  "swe @ DOUBL · production code, backend systems & AI integrations",
   "i like building fast, useful products and turning ideas into working mvps.",
   "interests: ai/ml, software integrations, big data, and full stack development.",
 ] as const;
