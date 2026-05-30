@@ -567,7 +567,7 @@ export const portfolioData: PortfolioData = {
     email: "rohan.gottipati@gmail.com",
     github: "https://github.com/RohanGottipati",
     linkedin: "https://www.linkedin.com/in/rohangottipati/",
-    resume: "/resume.pdf",
+    resume: "/Rohan_Gottipati_Resume.pdf",
   },
   quickLinks: [
     {

@@ -62,7 +62,7 @@ describe("App", () => {
     );
     expect(screen.getByRole("link", { name: "Resume" })).toHaveAttribute(
       "href",
-      "/resume.pdf"
+      "/Rohan_Gottipati_Resume.pdf"
     );
     expect(
       screen.queryByPlaceholderText("Type rohan, then press Enter")
@@ -233,7 +233,7 @@ describe("App", () => {
     );
     expect(chrome.getByRole("link", { name: "Open resume PDF" })).toHaveAttribute(
       "href",
-      "/resume.pdf"
+      "/Rohan_Gottipati_Resume.pdf"
     );
     expect(chrome.getByText("Email")).toBeInTheDocument();
     expect(chrome.getByText("GitHub")).toBeInTheDocument();
