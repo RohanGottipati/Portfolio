@@ -75,18 +75,16 @@ export function createCommandRegistry(): CommandDefinition[] {
       category: "Profile",
       args: "none",
       showInMenu: true,
-      handler: (_parsed, context) =>
+      handler: (_parsed, _context) =>
         createExecution({
           modal: createModal("intro", "Profile", "", {
-            roleLines: context.portfolio.about.roles,
-            paragraphs: [
-              context.portfolio.about.intro,
-              context.portfolio.about.studying,
-              context.portfolio.about.building,
-              context.portfolio.about.seeking,
-              context.portfolio.about.currentFocus,
-            ].filter((paragraph) => paragraph.trim().length > 0),
-            highlights: context.portfolio.about.highlights,
+            bulletLines: [
+              "cs @ Wilfrid Laurier University",
+              "swe @ DOUBL · building production code, backend systems, and ai integrations",
+              "i like building fast, useful products and turning ideas into working mvps",
+              "interests: ai/ml, software integrations, big data, and full stack development",
+            ],
+            paragraphs: [],
           }, "success", "about"),
           logLine: "Opened /about",
           meta: { canonicalCommand: "/about" },
@@ -237,7 +235,7 @@ export function createCommandRegistry(): CommandDefinition[] {
     },
     {
       command: "/contact",
-      description: "Find my email, GitHub, LinkedIn, and resume.",
+      description: "Find my email, GitHub, and LinkedIn.",
       aliases: [],
       category: "Contact",
       args: "none",
@@ -247,7 +245,7 @@ export function createCommandRegistry(): CommandDefinition[] {
           modal: createModal("contactPanel", "Contact", "Best ways to reach me.", {
             heading: "Reach Out",
             description:
-              "Email is the fastest path. GitHub, LinkedIn, and my resume are one click away.",
+              "Email is the fastest path. GitHub and LinkedIn are one click away.",
             contact: context.portfolio.contact,
             quickLinks: context.portfolio.quickLinks,
           }, "success", "contact"),

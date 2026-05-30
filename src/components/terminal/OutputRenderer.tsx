@@ -96,11 +96,21 @@ function IntroRenderer({ payload }: { payload: IntroPayload }) {
         </div>
       ) : null}
 
-      <div className="panel-copy">
-        {payload.paragraphs.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
-      </div>
+      {payload.bulletLines?.length ? (
+        <ul className="panel-intro-bullets">
+          {payload.bulletLines.map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
+      ) : null}
+
+      {payload.paragraphs.length ? (
+        <div className="panel-copy">
+          {payload.paragraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      ) : null}
 
       {payload.highlights?.length ? (
         <div className="panel-list-block">

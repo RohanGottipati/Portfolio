@@ -52,6 +52,7 @@ export interface IntroPayload {
   roleLines?: string[];
   highlights?: string[];
   chips?: string[];
+  bulletLines?: string[];
 }
 
 export interface TimelinePayload {
