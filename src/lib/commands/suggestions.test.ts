@@ -9,6 +9,7 @@ describe("command suggestions", () => {
     expect(suggestions.map((item) => item.value)).toEqual([
       "/about",
       "/experience",
+      "/clubs",
       "/projects",
       "/skills",
       "/contact",

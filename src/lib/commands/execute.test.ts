@@ -19,6 +19,14 @@ describe("command execution", () => {
     expect(result.meta?.canonicalCommand).toBe("/resume");
   });
 
+  it("canonicalizes mixed-case club commands", () => {
+    const { result } = executeCommand("/Clubs");
+
+    expect(result.title).toBe("Clubs");
+    expect(result.modal?.title).toBe("Clubs");
+    expect(result.meta?.canonicalCommand).toBe("/clubs");
+  });
+
   it("returns a shell error for plain text input", () => {
     const { result } = executeCommand("about");
 

@@ -3,23 +3,78 @@ import userEvent from "@testing-library/user-event";
 
 import App from "@/App";
 
+async function revealLanding() {
+  return screen.findByRole("heading", { name: "rohan gottipati" });
+}
+
+async function revealStartup(user: ReturnType<typeof userEvent.setup>) {
+  await revealLanding();
+  await user.click(screen.getByRole("button", { name: "Open terminal portfolio" }));
+  return screen.findByPlaceholderText("Type rohan, then press Enter", {}, { timeout: 2000 });
+}
+
+async function launchPortfolio(user: ReturnType<typeof userEvent.setup>) {
+  const startupInput = await revealStartup(user);
+  await user.type(startupInput, "rohan{enter}");
+  await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 4000 });
+}
+
 describe("App", () => {
   beforeEach(() => {
     window.history.replaceState({}, "", "/");
   });
 
-  it("starts locked and boots into the shell after typing rohan", async () => {
+  it("shows the rohan gate after the code button and boots into the shell", async () => {
     const user = userEvent.setup();
     render(<App />);
 
-    expect(screen.getByPlaceholderText("Type rohan, then press Enter")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "ENTER" })).not.toBeInTheDocument();
+
+    await revealLanding();
+
+    expect(screen.getByRole("heading", { name: "rohan gottipati" })).toBeInTheDocument();
+    expect(screen.getByText("cs @ Wilfrid Laurier University")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "junior software engineer @ DOUBL · building production code, backend systems, and ai integrations"
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("i like building fast, useful products and turning ideas into working mvps.")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "interests: ai/ml, software integrations, big data, and full stack development."
+      )
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open terminal portfolio" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
+      "href",
+      "https://www.linkedin.com/in/rohangottipati/"
+    );
+    expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
+      "href",
+      "https://github.com/RohanGottipati"
+    );
+    expect(screen.getByRole("link", { name: "Contact" })).toHaveAttribute(
+      "href",
+      "mailto:rohan.gottipati@gmail.com"
+    );
+    expect(screen.getByRole("link", { name: "Resume" })).toHaveAttribute(
+      "href",
+      "/resume.pdf"
+    );
+    expect(
+      screen.queryByPlaceholderText("Type rohan, then press Enter")
+    ).not.toBeInTheDocument();
     expect(screen.queryByText("Welcome to Rohan", { exact: false })).not.toBeInTheDocument();
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
+    const startupInput = await revealStartup(user);
+    expect(startupInput).toBeInTheDocument();
 
-    expect(
-      await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 })
-    ).toBeInTheDocument();
+    await user.type(startupInput, "rohan{enter}");
+    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 4000 });
+    expect(screen.getByText("Welcome to Rohan", { exact: false })).toBeInTheDocument();
 
     const input = screen.getByLabelText("Portfolio command input");
     await user.type(input, "/about{enter}");
@@ -52,8 +107,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
     await user.type(screen.getByLabelText("Portfolio command input"), "/sk{enter}");
 
     expect(await screen.findByRole("heading", { name: "Skill Stack" })).toBeInTheDocument();
@@ -79,8 +133,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
 
     await user.type(screen.getByLabelText("Portfolio command input"), "/experience{enter}");
 
@@ -92,6 +145,15 @@ describe("App", () => {
         "Delivered interactive product and growth tooling across demos, messaging reliability, and content operations."
       )
     ).not.toBeInTheDocument();
+    expect(screen.queryByText("Junior Software Developer")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Software Developer Intern at DOUBL")).not.toBeInTheDocument();
+    expect(screen.getByLabelText("Junior Software Engineer at DOUBL")).toBeInTheDocument();
+    expect(screen.getByLabelText("Software Engineer Intern at OneChart")).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("AI/ML Research Assistant at Wilfrid Laurier University")
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("Jan 2026 – Apr 2026").length).toBeGreaterThanOrEqual(2);
+    expect(screen.queryByLabelText("VP of Finance at Laurier Computing Society")).not.toBeInTheDocument();
     expect(
       screen.queryByText("Recent roles, research, leadership, and teaching work.")
     ).not.toBeInTheDocument();
@@ -106,8 +168,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
 
     const dashboard = within(screen.getByLabelText("Shell dashboard"));
     await user.click(dashboard.getByRole("button", { name: /\/help/i }));
@@ -118,15 +179,46 @@ describe("App", () => {
     expect(screen.getAllByText("Opened /help").length).toBeGreaterThan(0);
   });
 
+  it("opens club leadership from /clubs", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await launchPortfolio(user);
+
+    await user.type(screen.getByLabelText("Portfolio command input"), "/Clubs{enter}");
+
+    const dialog = await screen.findByRole("dialog", { name: "Clubs" });
+    const scoped = within(dialog);
+
+    expect(scoped.getByRole("heading", { name: "Club Leadership" })).toBeInTheDocument();
+    expect(scoped.getByLabelText("VP of Technology at Laurier Analytics Society")).toBeInTheDocument();
+    expect(scoped.getByText("May 2026 – Present")).toBeInTheDocument();
+    expect(scoped.getByLabelText("VP of Finance at Laurier Computing Society")).toBeInTheDocument();
+    expect(screen.getAllByText("Opened /clubs").length).toBeGreaterThan(0);
+  });
+
+  it("opens A.U.R.A. from the dashboard achievement CTA", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await launchPortfolio(user);
+
+    const dashboard = within(screen.getByLabelText("Shell dashboard"));
+    await user.click(dashboard.getByRole("button", { name: /BearHacks Win - A\.U\.R\.A\./i }));
+
+    expect(await screen.findByRole("dialog", { name: "A.U.R.A." })).toBeInTheDocument();
+    expect(screen.getAllByText("Opened /project aura").length).toBeGreaterThan(0);
+  });
+
   it("shows top-right contact shortcuts in the terminal chrome", async () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
 
     const chrome = within(screen.getByRole("group", { name: "Terminal window" }));
 
+    expect(chrome.getByRole("button", { name: "Return home" })).toBeInTheDocument();
     expect(chrome.getByRole("link", { name: "Email Rohan" })).toHaveAttribute(
       "href",
       "mailto:rohan.gottipati@gmail.com"
@@ -153,8 +245,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
 
     await user.type(screen.getByLabelText("Portfolio command input"), "/help{enter}");
     const dialog = await screen.findByRole("dialog", { name: "Command Directory" });
@@ -190,8 +281,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
 
     await user.type(screen.getByLabelText("Portfolio command input"), "/about{enter}");
     const dialog = await screen.findByRole("dialog", { name: "Profile" });
@@ -209,6 +299,11 @@ describe("App", () => {
 
     await user.keyboard("{ArrowDown}");
     await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Return home" })).toHaveFocus();
+    });
+
+    await user.keyboard("{ArrowDown}");
+    await waitFor(() => {
       expect(screen.getByRole("link", { name: "Email Rohan" })).toHaveFocus();
     });
 
@@ -222,8 +317,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
 
     const input = screen.getByLabelText("Portfolio command input");
     await waitFor(() => {
@@ -236,16 +330,29 @@ describe("App", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByRole("link", { name: "Email Rohan" })).toHaveFocus();
+      expect(screen.getByRole("button", { name: "Return home" })).toHaveFocus();
     });
+  });
+
+  it("returns to the home page from the terminal close button", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await launchPortfolio(user);
+
+    await user.click(screen.getByRole("button", { name: "Return home" }));
+
+    expect(screen.queryByLabelText("Portfolio command input")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "ENTER" })).not.toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "rohan gottipati" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open terminal portfolio" })).toBeInTheDocument();
   });
 
   it("focuses the first contact action and moves through contact actions with arrow keys", async () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
 
     await user.type(screen.getByLabelText("Portfolio command input"), "/contact{enter}");
 
@@ -269,8 +376,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
 
     await user.type(screen.getByLabelText("Portfolio command input"), "/help{enter}");
 
@@ -294,8 +400,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
 
     await user.type(screen.getByLabelText("Portfolio command input"), "/project spectra{enter}");
     expect(await screen.findByText("Back to /projects")).toBeInTheDocument();
@@ -310,15 +415,14 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
 
     await user.type(screen.getByLabelText("Portfolio command input"), "/projects{enter}");
 
     const dialog = await screen.findByRole("dialog", { name: "Projects" });
     const scoped = within(dialog);
-    const firstProject = scoped.getByRole("button", { name: /\/project spectra/i });
-    const secondProject = scoped.getByRole("button", { name: /\/project caresync/i });
+    const firstProject = scoped.getByRole("button", { name: /\/project aura/i });
+    const secondProject = scoped.getByRole("button", { name: /\/project scout/i });
 
     await waitFor(() => {
       expect(firstProject).toHaveFocus();
@@ -335,8 +439,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
 
     await user.type(screen.getByLabelText("Portfolio command input"), "/resume{enter}");
 
@@ -360,15 +463,14 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
 
     await user.type(screen.getByLabelText("Portfolio command input"), "/experience{enter}");
 
     const dialog = await screen.findByRole("dialog", { name: "Experience" });
     const scoped = within(dialog);
-    const firstEntry = scoped.getByLabelText("Junior Software Developer at DOUBL");
-    const secondEntry = scoped.getByLabelText("Software Developer Intern at DOUBL");
+    const firstEntry = scoped.getByLabelText("Junior Software Engineer at DOUBL");
+    const secondEntry = scoped.getByLabelText("Software Engineer Intern at OneChart");
 
     await waitFor(() => {
       expect(firstEntry).toHaveFocus();
@@ -385,8 +487,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
 
     await user.type(screen.getByLabelText("Portfolio command input"), "/resume{enter}");
 
@@ -401,8 +502,7 @@ describe("App", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getByLabelText("Startup input"), "rohan{enter}");
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 3500 });
+    await launchPortfolio(user);
 
     await user.type(screen.getByLabelText("Portfolio command input"), "/project spectra{enter}");
 

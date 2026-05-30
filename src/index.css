@@ -103,6 +103,255 @@
     background: var(--bg);
   }
 
+  .landing-shell {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    overflow: hidden;
+    background: #ffffff;
+    color: #15171a;
+    color-scheme: light;
+    font-family:
+      "Times New Roman",
+      Times,
+      serif;
+  }
+
+  .landing-shell::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    background: var(--bg);
+    opacity: 0;
+    transform: scale(0.96);
+    transition:
+      opacity 520ms var(--ease),
+      transform 520ms var(--ease);
+  }
+
+  .landing-shell.is-launching::before {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .landing-main {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(72px, 10vh, 112px) 24px clamp(118px, 18vh, 176px);
+    text-align: left;
+    transition:
+      opacity 300ms var(--ease),
+      transform 520ms var(--ease);
+  }
+
+  .landing-shell.is-launching .landing-main {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.985);
+  }
+
+  .landing-content {
+    width: fit-content;
+    max-width: min(760px, 100%);
+    margin: 0 auto;
+  }
+
+  .landing-name {
+    margin: 0;
+    max-width: min(1120px, 100%);
+    color: #111315;
+    font-size: clamp(3rem, 9vw, 7.2rem);
+    font-weight: 400;
+    line-height: 0.96;
+    letter-spacing: 0;
+  }
+
+  .landing-intro {
+    list-style: none;
+    display: grid;
+    gap: clamp(16px, 2.2vw, 24px);
+    margin: clamp(22px, 4vw, 34px) 0 0;
+    padding: 0;
+    max-width: min(720px, 100%);
+    color: #202328;
+    font-size: clamp(1.05rem, 2vw, 1.45rem);
+    font-weight: 400;
+    line-height: 1.35;
+    letter-spacing: 0;
+    text-align: left;
+  }
+
+  .landing-intro li {
+    position: relative;
+    padding-left: 22px;
+  }
+
+  .landing-intro li::before {
+    content: "-";
+    position: absolute;
+    left: 0;
+  }
+
+  .landing-code-callout {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+
+  .landing-code-arrow {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 50%;
+    color: #000000;
+    font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+    font-weight: 700;
+    line-height: 1;
+    transform: translateX(-50%) translateY(0);
+    animation: landing-arrow-bounce 920ms var(--ease-std) infinite alternate;
+  }
+
+  @keyframes landing-arrow-bounce {
+    from {
+      transform: translateX(-50%) translateY(3px);
+    }
+
+    to {
+      transform: translateX(-50%) translateY(-2px);
+    }
+  }
+
+  .landing-code-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 auto;
+    border: 1px solid rgba(15, 17, 19, 0.2);
+    border-radius: 8px;
+    background: #20242a;
+    color: #c7ccd3;
+    box-shadow:
+      0 18px 36px -26px rgba(15, 18, 22, 0.62),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition:
+      background 180ms var(--ease),
+      border-color 180ms var(--ease),
+      box-shadow 220ms var(--ease),
+      color 180ms var(--ease),
+      transform 180ms var(--ease);
+  }
+
+  .landing-code-button:hover,
+  .landing-code-button:focus-visible {
+    background: #2b3038;
+    border-color: rgba(15, 17, 19, 0.34);
+    color: #f6f7f9;
+    box-shadow:
+      0 22px 44px -28px rgba(15, 18, 22, 0.78),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .landing-code-button:focus-visible {
+    outline: 2px solid #15171a;
+    outline-offset: 5px;
+  }
+
+  .landing-code-button:disabled {
+    cursor: default;
+  }
+
+  .landing-links {
+    position: fixed;
+    left: 50%;
+    bottom: clamp(56px, 9vh, 96px);
+    z-index: 2;
+    width: fit-content;
+    max-width: calc(100% - 32px);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(16px, 3.2vw, 34px);
+    transform: translateX(-50%);
+    transition:
+      opacity 360ms var(--ease),
+      transform 560ms var(--ease);
+  }
+
+  .landing-shell.is-launching .landing-links {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+
+  .landing-links a {
+    position: relative;
+    color: #202328;
+    font-size: clamp(1.02rem, 1.25vw, 1.18rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    padding: 10px 0;
+    transition:
+      color 160ms var(--ease),
+      opacity 160ms var(--ease),
+      transform 180ms var(--ease);
+  }
+
+  .landing-links a:hover,
+  .landing-links a:focus-visible {
+    color: #000000;
+    outline: none;
+    transform: translateY(-2px);
+  }
+
+  .landing-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 3px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0;
+    transform: scaleX(0.35);
+    transition:
+      opacity 160ms var(--ease),
+      transform 180ms var(--ease);
+  }
+
+  .landing-links a:hover::after,
+  .landing-links a:focus-visible::after {
+    opacity: 0.72;
+    transform: scaleX(1);
+  }
+
+  @media (max-width: 640px) {
+    .landing-content {
+      width: min(100%, 360px);
+    }
+
+    .landing-name {
+      font-size: clamp(3.25rem, 18vw, 5.1rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .landing-code-arrow {
+      animation: none;
+    }
+  }
+
   .app-frame {
     width: min(1100px, calc(100% - 28px));
     margin: 0 auto;
@@ -211,9 +460,35 @@
   }
 
   .terminal-window-dot {
-    width: 11px;
-    height: 11px;
+    --window-dot-size: 12px;
+    width: var(--window-dot-size);
+    height: var(--window-dot-size);
+    min-width: var(--window-dot-size);
+    min-height: var(--window-dot-size);
+    flex: 0 0 var(--window-dot-size);
     border-radius: 50%;
+  }
+
+  .terminal-window-dot-button {
+    appearance: none;
+    display: block;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    line-height: 1;
+    transition:
+      box-shadow 160ms var(--ease),
+      filter 160ms var(--ease);
+  }
+
+  .terminal-window-dot-button:hover,
+  .terminal-window-dot-button:focus-visible {
+    filter: brightness(1.08);
+  }
+
+  .terminal-window-dot-button:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.62);
+    outline-offset: 3px;
   }
 
   .terminal-window-dot-close {

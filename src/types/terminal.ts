@@ -10,6 +10,7 @@ import type {
 export type CommandCategory =
   | "Profile"
   | "Work"
+  | "Clubs"
   | "Projects"
   | "Skills"
   | "Contact"

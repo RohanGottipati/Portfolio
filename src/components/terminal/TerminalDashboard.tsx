@@ -64,9 +64,9 @@ export function TerminalDashboard({
                   variant="dashboardRow"
                   size="none"
                   className="dashboard-command-row"
-                  onClick={() => onRunCommand("/project caresync")}
+                  onClick={() => onRunCommand("/project aura")}
                 >
-                  <span>Hack Canada Win - CareSync</span>
+                  <span>BearHacks Win - A.U.R.A.</span>
                   <span>Open project</span>
                 </Button>
               </div>

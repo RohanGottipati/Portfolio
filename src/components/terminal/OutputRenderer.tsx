@@ -143,14 +143,16 @@ function TimelineEntry({
         </div>
       </div>
 
-      <ul className="panel-bullet-list">
-        {entry.highlights.map((highlight) => (
-          <li key={highlight}>
-            <ArrowRight className="bullet-arrow-icon" size={13} />
-            <span>{highlight}</span>
-          </li>
-        ))}
-      </ul>
+      {entry.highlights.length ? (
+        <ul className="panel-bullet-list">
+          {entry.highlights.map((highlight) => (
+            <li key={highlight}>
+              <ArrowRight className="bullet-arrow-icon" size={13} />
+              <span>{highlight}</span>
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </article>
   );
 }

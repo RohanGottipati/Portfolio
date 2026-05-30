@@ -110,6 +110,23 @@ export function createCommandRegistry(): CommandDefinition[] {
         }),
     },
     {
+      command: "/clubs",
+      description: "Browse my campus club leadership roles.",
+      aliases: [],
+      category: "Clubs",
+      args: "none",
+      showInMenu: true,
+      handler: (_parsed, context) =>
+        createExecution({
+          modal: createModal("timeline", "Clubs", "", {
+            heading: "Club Leadership",
+            entries: context.portfolio.clubs,
+          }, "success", "clubs"),
+          logLine: "Opened /clubs",
+          meta: { canonicalCommand: "/clubs" },
+        }),
+    },
+    {
       command: "/projects",
       description: "See all the projects I've built.",
       aliases: [],

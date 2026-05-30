@@ -104,6 +104,7 @@ export interface PortfolioData {
   about: AboutData;
   current: CurrentData;
   experience: ExperienceEntry[];
+  clubs: ExperienceEntry[];
   projects: ProjectEntry[];
   skills: SkillGroup[];
   contact: ContactData;
