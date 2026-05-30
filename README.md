@@ -1,8 +1,7 @@
 # rohangottipati.com
 
 ```
-rohan@portfolio:~$ rohan
-  initializing ~/portfolio/rohan-shell
+rohan@portfolio:~$ ./launch
   loading portfolio data
   mounting projects, experience, skills
   resolving contact + links
@@ -30,12 +29,13 @@ This portfolio reflects that approach through clean UI, motion, and interactivit
 
 ## How It Works
 
-Type `rohan` to boot the shell, then use slash commands to navigate:
+The site opens on a landing screen with a quick intro and links. Hit the code button (the bouncing arrow points the way) to drop into the terminal, then use slash commands to navigate:
 
 | Command | Description |
 |---|---|
 | `/about` | Who I am and what I'm working on |
 | `/experience` | Work history and roles |
+| `/clubs` | Campus club leadership roles |
 | `/projects` | Projects I've built |
 | `/project <slug>` | Deep-dive into a specific project |
 | `/skills` | Technical skills and tools |
@@ -47,7 +47,7 @@ Type `rohan` to boot the shell, then use slash commands to navigate:
 
 ## Features
 
-- Realistic terminal boot sequence with path-style init lines
+- Landing screen with a one-tap launch into the terminal
 - Full shell prompt with working directory (`rohan@portfolio:~/portfolio/rohan-shell$`)
 - Path-style panel headers (`~/portfolio/rohan-shell/experience`)
 - Command menu with fuzzy suggestions and keyboard navigation
