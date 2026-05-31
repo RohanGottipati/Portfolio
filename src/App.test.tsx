@@ -36,7 +36,7 @@ describe("App", () => {
     expect(screen.getByText("cs @ Wilfrid Laurier University")).toBeInTheDocument();
     expect(
       screen.getByText(
-        "junior software engineer @ DOUBL · building production code, backend systems, and ai integrations"
+        "swe @ DOUBL · production code, backend systems & AI integrations"
       )
     ).toBeInTheDocument();
     expect(
@@ -82,7 +82,7 @@ describe("App", () => {
     expect(await screen.findByRole("dialog", { name: "Profile" })).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Bachelor of Computer Science, Big Data Concentration at Wilfrid Laurier University."
+        "swe @ DOUBL · building production code, backend systems, and ai integrations"
       )
     ).toBeInTheDocument();
     expect(
