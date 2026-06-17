@@ -57,6 +57,10 @@ export function LandingPage({
       return;
     }
 
+    if (window.matchMedia("(pointer: coarse)").matches) {
+      return;
+    }
+
     commandInputRef.current?.focus();
   }, [isLaunching]);
 
