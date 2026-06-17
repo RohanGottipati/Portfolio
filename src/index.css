@@ -2161,6 +2161,10 @@
       line-height: 1.35;
     }
 
+    .terminal-input {
+      caret-color: var(--accent);
+    }
+
     .modal-backdrop {
       padding: 10px;
       align-items: end;

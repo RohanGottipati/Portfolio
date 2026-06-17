@@ -29,7 +29,15 @@ export function TerminalInput({
   const [isFocused, setIsFocused] = useState(false);
   const [caretIndex, setCaretIndex] = useState(value.length);
   const [cursorOffset, setCursorOffset] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const measureRef = useRef<HTMLSpanElement | null>(null);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     setCaretIndex((current) => Math.min(current, value.length));
@@ -45,7 +53,7 @@ export function TerminalInput({
   }
 
   const measuredText = value.slice(0, caretIndex).replace(/ /g, "\u00a0") || "\u200b";
-  const showCursor = !disabled && isFocused;
+  const showCursor = !disabled && isFocused && !isMobile;
   const showPlaceholder = !value.length;
 
   return (
