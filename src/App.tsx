@@ -28,10 +28,11 @@ import {
 import { BootPage } from "@/pages/BootPage";
 import { LandingPage } from "@/pages/LandingPage";
 import { ShellPage } from "@/pages/ShellPage";
+import { SplashPage } from "@/pages/SplashPage";
 import { StartupPage } from "@/pages/StartupPage";
 import type { ModalContent, SessionLogEntry, SuggestionItem } from "@/types/terminal";
 
-type AppPhase = "landing" | "locked" | "booting" | "ready" | "exiting";
+type AppPhase = "splash" | "landing" | "locked" | "booting" | "ready" | "exiting";
 
 interface AppState {
   phase: AppPhase;
@@ -56,6 +57,7 @@ type AppAction =
   | { type: "clear-session" }
   | { type: "set-recall"; value: string; index: number }
   | { type: "set-startup-error"; value: string | null }
+  | { type: "show-landing" }
   | { type: "show-startup" }
   | { type: "start-boot" }
   | { type: "start-exit"; delayMs: number | null }
@@ -65,7 +67,7 @@ type AppAction =
   | { type: "reset-to-home" };
 
 const BOOT_LINES = [
-  "rohan@portfolio:~$ rohan",
+  "rohan@rohan.dev:~$ rohan",
   "  initializing ~/portfolio/rohan-shell",
   "  loading portfolio data",
   "  mounting projects, experience, skills",
@@ -132,16 +134,16 @@ const LANDING_INTRO_ITEMS = [
   "cs @ Wilfrid Laurier University",
   "swe @ DOUBL · production code, backend systems & AI integrations",
   "i like building fast, useful products and turning ideas into working mvps.",
-  "interests: ai/ml, software integrations, big data, and full stack development.",
+  "interests: ai/ml, software integrations, big data, and full stack development",
 ] as const;
 
 const LOCATIONS = ["Waterloo, ON", "Toronto, ON"];
 const MENU_SCROLL_MARGIN = 24;
 const FOCUSABLE = "button:not([disabled]), a[href], [tabindex='0']";
-const LANDING_TRANSITION_MS = 520;
+const LANDING_TRANSITION_MS = 1300;
 
 const initialState: AppState = {
-  phase: "landing",
+  phase: "splash",
   input: "",
   sessionLog: [],
   submittedHistory: [],
@@ -224,6 +226,17 @@ function reducer(state: AppState, action: AppAction): AppState {
       return {
         ...state,
         startupError: action.value,
+      };
+    case "show-landing":
+      return {
+        ...state,
+        phase: "landing",
+        input: "",
+        isMenuOpen: false,
+        selectedSuggestionIndex: -1,
+        recallIndex: -1,
+        startupError: null,
+        exitDelayMs: null,
       };
     case "show-startup":
       return {
@@ -573,8 +586,18 @@ export default function App() {
     launchTransitionTimeoutRef.current = window.setTimeout(() => {
       launchTransitionTimeoutRef.current = null;
       setIsLaunchTransitioning(false);
-      dispatch({ type: "show-startup" });
+      dispatch({ type: "finish-boot" });
     }, LANDING_TRANSITION_MS);
+  }
+
+  function openSplash() {
+    const pendingCommand = pendingCommandRef.current;
+    if (pendingCommand) {
+      startBoot(pendingCommand);
+      return;
+    }
+
+    dispatch({ type: "show-landing" });
   }
 
   function runCommand(
@@ -977,11 +1000,7 @@ export default function App() {
 
     const command = getCommandFromUrl();
     if (command) {
-      dispatch({ type: "finish-boot" });
-      window.requestAnimationFrame(() => {
-        inputRef.current?.focus();
-        runCommand(command, { urlMode: "replace" });
-      });
+      pendingCommandRef.current = command;
       return;
     }
   }, []);
@@ -994,7 +1013,16 @@ export default function App() {
       const command = getCommandFromUrl();
 
       if (!command) {
+        pendingCommandRef.current = null;
+        if (state.phase === "splash") {
+          return;
+        }
         closeModal();
+        return;
+      }
+
+      if (state.phase === "splash") {
+        pendingCommandRef.current = command;
         return;
       }
 
@@ -1013,13 +1041,17 @@ export default function App() {
   const currentLocation = typedLocation || "\u00a0";
   const isIdleShell = state.sessionLog.length === 0;
 
+  if (state.phase === "splash") {
+    return <SplashPage onOpen={openSplash} />;
+  }
+
   if (state.phase === "landing") {
     return (
       <LandingPage
-        name={portfolioData.identity.name.toLowerCase()}
         introItems={LANDING_INTRO_ITEMS}
         links={LANDING_LINKS}
         isLaunching={isLaunchTransitioning}
+        onHome={returnHome}
         onLaunch={launchPortfolio}
       />
     );

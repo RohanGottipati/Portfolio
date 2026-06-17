@@ -3,19 +3,22 @@ import userEvent from "@testing-library/user-event";
 
 import App from "@/App";
 
-async function revealLanding() {
-  return screen.findByRole("heading", { name: "rohan gottipati" });
+async function revealSplash() {
+  return screen.findByRole("button", { name: "Enter" });
 }
 
-async function revealStartup(user: ReturnType<typeof userEvent.setup>) {
-  await revealLanding();
-  await user.click(screen.getByRole("button", { name: "Open terminal portfolio" }));
-  return screen.findByPlaceholderText("Type rohan, then press Enter", {}, { timeout: 2000 });
+async function revealLanding(user: ReturnType<typeof userEvent.setup>) {
+  const splashLaunch = screen.queryByRole("button", { name: "Enter" });
+  if (splashLaunch) {
+    await user.click(splashLaunch);
+  }
+
+  return screen.findByLabelText("Landing terminal command input");
 }
 
 async function launchPortfolio(user: ReturnType<typeof userEvent.setup>) {
-  const startupInput = await revealStartup(user);
-  await user.type(startupInput, "rohan{enter}");
+  await revealLanding(user);
+  await user.type(screen.getByLabelText("Landing terminal command input"), "rohan{enter}");
   await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 4000 });
 }
 
@@ -24,15 +27,30 @@ describe("App", () => {
     window.history.replaceState({}, "", "/");
   });
 
-  it("shows the rohan gate after the code button and boots into the shell", async () => {
+  it("shows the portfolio splash before the landing page", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    const splashLaunch = await revealSplash();
+    expect(splashLaunch).toBeInTheDocument();
+    expect(screen.getByText("Enter")).toBeInTheDocument();
+    expect(screen.queryByLabelText("Landing terminal command input")).not.toBeInTheDocument();
+
+    await user.click(splashLaunch);
+
+    expect(await screen.findByLabelText("Landing terminal command input")).toBeInTheDocument();
+  });
+
+  it("boots from the landing terminal prompt", async () => {
     const user = userEvent.setup();
     render(<App />);
 
     expect(screen.queryByRole("button", { name: "ENTER" })).not.toBeInTheDocument();
+    expect(await revealSplash()).toBeInTheDocument();
 
-    await revealLanding();
+    await revealLanding(user);
 
-    expect(screen.getByRole("heading", { name: "rohan gottipati" })).toBeInTheDocument();
+    expect(screen.getByText(/rohan's portfolio/)).toBeInTheDocument();
     expect(screen.getByText("cs @ Wilfrid Laurier University")).toBeInTheDocument();
     expect(
       screen.getByText(
@@ -44,10 +62,10 @@ describe("App", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        "interests: ai/ml, software integrations, big data, and full stack development."
+        "interests: ai/ml, software integrations, big data, and full stack development"
       )
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Open terminal portfolio" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Open terminal portfolio" })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
       "href",
       "https://www.linkedin.com/in/rohangottipati/"
@@ -67,12 +85,14 @@ describe("App", () => {
     expect(
       screen.queryByPlaceholderText("Type rohan, then press Enter")
     ).not.toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Hint: Type "rohan"')).toBeInTheDocument();
     expect(screen.queryByText("Welcome to Rohan", { exact: false })).not.toBeInTheDocument();
 
-    const startupInput = await revealStartup(user);
-    expect(startupInput).toBeInTheDocument();
-
-    await user.type(startupInput, "rohan{enter}");
+    await user.type(screen.getByLabelText("Landing terminal command input"), "rohan{enter}");
+    expect(await screen.findByText("command accepted: rohan")).toBeInTheDocument();
+    expect(screen.getByText("loading portfolio shell")).toBeInTheDocument();
+    expect(screen.getByText("mounting interactive workspace")).toBeInTheDocument();
+    expect(screen.queryByText("initializing ~/portfolio/rohan-shell")).not.toBeInTheDocument();
     await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 4000 });
     expect(screen.getByText("Welcome to Rohan", { exact: false })).toBeInTheDocument();
 
@@ -115,8 +135,18 @@ describe("App", () => {
   });
 
   it("hydrates a deep-linked command from the URL after booting", async () => {
+    const user = userEvent.setup();
     window.history.replaceState({}, "", "/?cmd=%2Fproject%20spectra");
     render(<App />);
+
+    expect(await revealSplash()).toBeInTheDocument();
+    expect(
+      screen.queryByText(
+        "Security-focused analytics layer for AI agents operating on the Solana blockchain."
+      )
+    ).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Enter" }));
 
     expect(
       await screen.findByText(
@@ -344,8 +374,13 @@ describe("App", () => {
 
     expect(screen.queryByLabelText("Portfolio command input")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "ENTER" })).not.toBeInTheDocument();
-    expect(await screen.findByRole("heading", { name: "rohan gottipati" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Open terminal portfolio" })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "Enter" })).toBeInTheDocument();
+    expect(screen.queryByLabelText("Landing terminal command input")).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Enter" }));
+
+    expect(await screen.findByLabelText("Landing terminal command input")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Open terminal portfolio" })).not.toBeInTheDocument();
   });
 
   it("focuses the first contact action and moves through contact actions with arrow keys", async () => {
@@ -530,8 +565,12 @@ describe("App", () => {
       window.history.replaceState({}, "", "/?cmd=%2Fexit");
       render(<App />);
 
+      act(() => {
+        fireEvent.click(screen.getByRole("button", { name: "Enter" }));
+      });
+
       await act(async () => {
-        vi.advanceTimersByTime(120 * 5 + 300);
+        vi.advanceTimersByTime(1_500);
       });
 
       expect(screen.getByRole("dialog", { name: /Goodbye/ })).toBeInTheDocument();

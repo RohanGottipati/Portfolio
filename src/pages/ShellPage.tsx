@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import type { KeyboardEvent, MutableRefObject, RefObject } from "react";
+import { useEffect, useState, type KeyboardEvent, type MutableRefObject, type RefObject } from "react";
 import type { LucideIcon } from "lucide-react";
 
 import { CommandMenu } from "@/components/terminal/CommandMenu";
@@ -70,6 +70,16 @@ export function ShellPage({
   onRunCommand,
   onSuggestionSelect,
 }: ShellPageProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth <= 640);
+    update();
+
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
   return (
     <div className="app-shell">
       <motion.div
@@ -121,7 +131,9 @@ export function ShellPage({
               />
               <span className="terminal-window-dot terminal-window-dot-zoom" aria-hidden="true" />
             </div>
-            <span className="terminal-window-title">rohan shell v1.3.2</span>
+            <span className="terminal-window-title">
+              rohangottipati — -zsh — 80x24
+            </span>
             <div className="terminal-window-actions" aria-label="Contact shortcuts">
               {windowActions.map(({ label, tooltip, href, Icon, openInNewTab }) => (
                 <Button
@@ -136,15 +148,15 @@ export function ShellPage({
                     aria-label={label}
                     tabIndex={0}
                     {...(openInNewTab ? { target: "_blank", rel: "noreferrer" } : {})}
-                  >
-                    <Icon size={16} aria-hidden="true" />
-                    <span className="terminal-window-action-label" aria-hidden="true">
-                      {tooltip}
-                    </span>
-                  </a>
-                </Button>
-              ))}
-            </div>
+              >
+                <Icon size={16} aria-hidden="true" />
+                <span className="terminal-window-action-label" aria-hidden="true">
+                  {tooltip}
+                </span>
+              </a>
+            </Button>
+          ))}
+        </div>
           </div>
 
           <div ref={historyRef} className={cn("terminal-history", isIdleShell && "is-idle")}>
@@ -157,7 +169,7 @@ export function ShellPage({
               value={input}
               inputRef={inputRef}
               disabled={phase === "exiting"}
-              placeholder="Type / to explore commands"
+              placeholder={isMobile ? 'Type "/"' : "Type / to explore commands"}
               onChange={onInputChange}
               onKeyDown={onInputKeyDown}
             />

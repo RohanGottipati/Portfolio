@@ -59,9 +59,9 @@ export function TerminalInput({
           ) : (
             <span
               className="terminal-prompt-command"
-              title="rohan@portfolio:~/portfolio/rohan-shell"
+              title="rohan@rohan.dev:~/portfolio/rohan-shell"
             >
-              <span className="terminal-prompt-user">rohan@portfolio</span>
+              <span className="terminal-prompt-user">rohan@rohan.dev</span>
               <span className="terminal-prompt-sep">:</span>
               <span className="terminal-prompt-path">~/portfolio/rohan-shell</span>
               <span className="terminal-prompt-dollar">$</span>
