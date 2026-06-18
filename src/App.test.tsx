@@ -364,7 +364,7 @@ describe("App", () => {
     });
   });
 
-  it("returns to the home page from the terminal close button", async () => {
+  it("returns to the landing page without replaying the splash", async () => {
     const user = userEvent.setup();
     render(<App />);
 
@@ -373,13 +373,8 @@ describe("App", () => {
     await user.click(screen.getByRole("button", { name: "Return home" }));
 
     expect(screen.queryByLabelText("Portfolio command input")).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "ENTER" })).not.toBeInTheDocument();
-    expect(await screen.findByRole("button", { name: "Enter" })).toBeInTheDocument();
-    expect(screen.queryByLabelText("Landing terminal command input")).not.toBeInTheDocument();
-
-    await user.click(screen.getByRole("button", { name: "Enter" }));
-
     expect(await screen.findByLabelText("Landing terminal command input")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Enter" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Open terminal portfolio" })).not.toBeInTheDocument();
   });
 

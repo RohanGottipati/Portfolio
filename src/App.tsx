@@ -64,6 +64,7 @@ type AppAction =
   | { type: "append-boot-line"; line: string }
   | { type: "finish-boot" }
   | { type: "close-modal" }
+  | { type: "reset-to-landing" }
   | { type: "reset-to-home" };
 
 const BOOT_LINES = [
@@ -279,6 +280,11 @@ function reducer(state: AppState, action: AppAction): AppState {
         activeModal: null,
         modalBackCommand: null,
       };
+    case "reset-to-landing":
+      return {
+        ...initialState,
+        phase: "landing",
+      };
     case "reset-to-home":
       return { ...initialState };
     default:
@@ -308,6 +314,7 @@ export default function App() {
   const panelFocusIndexRef = useRef(-1);
   const modalRestoreFocusTimeoutRef = useRef<number | null>(null);
   const launchTransitionTimeoutRef = useRef<number | null>(null);
+  const hasOpenedSplashRef = useRef(false);
 
   const suggestions =
     state.phase === "ready"
@@ -591,6 +598,8 @@ export default function App() {
   }
 
   function openSplash() {
+    hasOpenedSplashRef.current = true;
+
     const pendingCommand = pendingCommandRef.current;
     if (pendingCommand) {
       startBoot(pendingCommand);
@@ -743,7 +752,9 @@ export default function App() {
     setIsLaunchTransitioning(false);
     setIsModalClosing(false);
     replaceCommandInUrl(null);
-    dispatch({ type: "reset-to-home" });
+    dispatch({
+      type: hasOpenedSplashRef.current ? "reset-to-landing" : "reset-to-home",
+    });
   }
 
   function handleStartupInputChange(value: string) {
