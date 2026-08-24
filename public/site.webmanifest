@@ -1,6 +1,9 @@
 {
   "name": "Rohan Gottipati - Software Engineer",
   "short_name": "Rohan",
+  "description": "My software engineering portfolio of projects and experience.",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     {
       "src": "/icon-192.png",
@@ -13,7 +16,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#000000",
-  "background_color": "#0a0e24",
+  "theme_color": "#f5f1e8",
+  "background_color": "#f5f1e8",
   "display": "standalone"
 }

@@ -1,39 +1,50 @@
 {
   "name": "rohan-gottipati-portfolio",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --ext .js,.mjs,.ts,.tsx --report-unused-disable-directives --max-warnings 0",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@radix-ui/react-slot": "^1.2.4",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "framer-motion": "^9.0.7",
+    "framer-motion": "^11.5.4",
     "lucide-react": "^0.563.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tailwind-merge": "^3.4.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.18.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/node": "^24.7.2",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
-    "@vitejs/plugin-react": "^3.1.0",
-    "autoprefixer": "^10.4.13",
-    "jsdom": "^26.1.0",
-    "postcss": "^8.4.21",
-    "tailwindcss": "^3.2.6",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.41.0",
+    "@typescript-eslint/parser": "^8.41.0",
+    "@vitejs/plugin-react": "^6.1.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.21",
+    "jsdom": "^27.4.0",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.9.3",
-    "vite": "^4.1.0",
-    "vitest": "^3.2.4"
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
+  },
+  "overrides": {
+    "nanoid": "3.3.18",
+    "ws": "8.21.3"
+  },
+  "engines": {
+    "node": ">=20.19.0"
   }
 }

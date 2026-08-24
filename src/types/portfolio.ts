@@ -1,65 +1,28 @@
-export type ExperienceCategory =
-  | "work"
-  | "founder"
-  | "leadership"
-  | "research"
-  | "teaching";
+export type AccentColor = 'tangerine' | 'lime' | 'sky' | 'peach' | 'blush';
 
-export type SkillCategoryKey =
-  | "languages"
-  | "frontend"
-  | "backend"
-  | "ai-data"
-  | "tools-platforms"
-  | "startup-product";
-
-export interface PortfolioLink {
+export interface ProjectLink {
   label: string;
   href: string;
-  kind:
-    | "github"
-    | "linkedin"
-    | "email"
-    | "resume"
-    | "website"
-    | "devpost"
-    | "download"
-    | "other";
-  external?: boolean;
-  download?: boolean;
 }
 
-export interface PortfolioIdentity {
+export interface Project {
+  slug: string;
   name: string;
-  shortName: string;
+  year: string;
+  summary: string;
+  description: string;
+  stack: string[];
+  features: string[];
   role: string;
-  subtitle: string;
-  handle: string;
-  avatar: string;
-  tagline: string;
-  statusLabel: string;
-  statusDetail: string;
-  location: string;
+  links: ProjectLink[];
+  impact?: string;
+  tags: string[];
+  accent: AccentColor;
+  image?: string;
+  featured: boolean;
 }
 
-export interface AboutData {
-  intro: string;
-  studying: string;
-  building: string;
-  seeking: string;
-  currentFocus: string;
-  roles: string[];
-  highlights: string[];
-}
-
-export interface CurrentData {
-  building: string;
-  learning: string;
-  exploring: string;
-  workingOn: string[];
-}
-
-export interface ExperienceEntry {
+export interface Role {
   slug: string;
   title: string;
   organization: string;
@@ -68,46 +31,12 @@ export interface ExperienceEntry {
   summary: string;
   highlights: string[];
   techUsed: string[];
-  category: ExperienceCategory;
-  promotedFrom?: string;
-}
-
-export interface ProjectEntry {
-  slug: string;
-  name: string;
-  summary: string;
-  description: string;
-  stack: string[];
-  features: string[];
-  role: string;
-  links: PortfolioLink[];
-  impact?: string;
-  tags: string[];
+  kind: 'work' | 'research' | 'founder' | 'teaching' | 'leadership';
 }
 
 export interface SkillGroup {
-  key: SkillCategoryKey;
+  key: string;
   label: string;
   summary: string;
   items: string[];
-}
-
-export interface ContactData {
-  email: string;
-  github: string;
-  linkedin: string;
-  resume: string;
-}
-
-export interface PortfolioData {
-  identity: PortfolioIdentity;
-  about: AboutData;
-  current: CurrentData;
-  experience: ExperienceEntry[];
-  clubs: ExperienceEntry[];
-  projects: ProjectEntry[];
-  skills: SkillGroup[];
-  contact: ContactData;
-  quickLinks: PortfolioLink[];
-  pinnedCommands: string[];
 }

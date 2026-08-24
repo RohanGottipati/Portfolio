@@ -1,592 +1,444 @@
-import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { vi } from "vitest";
 
-import App from "@/App";
+import { App } from "./App";
 
-async function revealSplash() {
-  return screen.findByRole("button", { name: "Enter" });
-}
-
-async function revealLanding(user: ReturnType<typeof userEvent.setup>) {
-  const splashLaunch = screen.queryByRole("button", { name: "Enter" });
-  if (splashLaunch) {
-    await user.click(splashLaunch);
-  }
-
-  return screen.findByLabelText("Landing terminal command input");
-}
-
-async function launchPortfolio(user: ReturnType<typeof userEvent.setup>) {
-  await revealLanding(user);
-  await user.type(screen.getByLabelText("Landing terminal command input"), "rohan{enter}");
-  await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 4000 });
-}
-
-describe("App", () => {
+describe("redesigned portfolio", () => {
   beforeEach(() => {
+    vi.clearAllMocks();
     window.history.replaceState({}, "", "/");
   });
 
-  it("shows the portfolio splash before the landing page", async () => {
+  it("renders and dismisses the intro before showing primary navigation", async () => {
     const user = userEvent.setup();
-    render(<App />);
+    render(<App paperGrain={false} />);
 
-    const splashLaunch = await revealSplash();
-    expect(splashLaunch).toBeInTheDocument();
-    expect(screen.getByText("Enter")).toBeInTheDocument();
-    expect(screen.queryByLabelText("Landing terminal command input")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("dialog", { name: "Portfolio introduction" }),
+    ).toHaveAttribute("aria-modal", "true");
+    expect(
+      screen.getByRole("progressbar", { name: "Loading portfolio" }),
+    ).toHaveAttribute("aria-valuenow", "100");
 
-    await user.click(splashLaunch);
+    await user.click(
+      screen.getByRole("button", { name: /click anywhere to skip/i }),
+    );
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("dialog", { name: "Portfolio introduction" }),
+      ).not.toBeInTheDocument();
+    });
 
-    expect(await screen.findByLabelText("Landing terminal command input")).toBeInTheDocument();
-  });
+    expect(
+      screen.getByRole("heading", {
+        name: /I'm Rohan, a software engineer who ships/i,
+      }),
+    ).toBeInTheDocument();
+    const primaryNav = screen.getByRole("navigation", { name: "Primary" });
+    const aboutLink = within(primaryNav).getByRole("link", { name: "About" });
+    const projectsLink = within(primaryNav).getByRole("link", {
+      name: "Projects",
+    });
+    const experienceLink = within(primaryNav).getByRole("link", {
+      name: "Experience",
+    });
+    const resumeLink = within(primaryNav).getByRole("link", { name: "Resume" });
+    const roroButton = within(primaryNav).getByRole("button", { name: "RoRo" });
 
-  it("boots from the landing terminal prompt", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    expect(screen.queryByRole("button", { name: "ENTER" })).not.toBeInTheDocument();
-    expect(await revealSplash()).toBeInTheDocument();
-
-    await revealLanding(user);
-
-    expect(screen.getByText(/rohan's portfolio/)).toBeInTheDocument();
-    expect(screen.getByText("cs @ Wilfrid Laurier University")).toBeInTheDocument();
+    expect(projectsLink).toHaveAttribute(
+      "href",
+      "/work",
+    );
+    expect(experienceLink).toHaveAttribute(
+      "href",
+      "/experience",
+    );
+    expect(aboutLink).toHaveAttribute(
+      "href",
+      "/about",
+    );
+    expect(resumeLink).toHaveAttribute("href", "/Rohan_Gottipati_Resume.pdf");
+    expect(resumeLink).toHaveAttribute("target", "_blank");
+    expect(resumeLink).toHaveAttribute("rel", "noreferrer");
+    expect(
+      aboutLink.compareDocumentPosition(projectsLink) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      projectsLink.compareDocumentPosition(experienceLink) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      experienceLink.compareDocumentPosition(resumeLink) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      resumeLink.compareDocumentPosition(roroButton) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(screen.getAllByText("Toronto, ON").length).toBeGreaterThan(0);
+    expect(
+      screen.getByText(/I'm at Intact Financial now, recently wrapped/),
+    ).toBeInTheDocument();
     expect(
       screen.getByText(
-        "swe @ DOUBL · production code, backend systems & AI integrations"
-      )
+        "IT Technical Advisor Intern, Software Engineering & Integrations",
+      ),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("i like building fast, useful products and turning ideas into working mvps.")
+      screen.getByText("Building multi-system integrations across enterprise systems."),
     ).toBeInTheDocument();
+    expect(
+      screen.getByText("Supporting application architecture in Java and Python."),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Working with AWS, Kubernetes, and CI/CD cloud tooling."),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Big Data Concentration")).toBeInTheDocument();
+    expect(screen.getByText("AI/ML systems")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "This Portfolio" }),
+    ).not.toBeInTheDocument();
+    expect(window.scrollTo).not.toHaveBeenCalled();
+    expect(document.querySelector("[data-cursor]")).not.toBeInTheDocument();
+    expect(document.querySelector("[data-hero-grid]")).toHaveClass(
+      "md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]",
+    );
+    expect(document.querySelector("[data-rotating-verb-slot]")).toHaveClass(
+      "w-[4.9em]",
+    );
+
+    const nextStop = screen.getByRole("heading", {
+      name: "I'm at Intact Financial.",
+    });
+    const selectedProjects = screen.getByRole("heading", {
+      name: "Things I built, shipped and broke.",
+    });
+    expect(
+      nextStop.compareDocumentPosition(selectedProjects) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+  it("keeps experience and about on separate pages", async () => {
+    const user = userEvent.setup();
+    window.history.replaceState({}, "", "/experience");
+    render(<App paperGrain={false} />);
+
+    expect(
+      await screen.findByRole("heading", {
+        name: "What I've built across roles.",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: /Intact Financial Corporation/,
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("Waterloo, ON")).toHaveLength(3);
     expect(
       screen.getByText(
-        "interests: ai/ml, software integrations, big data, and full stack development"
-      )
-    ).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Open terminal portfolio" })).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
-      "href",
-      "https://www.linkedin.com/in/rohangottipati/"
-    );
-    expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
-      "href",
-      "https://github.com/RohanGottipati"
-    );
-    expect(screen.getByRole("link", { name: "Contact" })).toHaveAttribute(
-      "href",
-      "mailto:rohan.gottipati@gmail.com"
-    );
-    expect(screen.getByRole("link", { name: "Resume" })).toHaveAttribute(
-      "href",
-      "/Rohan_Gottipati_Resume.pdf"
-    );
-    expect(
-      screen.queryByPlaceholderText("Type rohan, then press Enter")
-    ).not.toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Hint: Type "rohan"')).toBeInTheDocument();
-    expect(screen.queryByText("Welcome to Rohan", { exact: false })).not.toBeInTheDocument();
-
-    await user.type(screen.getByLabelText("Landing terminal command input"), "rohan{enter}");
-    expect(await screen.findByText("command accepted: rohan")).toBeInTheDocument();
-    expect(screen.getByText("loading portfolio shell")).toBeInTheDocument();
-    expect(screen.getByText("mounting interactive workspace")).toBeInTheDocument();
-    expect(screen.queryByText("initializing ~/portfolio/rohan-shell")).not.toBeInTheDocument();
-    await screen.findByText("Welcome to Rohan", { exact: false }, { timeout: 4000 });
-    expect(screen.getByText("Welcome to Rohan", { exact: false })).toBeInTheDocument();
-
-    const input = screen.getByLabelText("Portfolio command input");
-    await user.type(input, "/about{enter}");
-
-    expect(await screen.findByRole("dialog", { name: "Profile" })).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "swe @ DOUBL · building production code, backend systems, and ai integrations"
-      )
+        /Built scalable data pipelines to evaluate affective-computing models/,
+      ),
     ).toBeInTheDocument();
     expect(
       screen.queryByText(
-        "Computer Science student at Wilfrid Laurier University building software with a product-first mindset."
-      )
+        /Build research infrastructure for affective-computing models/,
+      ),
     ).not.toBeInTheDocument();
-    expect(screen.queryByText("Builder")).not.toBeInTheDocument();
-    expect(screen.getAllByText("Opened /about").length).toBeGreaterThan(0);
-
-    await user.type(input, "/clear{enter}");
-
+    expect(screen.queryByText("Data Pipelines")).not.toBeInTheDocument();
+    expect(screen.getByText("Data Structures I & II")).toBeInTheDocument();
+    expect(screen.getByText("Linear Algebra")).toBeInTheDocument();
+    expect(screen.getByText("Big Data Concentration")).toBeInTheDocument();
+    expect(screen.queryByText("Calculus")).not.toBeInTheDocument();
     await waitFor(() => {
-      expect(screen.queryByRole("dialog", { name: "Profile" })).not.toBeInTheDocument();
+      expect(document.title).toBe("Experience | Rohan Gottipati");
     });
 
-    expect(screen.getByLabelText("Shell dashboard")).toBeInTheDocument();
-    expect(screen.queryByText("Opened /about")).not.toBeInTheDocument();
-  });
-
-  it("runs /skills from suggestions with a single enter press", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-    await user.type(screen.getByLabelText("Portfolio command input"), "/sk{enter}");
-
-    expect(await screen.findByRole("heading", { name: "Skill Stack" })).toBeInTheDocument();
-    expect(screen.getAllByText("Opened /skills").length).toBeGreaterThan(0);
-  });
-
-  it("hydrates a deep-linked command from the URL after booting", async () => {
-    const user = userEvent.setup();
-    window.history.replaceState({}, "", "/?cmd=%2Fproject%20spectra");
-    render(<App />);
-
-    expect(await revealSplash()).toBeInTheDocument();
+    await user.click(screen.getByRole("link", { name: "About" }));
     expect(
-      screen.queryByText(
-        "Security-focused analytics layer for AI agents operating on the Solana blockchain."
-      )
-    ).not.toBeInTheDocument();
-
-    await user.click(screen.getByRole("button", { name: "Enter" }));
-
-    expect(
-      await screen.findByText(
-        "Security-focused analytics layer for AI agents operating on the Solana blockchain.",
-        {},
-        { timeout: 3500 }
-      )
-    ).toBeInTheDocument();
-
-    expect(screen.getAllByText("Opened /project spectra").length).toBeGreaterThan(0);
-  });
-
-  it("removes the extra experience summary copy", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    await user.type(screen.getByLabelText("Portfolio command input"), "/experience{enter}");
-
-    expect(
-      await screen.findByRole("heading", { name: "Experience Timeline" })
+      await screen.findByRole("heading", {
+        name: "I like turning half-formed ideas into working software.",
+      }),
     ).toBeInTheDocument();
     expect(
       screen.queryByText(
-        "Delivered interactive product and growth tooling across demos, messaging reliability, and content operations."
-      )
+        /I'm a software engineer who likes building fast, useful products/,
+      ),
     ).not.toBeInTheDocument();
-    expect(screen.queryByText("Junior Software Developer")).not.toBeInTheDocument();
-    expect(screen.queryByLabelText("Software Developer Intern at DOUBL")).not.toBeInTheDocument();
-    expect(screen.getByLabelText("Junior Software Engineer at DOUBL")).toBeInTheDocument();
-    expect(screen.getByLabelText("Software Engineer Intern at OneChart")).toBeInTheDocument();
     expect(
-      screen.getByLabelText("AI/ML Research Assistant at Wilfrid Laurier University")
+      screen.queryByRole("heading", {
+        name: "What I've built across roles.",
+      }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("navigates to work and filters projects", async () => {
+    const user = userEvent.setup();
+    window.history.replaceState({}, "", "/work");
+    render(<App paperGrain={false} />);
+
+    expect(
+      await screen.findByRole("heading", {
+        name: "14 so far, more in progress.",
+      }),
     ).toBeInTheDocument();
-    expect(screen.getAllByText("Jan 2026 – Apr 2026").length).toBeGreaterThanOrEqual(2);
-    expect(screen.queryByLabelText("VP of Finance at Laurier Computing Society")).not.toBeInTheDocument();
+
+    const portfolioHeading = screen.getByRole("heading", {
+      name: "This Portfolio",
+    });
+    expect(portfolioHeading).toBeInTheDocument();
+    expect(portfolioHeading.closest("a")?.querySelector("img")).toHaveAttribute(
+      "src",
+      "/c7482166-3a87-4a04-8b46-94156b0b0e28.jpg",
+    );
+
+    expect(screen.queryByText("Next.js")).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "AI + ML" }));
+    expect(screen.getByText("9 projects shown")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "GreenLens AI" })).toBeInTheDocument();
     expect(
-      screen.queryByText("Recent roles, research, leadership, and teaching work.")
-    ).not.toBeInTheDocument();
+      screen.getByText("Best Use of MongoDB Atlas, Hack the 6ix"),
+    ).not.toHaveClass("truncate");
     expect(
-      screen.queryByText(
-        "A structured view of software, research, founder, leadership, and teaching experience."
-      )
+      screen.queryByRole("heading", { name: "Letterly" }),
     ).not.toBeInTheDocument();
   });
 
-  it("runs /help from the dashboard CTA button", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    const dashboard = within(screen.getByLabelText("Shell dashboard"));
-    await user.click(dashboard.getByRole("button", { name: /\/help/i }));
+  it("renders a project case study and updates route metadata", async () => {
+    window.history.replaceState({}, "", "/work/greenlens-ai");
+    render(<App paperGrain={false} />);
 
     expect(
-      await screen.findByRole("dialog", { name: "Command Directory" })
+      await screen.findByRole("heading", { name: "GreenLens AI" }),
     ).toBeInTheDocument();
-    expect(screen.getAllByText("Opened /help").length).toBeGreaterThan(0);
+
+    await waitFor(() => {
+      expect(document.title).toBe("GreenLens AI | Rohan Gottipati");
+      expect(
+        document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href,
+      ).toBe("https://rohangottipati.com/work/greenlens-ai");
+    });
   });
 
-  it("opens club leadership from /clubs", async () => {
+  it("opens and closes the RoRo dialog accessibly", async () => {
     const user = userEvent.setup();
-    render(<App />);
+    render(<App paperGrain={false} />);
 
-    await launchPortfolio(user);
-
-    await user.type(screen.getByLabelText("Portfolio command input"), "/Clubs{enter}");
-
-    const dialog = await screen.findByRole("dialog", { name: "Clubs" });
-    const scoped = within(dialog);
-
-    expect(scoped.getByRole("heading", { name: "Club Leadership" })).toBeInTheDocument();
-    expect(scoped.getByLabelText("VP of Technology at Laurier Analytics Society")).toBeInTheDocument();
-    expect(scoped.getByText("May 2026 – Present")).toBeInTheDocument();
-    expect(scoped.getByLabelText("VP of Finance at Laurier Computing Society")).toBeInTheDocument();
-    expect(screen.getAllByText("Opened /clubs").length).toBeGreaterThan(0);
-  });
-
-  it("opens A.U.R.A. from the dashboard achievement CTA", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    const dashboard = within(screen.getByLabelText("Shell dashboard"));
-    await user.click(dashboard.getByRole("button", { name: /BearHacks Win - A\.U\.R\.A\./i }));
-
-    expect(await screen.findByRole("dialog", { name: "A.U.R.A." })).toBeInTheDocument();
-    expect(screen.getAllByText("Opened /project aura").length).toBeGreaterThan(0);
-  });
-
-  it("shows top-right contact shortcuts in the terminal chrome", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    const chrome = within(screen.getByRole("group", { name: "Terminal window" }));
-
-    expect(chrome.getByRole("button", { name: "Return home" })).toBeInTheDocument();
-    expect(chrome.getByRole("link", { name: "Email Rohan" })).toHaveAttribute(
-      "href",
-      "mailto:rohan.gottipati@gmail.com"
+    await user.click(
+      screen.getByRole("button", { name: /click anywhere to skip/i }),
     );
-    expect(chrome.getByRole("link", { name: "View GitHub profile" })).toHaveAttribute(
-      "href",
-      "https://github.com/RohanGottipati"
-    );
-    expect(chrome.getByRole("link", { name: "View LinkedIn profile" })).toHaveAttribute(
-      "href",
-      "https://www.linkedin.com/in/rohangottipati/"
-    );
-    expect(chrome.getByRole("link", { name: "Open resume PDF" })).toHaveAttribute(
-      "href",
-      "/Rohan_Gottipati_Resume.pdf"
-    );
-    expect(chrome.getByText("Email")).toBeInTheDocument();
-    expect(chrome.getByText("GitHub")).toBeInTheDocument();
-    expect(chrome.getByText("LinkedIn")).toBeInTheDocument();
-    expect(chrome.getByText("Resume")).toBeInTheDocument();
-  });
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("dialog", { name: "Portfolio introduction" }),
+      ).not.toBeInTheDocument();
+    });
 
-  it("recalls previous commands with ArrowUp from the terminal input", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    await user.type(screen.getByLabelText("Portfolio command input"), "/help{enter}");
-    const dialog = await screen.findByRole("dialog", { name: "Command Directory" });
+    expect(
+      screen.queryByRole("button", { name: "Ask RoRo" }),
+    ).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "RoRo" }));
+    expect(
+      screen.getByRole("dialog", { name: "RoRo portfolio guide" }),
+    ).toHaveAttribute("aria-modal", "true");
+    expect(document.querySelector("[data-roro-panel]")).toHaveClass(
+      "lg:w-[clamp(390px,28vw,500px)]",
+    );
+    expect(document.querySelector("[data-site-shell]")).toHaveClass(
+      "lg:mr-[clamp(390px,28vw,500px)]",
+    );
+    expect(
+      screen.getByRole("heading", { name: "Ask me anything." }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/I'm RoRo, the AI guide for this portfolio/),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("Portfolio assistant")).toHaveLength(1);
+    expect(document.querySelector("[data-roro-scroll-region]")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Ask about Rohan...")).toBeInTheDocument();
 
     await user.keyboard("{Escape}");
-
     await waitFor(() => {
-      expect(dialog).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("dialog", { name: "RoRo portfolio guide" }),
+      ).not.toBeInTheDocument();
     });
-
-    const input = screen.getByLabelText("Portfolio command input");
-    await waitFor(() => {
-      expect(input).toHaveFocus();
-    });
-
-    await user.type(input, "/about{enter}");
-    const profileDialog = await screen.findByRole("dialog", { name: "Profile" });
-
-    await user.keyboard("{Escape}");
-
-    await waitFor(() => {
-      expect(profileDialog).not.toBeInTheDocument();
-    });
-
-    await user.keyboard("{ArrowUp}");
-    expect(input).toHaveValue("/about");
-
-    await user.keyboard("{ArrowUp}");
-    expect(input).toHaveValue("/help");
   });
 
-  it("supports arrow-key navigation across shell controls after commands have run", async () => {
+  it("anchors a long RoRo answer at its beginning", async () => {
     const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    await user.type(screen.getByLabelText("Portfolio command input"), "/about{enter}");
-    const dialog = await screen.findByRole("dialog", { name: "Profile" });
-
-    await user.keyboard("{Escape}");
-
-    await waitFor(() => {
-      expect(dialog).not.toBeInTheDocument();
-    });
-
-    const input = screen.getByLabelText("Portfolio command input");
-    await waitFor(() => {
-      expect(input).toHaveFocus();
-    });
-
-    await user.keyboard("{ArrowDown}");
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Return home" })).toHaveFocus();
-    });
-
-    await user.keyboard("{ArrowDown}");
-    await waitFor(() => {
-      expect(screen.getByRole("link", { name: "Email Rohan" })).toHaveFocus();
-    });
-
-    await user.keyboard("{ArrowDown}");
-    await waitFor(() => {
-      expect(screen.getByRole("link", { name: "View GitHub profile" })).toHaveFocus();
-    });
-  });
-
-  it("starts arrow-key navigation from the window surface when the input is not focused", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    const input = screen.getByLabelText("Portfolio command input");
-    await waitFor(() => {
-      expect(input).toHaveFocus();
-    });
-
-    await act(async () => {
-      input.blur();
-      fireEvent.keyDown(window, { key: "ArrowDown" });
-    });
-
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Return home" })).toHaveFocus();
-    });
-  });
-
-  it("returns to the landing page without replaying the splash", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    await user.click(screen.getByRole("button", { name: "Return home" }));
-
-    expect(screen.queryByLabelText("Portfolio command input")).not.toBeInTheDocument();
-    expect(await screen.findByLabelText("Landing terminal command input")).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Enter" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Open terminal portfolio" })).not.toBeInTheDocument();
-  });
-
-  it("focuses the first contact action and moves through contact actions with arrow keys", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    await user.type(screen.getByLabelText("Portfolio command input"), "/contact{enter}");
-
-    const dialog = await screen.findByRole("dialog", { name: "Contact" });
-    const scoped = within(dialog);
-    const emailLink = scoped.getByRole("link", { name: "rohan.gottipati@gmail.com" });
-    const copyButton = scoped.getByRole("button", { name: "Copy email" });
-
-    await waitFor(() => {
-      expect(emailLink).toHaveFocus();
-    });
-
-    await user.keyboard("{ArrowDown}");
-
-    await waitFor(() => {
-      expect(copyButton).toHaveFocus();
-    });
-  });
-
-  it("focuses the first help command and moves through help commands with arrow keys", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    await user.type(screen.getByLabelText("Portfolio command input"), "/help{enter}");
-
-    const dialog = await screen.findByRole("dialog", { name: "Command Directory" });
-    const scoped = within(dialog);
-    const aboutCommand = scoped.getByRole("button", { name: /\/about/i });
-    const experienceCommand = scoped.getByRole("button", { name: /\/experience/i });
-
-    await waitFor(() => {
-      expect(aboutCommand).toHaveFocus();
-    });
-
-    await user.keyboard("{ArrowDown}");
-
-    await waitFor(() => {
-      expect(experienceCommand).toHaveFocus();
-    });
-  });
-
-  it("supports navigating back to /projects from project detail", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    await user.type(screen.getByLabelText("Portfolio command input"), "/project spectra{enter}");
-    expect(await screen.findByText("Back to /projects")).toBeInTheDocument();
-
-    await user.click(screen.getByRole("button", { name: "Back to /projects" }));
-    await waitFor(() => {
-      expect(screen.getAllByText("/project spectra").length).toBeGreaterThan(0);
-    });
-  });
-
-  it("supports arrow-key navigation through the project list", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    await user.type(screen.getByLabelText("Portfolio command input"), "/projects{enter}");
-
-    const dialog = await screen.findByRole("dialog", { name: "Projects" });
-    const scoped = within(dialog);
-    const firstProject = scoped.getByRole("button", { name: /\/project aura/i });
-    const secondProject = scoped.getByRole("button", { name: /\/project scout/i });
-
-    await waitFor(() => {
-      expect(firstProject).toHaveFocus();
-    });
-
-    await user.keyboard("{ArrowDown}");
-
-    await waitFor(() => {
-      expect(secondProject).toHaveFocus();
-    });
-  });
-
-  it("focuses resume actions and moves through them with arrow keys", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    await user.type(screen.getByLabelText("Portfolio command input"), "/resume{enter}");
-
-    const dialog = await screen.findByRole("dialog", { name: "Resume" });
-    const scoped = within(dialog);
-    const openLink = scoped.getByRole("link", { name: "Open in new page" });
-    const downloadLink = scoped.getByRole("link", { name: "Download PDF" });
-
-    await waitFor(() => {
-      expect(openLink).toHaveFocus();
-    });
-
-    await user.keyboard("{ArrowDown}");
-
-    await waitFor(() => {
-      expect(downloadLink).toHaveFocus();
-    });
-  });
-
-  it("focuses the first experience entry and moves through entries with arrow keys", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    await user.type(screen.getByLabelText("Portfolio command input"), "/experience{enter}");
-
-    const dialog = await screen.findByRole("dialog", { name: "Experience" });
-    const scoped = within(dialog);
-    const firstEntry = scoped.getByLabelText("Junior Software Engineer at DOUBL");
-    const secondEntry = scoped.getByLabelText("Software Engineer Intern at OneChart");
-
-    await waitFor(() => {
-      expect(firstEntry).toHaveFocus();
-    });
-
-    await user.keyboard("{ArrowDown}");
-
-    await waitFor(() => {
-      expect(secondEntry).toHaveFocus();
-    });
-  });
-
-  it("shows resume preview popup with open and download actions", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    await user.type(screen.getByLabelText("Portfolio command input"), "/resume{enter}");
-
-    expect(
-      await screen.findByRole("heading", { name: "Resume" }, { timeout: 5000 })
-    ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Open in new page" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Download PDF" })).toBeInTheDocument();
-  });
-
-  it("renders project detail CTA links with the expected hrefs", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await launchPortfolio(user);
-
-    await user.type(screen.getByLabelText("Portfolio command input"), "/project spectra{enter}");
-
-    const dialog = await screen.findByRole("dialog", { name: "Spectra" });
-    const scoped = within(dialog);
-
-    expect(scoped.getByRole("link", { name: "GitHub" })).toHaveAttribute(
-      "href",
-      "https://github.com/RohanGottipati/Spectra"
-    );
-    expect(
-      scoped.getByText("Next.js, React, TypeScript, Solana Web3.js, Supabase")
-    ).toBeInTheDocument();
-    expect(scoped.getByRole("link", { name: "Devpost" })).toHaveAttribute(
-      "href",
-      "https://devpost.com/software/s-e-n-t-r-a"
-    );
-  });
-
-  it("locks the terminal on /exit and auto-closes the window after 10 seconds", async () => {
-    const closeSpy = vi.spyOn(window, "close").mockImplementation(() => undefined);
-    vi.useFakeTimers();
+    const scrollHeight = vi
+      .spyOn(HTMLElement.prototype, "scrollHeight", "get")
+      .mockImplementation(function (this: HTMLElement) {
+        if (this.hasAttribute("data-roro-answer-body")) return 520;
+        if (this.hasAttribute("data-roro-scroll-region")) return 1400;
+        return 0;
+      });
+    const clientHeight = vi
+      .spyOn(HTMLElement.prototype, "clientHeight", "get")
+      .mockImplementation(function (this: HTMLElement) {
+        return this.hasAttribute("data-roro-scroll-region") ? 720 : 0;
+      });
+    const elementRect = vi
+      .spyOn(HTMLElement.prototype, "getBoundingClientRect")
+      .mockImplementation(function (this: HTMLElement) {
+        const top = this.hasAttribute("data-roro-answer") ? 300 : 100;
+        return {
+          bottom: top + 100,
+          height: 100,
+          left: 0,
+          right: 390,
+          top,
+          width: 390,
+          x: 0,
+          y: top,
+          toJSON: () => ({}),
+        };
+      });
+
+    vi.mocked(fetch).mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        answer:
+          "Here is a detailed portfolio answer.\n\n• First relevant point\n• Second relevant point\n• Third relevant point",
+      }),
+    } as Response);
 
     try {
-      window.history.replaceState({}, "", "/?cmd=%2Fexit");
-      render(<App />);
-
-      act(() => {
-        fireEvent.click(screen.getByRole("button", { name: "Enter" }));
+      render(<App paperGrain={false} />);
+      await user.click(
+        screen.getByRole("button", { name: /click anywhere to skip/i }),
+      );
+      await waitFor(() => {
+        expect(
+          screen.queryByRole("dialog", { name: "Portfolio introduction" }),
+        ).not.toBeInTheDocument();
       });
 
-      await act(async () => {
-        vi.advanceTimersByTime(1_500);
+      await user.click(screen.getByRole("button", { name: "RoRo" }));
+      await user.type(
+        screen.getByPlaceholderText("Ask about Rohan..."),
+        "List the most relevant portfolio details",
+      );
+      await user.click(screen.getByRole("button", { name: "Send question" }));
+
+      expect(
+        await screen.findByText(/Here is a detailed portfolio answer/),
+      ).toBeInTheDocument();
+      await waitFor(() => {
+        expect(HTMLElement.prototype.scrollTo).toHaveBeenCalledWith({
+          top: 176,
+          behavior: "smooth",
+        });
       });
-
-      expect(screen.getByRole("dialog", { name: /Goodbye/ })).toBeInTheDocument();
-      expect(screen.getByLabelText("Portfolio command input")).toBeDisabled();
-      expect(screen.queryByLabelText("Keyboard navigation help")).not.toBeInTheDocument();
-      expect(screen.queryByLabelText("Press Escape to close")).not.toBeInTheDocument();
-      expect(screen.queryByLabelText("Close panel")).not.toBeInTheDocument();
-
-      await act(async () => {
-        vi.advanceTimersByTime(9_000);
-      });
-      expect(closeSpy).not.toHaveBeenCalled();
-
-      await act(async () => {
-        vi.advanceTimersByTime(1_500);
-      });
-
-      expect(closeSpy).toHaveBeenCalledTimes(1);
     } finally {
-      closeSpy.mockRestore();
-      vi.useRealTimers();
+      scrollHeight.mockRestore();
+      clientHeight.mockRestore();
+      elementRect.mockRestore();
     }
+  });
+
+  it("offers to ask RoRo about double-clicked text", async () => {
+    const user = userEvent.setup();
+    window.history.replaceState({}, "", "/work");
+    render(<App paperGrain={false} />);
+
+    const heading = await screen.findByRole("heading", {
+      name: "GreenLens AI",
+    });
+    const range = document.createRange();
+    range.selectNodeContents(heading);
+    Object.defineProperty(range, "getBoundingClientRect", {
+      value: () => ({
+        bottom: 140,
+        height: 20,
+        left: 100,
+        right: 220,
+        top: 120,
+        width: 120,
+        x: 100,
+        y: 120,
+        toJSON: () => ({}),
+      }),
+    });
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+
+    fireEvent.doubleClick(heading, { clientX: 160, clientY: 120 });
+
+    await user.click(
+      await screen.findByRole("button", {
+        name: "Ask RoRo about GreenLens AI",
+      }),
+    );
+
+    expect(
+      screen.getByRole("dialog", { name: "RoRo portfolio guide" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('Tell me about “GreenLens AI”'),
+    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/roro",
+        expect.objectContaining({ method: "POST" }),
+      );
+    });
+  });
+
+  it("offers to ask RoRo after selecting across multiple elements", async () => {
+    const user = userEvent.setup();
+    window.history.replaceState({}, "", "/work");
+    render(<App paperGrain={false} />);
+
+    const heading = await screen.findByRole("heading", {
+      name: "GreenLens AI",
+    });
+    const card = heading.closest("a");
+    const summary = card?.querySelector("p");
+    expect(card).not.toBeNull();
+    expect(summary).not.toBeNull();
+
+    const range = document.createRange();
+    range.setStartBefore(heading);
+    range.setEndAfter(summary!);
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+
+    fireEvent.pointerUp(summary!, {
+      clientX: 260,
+      clientY: 180,
+      pointerType: "mouse",
+    });
+
+    const askSelection = await screen.findByRole("button", {
+      name: /Ask RoRo about GreenLens AI/,
+    });
+    await user.click(askSelection);
+
+    expect(
+      screen.getByRole("dialog", { name: "RoRo portfolio guide" }),
+    ).toBeInTheDocument();
+  });
+
+  it("marks unknown routes as not indexable", async () => {
+    window.history.replaceState({}, "", "/missing-page");
+    render(<App paperGrain={false} />);
+
+    expect(
+      await screen.findByRole("heading", {
+        name: "I couldn't find that page.",
+      }),
+    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(document.getElementById("meta-robots")).toHaveAttribute(
+        "content",
+        "noindex, nofollow",
+      );
+    });
   });
 });

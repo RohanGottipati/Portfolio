@@ -1,45 +1,111 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f1e8" />
+    <meta name="color-scheme" content="light" />
+
     <title>Rohan Gottipati - Software Engineer</title>
     <meta
+      id="meta-description"
       name="description"
-      content="Rohan Gottipati - Software Engineer."
+      content="I'm Rohan Gottipati, a software engineer building AI systems, full-stack products, data platforms, and cloud integrations. Explore my selected work and experience."
     />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="author" content="Rohan Gottipati" />
+    <meta
+      id="meta-robots"
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <link id="canonical-link" rel="canonical" href="https://rohangottipati.com/" />
+
+    <meta id="og-title" property="og:title" content="Rohan Gottipati - Software Engineer" />
+    <meta
+      id="og-description"
+      property="og:description"
+      content="I build and ship AI systems, full-stack products, data platforms, and cloud integrations."
+    />
+    <meta id="og-type" property="og:type" content="website" />
+    <meta id="og-url" property="og:url" content="https://rohangottipati.com/" />
+    <meta property="og:site_name" content="Rohan Gottipati" />
+    <meta property="og:locale" content="en_CA" />
+    <meta id="og-image" property="og:image" content="https://rohangottipati.com/15958fba-0eb9-4d42-9c49-c72e86d80c5b.jpg" />
+    <meta id="og-image-alt" property="og:image:alt" content="A project preview from my software engineering portfolio" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="896" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta id="twitter-title" name="twitter:title" content="Rohan Gottipati - Software Engineer" />
+    <meta
+      id="twitter-description"
+      name="twitter:description"
+      content="I build and ship AI systems, full-stack products, data platforms, and cloud integrations."
+    />
+    <meta id="twitter-image" name="twitter:image" content="https://rohangottipati.com/15958fba-0eb9-4d42-9c49-c72e86d80c5b.jpg" />
+
+    <link rel="icon" type="image/jpeg" href="/c7c61c15-bb32-455d-b0ea-980da57f74c3.jpg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="msapplication-TileColor" content="#000000" />
-    <meta name="msapplication-TileImage" content="/icon-192.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&amp;family=Instrument+Serif:ital@0;1&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;display=swap"
+    />
+
+    <script id="person-structured-data" type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Rohan Gottipati",
+        "url": "https://rohangottipati.com/",
+        "image": "https://rohangottipati.com/rohan.jpg",
+        "jobTitle": "Software Engineer",
+        "email": "mailto:rohan.gottipati@gmail.com",
+        "homeLocation": { "@type": "Place", "name": "Toronto, Ontario, Canada" },
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "Wilfrid Laurier University"
+        },
+        "sameAs": [
+          "https://github.com/RohanGottipati",
+          "https://www.linkedin.com/in/rohangottipati/"
+        ],
+        "knowsAbout": [
+          "Software engineering",
+          "Artificial intelligence",
+          "Full-stack development",
+          "Data platforms",
+          "Cloud integrations"
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <noscript>My portfolio requires JavaScript for navigation. You can still reach me at rohan.gottipati@gmail.com.</noscript>
     <script>
-      // Single Page Apps for GitHub Pages
-      // https://github.com/rafgraph/spa-github-pages
-      // This script checks to see if a redirect is present in the query string,
-      // converts it back into the correct url and adds it to the
-      // browser's history using window.history.replaceState(...),
-      // which won't cause the browser to attempt to load the new url.
-      // When the single page app is loaded further down in this file,
-      // it will check the window location and navigate accordingly.
-      (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-          );
-        }
-      }(window.location))
+      (function (location) {
+        if (location.search[1] !== "/") return;
+        var decoded = location.search
+          .slice(1)
+          .split("&")
+          .map(function (value) {
+            return value.replace(/~and~/g, "&");
+          })
+          .join("?");
+        window.history.replaceState(
+          null,
+          "",
+          location.pathname.slice(0, -1) + decoded + location.hash,
+        );
+      })(window.location);
     </script>
+    <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>
