@@ -7,7 +7,7 @@ Live site: [rohangottipati.com](https://rohangottipati.com)
 ## Highlights
 
 - Responsive paper-collage interface with an animated intro, experience-index hero, and fine-pointer paper cursor
-- Thirteen filterable project case studies with dedicated routes
+- Fifteen filterable project case studies with dedicated routes, including the 2nd-place ScotiaCheck hackathon build
 - Separate Projects, Experience, About, and Contact pages, plus a downloadable résumé
 - RoRo, a Gemini-powered portfolio assistant with adaptive responses, contextual highlighted-text questions, local fallbacks, and a strict portfolio-only boundary
 - Route-specific titles, descriptions, canonical URLs, Open Graph tags, Twitter cards, and project structured data
@@ -79,7 +79,7 @@ server/
 api/
 └── roro.js                  Production Vercel Function
 public/
-├── *.jpg             Project artwork supplied with the redesign
+├── *.jpg             Project artwork and the portfolio-wide social preview
 ├── robots.txt        Search crawler policy
 ├── sitemap.xml       Canonical route inventory
 └── site.webmanifest  Install metadata and icons
@@ -101,11 +101,14 @@ When adding a project:
 3. Add the route to `public/sitemap.xml`.
 4. Update any affected RoRo copy and tests.
 
+The homepage currently highlights TechTO, GreenLens AI, ScotiaCheck, A.U.R.A., and Playground. Keep `featuredProjectSlugs` in `src/data/projects.mjs` aligned with that curated five-project set.
+
 ## SEO
 
 The canonical production origin is `https://rohangottipati.com`.
 
 - Baseline metadata and Person JSON-LD live in `index.html`.
+- The default link-preview image is the overall portfolio artwork at `public/c7482166-3a87-4a04-8b46-94156b0b0e28.jpg`; project routes use their own artwork.
 - Shared route metadata lives in `src/data/seo.mjs` and is managed at runtime by `src/components/Seo.tsx`.
 - The production build emits a metadata-complete HTML shell for every page and project via `scripts/generate-route-html.mjs`, so non-JavaScript crawlers and link unfurlers receive route-specific metadata.
 - Crawl discovery is configured in `public/robots.txt` and `public/sitemap.xml`.

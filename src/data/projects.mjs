@@ -87,6 +87,39 @@ export const projects = [
   featured: true
 },
 {
+  slug: 'scotiacheck',
+  name: 'ScotiaCheck',
+  year: '2026',
+  date: 'August 2026',
+  summary:
+  'An AI-powered financial advice checker that weighs online money advice against a Gen Z user’s real financial context before they act.',
+  description:
+  'I built ScotiaCheck for the Scotiabank x Tangerine Student Hackathon: S:\\HA<KS 2026. It lets Gen Z paste or upload financial advice, extracts the action and assumptions behind it, and compares the recommendation with balances, spending, debt, income and upcoming obligations. The Alex demo showed why a headline $400 car payment did not fit an 18-year-old with roughly $10.8K saved and a $6,000 tuition payment due in six weeks. ScotiaCheck provides personalized context and a useful next step without reducing nuanced advice to a universal good-or-bad verdict.',
+  stack: ['React', 'Vite', 'Tailwind CSS', 'Framer Motion', 'React Router'],
+  features: [
+  'Accepts pasted advice or screenshots from social platforms, AI tools and friends',
+  'Extracts the recommended action and surfaces the assumptions behind it',
+  'Compares the advice with real financial context and shows hidden costs visually',
+  'Suggests an appropriate next step without labelling advice universally good or bad'],
+  role: 'Developer',
+  event: 'Scotiabank x Tangerine Student Hackathon: S:\\HA<KS 2026',
+  challenge: 'Financial Confidence in an AI World: “When everyone has advice, who do you trust?”',
+  tagline: 'Don’t just take financial advice. Check it.',
+  links: [],
+  impact: '2nd Place at S:\\HA<KS 2026',
+  tags: [
+  'AI',
+  'FinTech',
+  'Financial Literacy',
+  'Personalization',
+  'Product Design',
+  'Scotiabank',
+  'Hackathon'],
+  accent: 'blush',
+  image: '/f924dd4c-4bcd-4e4c-9c5f-5824883194f4.jpg',
+  featured: true
+},
+{
   slug: 'aura',
   name: 'A.U.R.A.',
   year: '2026',
@@ -152,7 +185,7 @@ export const projects = [
   accent: 'lime',
   image: "/57d75bc7-671b-4424-9ffb-7fbe18de701d.jpg",
 
-  featured: true
+  featured: false
 },
 {
   slug: 'playground',
@@ -405,4 +438,15 @@ export const projects = [
 }];
 
 
-export const featuredProjects = projects.filter((p) => p.featured);
+const featuredProjectSlugs = [
+  'techto',
+  'greenlens-ai',
+  'scotiacheck',
+  'aura',
+  'playground'
+];
+
+export const featuredProjects = featuredProjectSlugs.flatMap((slug) => {
+  const project = projects.find((entry) => entry.slug === slug);
+  return project ? [project] : [];
+});

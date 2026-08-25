@@ -19,6 +19,7 @@ describe('RoRo portfolio boundary', () => {
 
   it('allows portfolio questions and highlighted portfolio text', () => {
     expect(isPortfolioQuestion('What did you build at DOUBL?')).toBe(true);
+    expect(isPortfolioQuestion('Tell me about ScotiaCheck.')).toBe(true);
     expect(isPortfolioQuestion('What React projects have you built?')).toBe(true);
     expect(isPortfolioQuestion('How can I reach you?')).toBe(true);
     expect(isPortfolioQuestion('How do I get in touch?')).toBe(true);

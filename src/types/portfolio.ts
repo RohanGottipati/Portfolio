@@ -9,6 +9,7 @@ export interface Project {
   slug: string;
   name: string;
   year: string;
+  date?: string;
   summary: string;
   description: string;
   stack: string[];
@@ -16,6 +17,9 @@ export interface Project {
   role: string;
   links: ProjectLink[];
   impact?: string;
+  event?: string;
+  challenge?: string;
+  tagline?: string;
   tags: string[];
   accent: AccentColor;
   image?: string;

@@ -12,8 +12,8 @@ const TYPE_START = 220;
 const phrases = [
 'production systems',
 'agent pipelines',
-'13 shipped projects',
-'9 hackathon wins',
+'15 shipped projects',
+'10 hackathon awards',
 'and a lot of coffee'];
 
 

@@ -6,7 +6,7 @@ const OFF_TOPIC_REPLY =
 const GREETING_REPLY =
   "Hi, I'm RoRo, the assistant for my portfolio. Ask me about my projects, experience, skills, education, or contact details.";
 
-const namedPortfolioTerms = /\b(rohan(?: gottipati)?|wilfrid laurier|laurier|toronto|waterloo|intact|doubl|onechart|averto|stealth startup|dmz|varsity tutors|greenlens|techto|a\.u\.r\.a|aura|scout|playground|spar|caresync|spectra|movemind|medalyze|letterly)\b/i;
+const namedPortfolioTerms = /\b(rohan(?: gottipati)?|wilfrid laurier|laurier|toronto|waterloo|intact|doubl|onechart|averto|stealth startup|dmz|varsity tutors|greenlens|techto|scotiacheck|scotiabank|tangerine|a\.u\.r\.a|aura|scout|playground|spar|caresync|spectra|movemind|medalyze|letterly)\b/i;
 const portfolioTopics = /\b(portfolio|projects?|work|working on|built|build|shipped|experience|roles?|internships?|jobs?|career|skills?|stack|technologies|tech|languages?|frameworks?|resume|résumé|education|school|university|degree|coursework|awards?|hackathons?|wins?|devpost|contact|email|github|linkedin|location|based|hire|design process|product strategy|workflow|favourite|favorite|proudest)\b/i;
 const technicalTopics = /\b(type(?:script)?|python|javascript|sql|java|c\+\+|react|next\.js|node\.js|fastapi|express|three\.js|websockets?|tailwind|gcp|google cloud|aws|kubernetes|ci\/cd|postgresql|firebase|mongodb|bigquery|supabase|gemini|openai|pandas|numpy|scikit-learn|statsmodels|ggplot2|ai|machine learning|ml)\b/i;
 const unrelatedIntents = /\b(capital of|recipe|weather|sports score|stock price|latest news|write (?:me )?code|solve this|translate this|write (?:a|an) (?:poem|essay)|medical advice|legal advice)\b/i;
@@ -38,7 +38,7 @@ Technical toolkit:
 - AI and analysis: OpenAI API, Gemini API, pandas, NumPy, scikit-learn, statsmodels, ggplot2.
 
 Highlights and contact:
-- My teams and I have earned 9 hackathon wins and counting.
+- My teams and I have earned 10 hackathon placements and awards, including 2nd Place at the Scotiabank x Tangerine Student Hackathon, S:\\HA<KS 2026, with ScotiaCheck.
 - Email: rohan.gottipati@gmail.com. GitHub: github.com/RohanGottipati. LinkedIn: linkedin.com/in/rohangottipati.
 `.trim();
 
@@ -50,10 +50,9 @@ function normalize(value, maxLength) {
 
 function projectLine(project) {
   const award = project.impact ? ` Award: ${project.impact}.` : '';
-  const collaboration = project.impact
-    ? ' This was a team hackathon project.'
-    : '';
-  return `- ${project.name} (${project.year}): ${project.summary}${award}${collaboration} Stack: ${project.stack.join(', ')}.`;
+  const event = project.event ? ` Event: ${project.event}.` : '';
+  const challenge = project.challenge ? ` Challenge: ${project.challenge}.` : '';
+  return `- ${project.name} (${project.date ?? project.year}): ${project.summary}${award}${event}${challenge} Stack: ${project.stack.join(', ')}.`;
 }
 
 function relevantProjectContext(question, selection) {

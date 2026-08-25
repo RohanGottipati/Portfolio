@@ -181,7 +181,7 @@ describe("redesigned portfolio", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "14 so far, more in progress.",
+        name: "15 so far, more in progress.",
       }),
     ).toBeInTheDocument();
 
@@ -196,7 +196,7 @@ describe("redesigned portfolio", () => {
 
     expect(screen.queryByText("Next.js")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "AI + ML" }));
-    expect(screen.getByText("9 projects shown")).toBeInTheDocument();
+    expect(screen.getByText("10 projects shown")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "GreenLens AI" })).toBeInTheDocument();
     expect(
       screen.getByText("Best Use of MongoDB Atlas, Hack the 6ix"),
@@ -220,6 +220,17 @@ describe("redesigned portfolio", () => {
         document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href,
       ).toBe("https://rohangottipati.com/work/greenlens-ai");
     });
+  });
+
+  it("renders ScotiaCheck with its exact placement and no external link", async () => {
+    window.history.replaceState({}, "", "/work/scotiacheck");
+    render(<App paperGrain={false} />);
+
+    expect(
+      await screen.findByRole("heading", { name: "ScotiaCheck" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("2nd Place at S:\\HA<KS 2026")).toBeInTheDocument();
+    expect(screen.queryByText("Links")).not.toBeInTheDocument();
   });
 
   it("opens and closes the RoRo dialog accessibly", async () => {
@@ -379,7 +390,10 @@ describe("redesigned portfolio", () => {
       screen.getByRole("dialog", { name: "RoRo portfolio guide" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText('Tell me about “GreenLens AI”'),
+      screen.getByText("Selected from page"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('“GreenLens AI”'),
     ).toBeInTheDocument();
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(

@@ -22,16 +22,15 @@ const experienceLink: BotLink = { label: 'View my experience', to: '/experience'
 const contactLink: BotLink = { label: 'Contact', to: '/contact' };
 const offTopicReply =
   "I can only help with questions about my portfolio, projects, experience, skills, education, or how to reach me.";
-const localPortfolioNames = /\b(rohan(?: gottipati)?|laurier|intact|doubl|onechart|averto|stealth startup|dmz|varsity tutors|greenlens|techto|a\.u\.r\.a|aura|scout|playground|spar|caresync|spectra|movemind|medalyze|letterly)\b/i;
+const localPortfolioNames = /\b(rohan(?: gottipati)?|laurier|intact|doubl|onechart|averto|stealth startup|dmz|varsity tutors|greenlens|techto|scotiacheck|scotiabank|tangerine|a\.u\.r\.a|aura|scout|playground|spar|caresync|spectra|movemind|medalyze|letterly)\b/i;
 const localPortfolioIntent = /\b(your|portfolio|projects?|working on|you built|you build|you shipped|your work|your experience|experience do you have|your roles?|your internships?|your career|your skills?|skills do you have|your stack|stack do you use|your tech|tech do you use|languages do you use|your resume|your résumé|your education|your degree|your coursework|your awards?|your hackathons?|what have you won|your contact|your email|your github|your linkedin|reach you|get in touch|hire you|where are you based|who are you|about yourself)\b/i;
 const localUnrelatedIntent = /\b(capital of|recipe|weather|sports score|stock price|latest news|write (?:me )?code|solve this|translate this|medical advice|legal advice)\b/i;
 
 function projectAnswer(slug: string): BotAnswer {
   const p = projects.find((x) => x.slug === slug)!;
-  const award = p.impact ? ` My team and I won ${p.impact} with it.` : '';
-  const stackLead = p.impact ? 'We built it with' : 'I built it with';
+  const award = p.impact ? ` It earned ${p.impact}.` : '';
   return {
-    text: `${p.description}${award} ${stackLead} ${p.stack.join(', ')}.`,
+    text: `${p.description}${award} Built with ${p.stack.join(', ')}.`,
     links: [
     { label: `Open the ${p.name} case`, to: `/work/${p.slug}` },
     ...p.links.map((l) => ({ label: l.label, href: l.href }))]
@@ -87,11 +86,13 @@ export function askRoRo(input: string): BotAnswer {
 
   if (has(q, ['best', 'favourite', 'favorite', 'proudest', 'strongest'])) {
     return {
-      text: `I'd start with GreenLens AI, the six-agent ESG audit pipeline my team and I built to win 1st Overall at Data Minds Challenge 2.0. Then I'd show you TechTO, our Toronto digital twin with 100,000+ Census-grounded simulated citizens, and A.U.R.A., which my team and I built to turn floor plans into walkable 3D environments.`,
+      text: `My featured five are TechTO, GreenLens AI, ScotiaCheck, A.U.R.A. and Playground. Together they cover a Census-grounded Toronto digital twin, multi-agent ESG auditing, personalized financial-advice context, floor-plan-to-3D generation and a photo-to-platformer game engine.`,
       links: [
-      { label: 'Open GreenLens AI', to: '/work/greenlens-ai' },
       { label: 'Open TechTO', to: '/work/techto' },
-      { label: 'Open A.U.R.A.', to: '/work/aura' }]
+      { label: 'Open GreenLens AI', to: '/work/greenlens-ai' },
+      { label: 'Open ScotiaCheck', to: '/work/scotiacheck' },
+      { label: 'Open A.U.R.A.', to: '/work/aura' },
+      { label: 'Open Playground', to: '/work/playground' }]
 
     };
   }
@@ -119,7 +120,7 @@ export function askRoRo(input: string): BotAnswer {
       text: `I've filed ${projects.length} builds in my portfolio. My featured projects are ${projects.
       filter((p) => p.featured).
       map((p) => p.name).
-      join(', ')} - spanning ESG auditing, civic digital twins, 3D generation, grounded research and a photo-to-platformer game engine.`,
+      join(', ')} - spanning civic digital twins, ESG auditing, personalized financial context, 3D generation and a photo-to-platformer game engine.`,
       links: [workLink]
     };
   }
@@ -158,7 +159,7 @@ export function askRoRo(input: string): BotAnswer {
 
   if (has(q, ['hackathon', 'win', 'won', 'award', 'prize', 'devpost'])) {
     return {
-      text: `My teams and I have earned 9 hackathon wins and counting. Highlights include 1st Overall at Data Minds Challenge 2.0 with GreenLens AI, Best Use of MongoDB Atlas at Hack the 6ix with TechTO, two sponsor awards at BearHacks with A.U.R.A., a sponsor award at HuskyHacks with Scout, 3rd Place Overall at SumerHacks with Playground, Best Use of Solana at uOttaHack with Spectra, a sponsor award at Hack Canada with CareSync, and an Honourable Mention at DDC x IgnitionHacks with Spar.`,
+      text: `My teams and I have earned 10 hackathon placements and awards. Highlights include 2nd Place at the Scotiabank x Tangerine Student Hackathon, S:\\HA<KS 2026, with ScotiaCheck, 1st Overall at Data Minds Challenge 2.0 with GreenLens AI, Best Use of MongoDB Atlas at Hack the 6ix with TechTO, two sponsor awards at BearHacks with A.U.R.A., a sponsor award at HuskyHacks with Scout, 3rd Place Overall at SumerHacks with Playground, Best Use of Solana at uOttaHack with Spectra, a sponsor award at Hack Canada with CareSync, and an Honourable Mention at DDC x IgnitionHacks with Spar.`,
       links: [workLink]
     };
   }
@@ -219,7 +220,7 @@ export function askRoRo(input: string): BotAnswer {
 
   if (has(q, ['ai', 'ml', 'agent', 'llm', 'machine learning', 'model'])) {
     return {
-      text: `AI systems are the main thread in my work: I built multi-agent pipelines in GreenLens AI, A.U.R.A. and Scout, fine-tuned a Qwen model to predict citizen reactions in TechTO, integrated real-time Deepgram + Gemini transcription at OneChart, and researched affective computing at Laurier.`,
+      text: `AI systems are the main thread in my work: I built multi-agent pipelines in GreenLens AI, A.U.R.A. and Scout, contextualized outside financial advice with real customer circumstances in ScotiaCheck, fine-tuned a Qwen model to predict citizen reactions in TechTO, integrated real-time Deepgram + Gemini transcription at OneChart, and researched affective computing at Laurier.`,
       links: [
       { label: 'Open TechTO', to: '/work/techto' },
       workLink]

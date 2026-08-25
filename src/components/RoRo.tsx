@@ -16,6 +16,7 @@ interface Message {
   id: number;
   from: 'bot' | 'user';
   text: string;
+  selection?: string;
   links?: BotLink[];
   suggestions?: string[];
 }
@@ -132,13 +133,16 @@ export function RoRo() {
       const selectedText = selection?.trim();
       if (!question || thinking) return;
 
-      const displayText = selectedText
-        ? `Tell me about “${selectedText}”`
-        : question;
+      const selectionPreview = selectedText && selectedText.length > 220
+        ? `${selectedText.slice(0, 217).trimEnd()}...`
+        : selectedText;
       const userMessage: Message = {
         id: idRef.current++,
         from: 'user',
-        text: displayText
+        text: selectionPreview
+          ? `Selected from page: "${selectionPreview}"`
+          : question,
+        selection: selectionPreview || undefined
       };
       const history = messages.slice(-6).map((message) => ({
         role: message.from === 'bot' ? 'assistant' : 'user',
@@ -454,9 +458,22 @@ export function RoRo() {
                     transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}>
                         {message.from === 'user' ?
                     <div className="flex justify-end">
-                            <p className="max-w-[88%] border border-ink/15 bg-peach/45 px-5 py-4 text-[15px] leading-snug shadow-paper sm:text-base">
-                              {message.text}
-                            </p>
+                            {message.selection ?
+                      <div className="relative max-w-[88%] border border-ink/20 bg-paper-2 px-5 py-4 shadow-paper">
+                                <span
+                          aria-hidden="true"
+                          className="absolute -top-1.5 right-5 h-3 w-12 rotate-2 border border-ink/10 bg-peach/75" />
+                                <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-tangerine">
+                                  Selected from page
+                                </p>
+                                <p className="mt-2 text-[15px] leading-snug text-ink sm:text-base">
+                                  “{message.selection}”
+                                </p>
+                              </div> :
+                      <p className="max-w-[88%] border border-ink/15 bg-peach/45 px-5 py-4 text-[15px] leading-snug shadow-paper sm:text-base">
+                                {message.text}
+                              </p>
+                      }
                           </div> :
                     <div
                       ref={message.id === latestBotId ? latestAnswerRef : undefined}

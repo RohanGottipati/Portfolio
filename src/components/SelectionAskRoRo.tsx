@@ -150,8 +150,11 @@ export function SelectionAskRoRo() {
             onMouseDown={(event) => event.preventDefault()}
             onClick={askAboutSelection}
             aria-label={`Ask RoRo about ${prompt.text}`}
-            className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-ink/20 bg-ink px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-paper-2 shadow-paper-lg transition-colors hover:bg-tangerine">
-            <Sparkle size={12} className="text-lime" aria-hidden="true" />
+            className="relative inline-flex items-center gap-2 whitespace-nowrap border border-ink/20 bg-paper-2 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-ink shadow-paper-lg transition-[background-color,border-color,transform] hover:-translate-y-0.5 hover:border-tangerine hover:bg-lime/35">
+            <span
+              aria-hidden="true"
+              className="absolute -top-1.5 left-1/2 h-3 w-12 -translate-x-1/2 -rotate-2 border border-ink/10 bg-peach/75" />
+            <Sparkle size={12} className="text-tangerine" aria-hidden="true" />
             Ask RoRo
           </button>
         </motion.div>

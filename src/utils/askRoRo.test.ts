@@ -19,7 +19,13 @@ describe('RoRo local fallback boundary', () => {
       'Our six-agent pipeline'
     );
     expect(askRoRo('Tell me about GreenLens AI').text).toContain(
-      'My team and I won'
+      'It earned'
+    );
+    expect(askRoRo('Tell me about ScotiaCheck').text).toContain(
+      'without reducing nuanced advice'
+    );
+    expect(askRoRo('Tell me about ScotiaCheck').text).toContain(
+      '2nd Place'
     );
   });
 });

@@ -42,12 +42,17 @@ export function ProjectDetail() {
             {project.name}
           </h1>
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-soft">
-            {project.year} · {project.role}
+            {project.date ?? project.year} · {project.role}
           </span>
         </div>
         <p className="mt-4 max-w-2xl font-display text-2xl italic leading-snug text-ink-soft md:text-3xl">
           {project.summary}
         </p>
+        {project.tagline &&
+        <p className="mt-4 font-hand text-3xl leading-tight text-tangerine">
+            {project.tagline}
+          </p>
+        }
         {project.impact &&
         <p className="mt-5 inline-flex items-center gap-2 bg-ink px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-paper-2">
             <Award size={12} />
@@ -96,9 +101,29 @@ export function ProjectDetail() {
               </li>
             )}
           </ul>
+
         </div>
 
         <aside className="flex flex-col gap-6">
+          {project.event &&
+          <Paper rotate={-1.1} tape="single" className="p-5">
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-soft">
+                Event
+              </p>
+              <p className="mt-3 text-[15px] leading-snug">{project.event}</p>
+              {project.challenge &&
+              <>
+                  <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-soft">
+                    Challenge
+                  </p>
+                  <p className="mt-2 text-[15px] leading-snug">
+                    {project.challenge}
+                  </p>
+                </>
+              }
+            </Paper>
+          }
+
           <Paper rotate={-1.4} className="p-5">
             <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-soft">
               Stack
@@ -115,6 +140,7 @@ export function ProjectDetail() {
             </ul>
           </Paper>
 
+          {project.links.length > 0 &&
           <Paper rotate={1.2} className={`p-5 ${tone.bg}`}>
             <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink/70">
               Links
@@ -135,6 +161,7 @@ export function ProjectDetail() {
               )}
             </ul>
           </Paper>
+          }
 
           <div>
             <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-soft">

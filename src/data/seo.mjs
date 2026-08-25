@@ -1,6 +1,6 @@
 export const SITE_URL = "https://rohangottipati.com";
 export const DEFAULT_SOCIAL_IMAGE =
-  "/15958fba-0eb9-4d42-9c49-c72e86d80c5b.jpg";
+  "/c7482166-3a87-4a04-8b46-94156b0b0e28.jpg";
 
 export const PAGE_SEO = {
   home: {
@@ -12,7 +12,7 @@ export const PAGE_SEO = {
   work: {
     title: "Projects | Rohan Gottipati",
     description:
-      "Explore 14 software projects I've built across portfolio design, AI agents, civic technology, 3D, analytics, healthcare, games, and full-stack development.",
+      "Explore 15 software projects I've built across portfolio design, AI agents, FinTech, civic technology, 3D, analytics, healthcare, games, and full-stack development.",
     path: "/work",
   },
   about: {
@@ -52,9 +52,16 @@ export function createProjectStructuredData(project) {
     "@type": "CreativeWork",
     name: project.name,
     description: project.description,
-    dateCreated: project.year,
+    dateCreated: project.date ?? project.year,
     url: `${SITE_URL}/work/${project.slug}`,
     image: project.image ? `${SITE_URL}${project.image}` : undefined,
+    award: project.impact,
+    isPartOf: project.event
+      ? {
+          "@type": "Event",
+          name: project.event,
+        }
+      : undefined,
     author: {
       "@type": "Person",
       name: "Rohan Gottipati",

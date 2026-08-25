@@ -67,7 +67,7 @@ export function Work() {
       <SectionHeading
         index="01"
         label="Projects"
-        title="14 so far, more in progress."
+        title="15 so far, more in progress."
         note="I built them during hackathon sprints, internships and side experiments." />
       
 
