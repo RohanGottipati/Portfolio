@@ -121,6 +121,26 @@ describe("redesigned portfolio", () => {
     ).toBeTruthy();
   });
 
+  it("renders every mobile navigation action on its own row", async () => {
+    const user = userEvent.setup();
+    window.history.replaceState({}, "", "/work");
+    render(<App paperGrain={false} />);
+
+    await user.click(screen.getByRole("button", { name: "Open menu" }));
+    const mobileNavigation = document.getElementById("mobile-navigation");
+    expect(mobileNavigation).not.toBeNull();
+
+    const resume = within(mobileNavigation!).getByRole("link", {
+      name: "Resume",
+    });
+    const roro = within(mobileNavigation!).getByRole("button", {
+      name: "RoRo",
+    });
+
+    expect(resume.closest("li")).not.toBe(roro.closest("li"));
+    expect(mobileNavigation?.children).toHaveLength(5);
+  });
+
   it("keeps experience and about on separate pages", async () => {
     const user = userEvent.setup();
     window.history.replaceState({}, "", "/experience");

@@ -101,22 +101,24 @@ export function SiteNav() {
               </Link>
             </li>
         )}
-          <li className="flex items-center gap-3 pt-3">
+          <li className="border-b border-ink/10">
             <a
             href={profile.contact.resume}
             target="_blank"
             rel="noreferrer"
-            className="inline-block bg-ink px-3 py-2 font-mono text-xs uppercase tracking-[0.18em] text-paper-2">
+            className="block w-full py-3 font-mono text-xs uppercase tracking-[0.2em] text-ink">
             
               Resume
             </a>
+          </li>
+          <li>
             <button
             type="button"
             onClick={() => {
               setOpen(false);
               openBot();
             }}
-            className="inline-flex items-center gap-1.5 border border-ink/25 px-3 py-2 font-mono text-xs uppercase tracking-[0.18em]">
+            className="flex w-full items-center gap-1.5 py-3 text-left font-mono text-xs uppercase tracking-[0.2em] text-ink">
             
               <Sparkle size={12} aria-hidden="true" />
               RoRo
