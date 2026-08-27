@@ -269,7 +269,8 @@ describe("redesigned portfolio", () => {
     expect(
       screen.queryByRole("button", { name: "Ask RoRo" }),
     ).not.toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "RoRo" }));
+    const roroButton = screen.getByRole("button", { name: "RoRo" });
+    await user.click(roroButton);
     expect(
       screen.getByRole("dialog", { name: "RoRo portfolio guide" }),
     ).toHaveAttribute("aria-modal", "true");
@@ -283,12 +284,22 @@ describe("redesigned portfolio", () => {
       screen.getByRole("heading", { name: "Ask me anything." }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/I'm RoRo, the AI guide for this portfolio/),
+      screen.getByText(/I'm RoRo, Rohan's portfolio AI/),
     ).toBeInTheDocument();
     expect(screen.getAllByText("Portfolio assistant")).toHaveLength(1);
     expect(document.querySelector("[data-roro-scroll-region]")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Ask about Rohan...")).toBeInTheDocument();
+    expect(screen.queryByText("Listening")).not.toBeInTheDocument();
+    expect(screen.queryByText("Live")).not.toBeInTheDocument();
 
+    await user.click(roroButton);
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("dialog", { name: "RoRo portfolio guide" }),
+      ).not.toBeInTheDocument();
+    });
+
+    await user.click(roroButton);
     await user.keyboard("{Escape}");
     await waitFor(() => {
       expect(

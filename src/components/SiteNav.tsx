@@ -13,7 +13,7 @@ const links = [
 export function SiteNav() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
-  const { openBot } = useAskBot();
+  const { open: isBotOpen, toggleBot } = useAskBot();
 
   useEffect(() => {
     setOpen(false);
@@ -63,7 +63,8 @@ export function SiteNav() {
           <li>
             <button
               type="button"
-              onClick={openBot}
+              onClick={toggleBot}
+              aria-expanded={isBotOpen}
               className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-soft hover:text-tangerine">
               
               <Sparkle size={12} aria-hidden="true" />
@@ -116,8 +117,9 @@ export function SiteNav() {
             type="button"
             onClick={() => {
               setOpen(false);
-              openBot();
+              toggleBot();
             }}
+            aria-expanded={isBotOpen}
             className="flex w-full items-center gap-1.5 py-3 text-left font-mono text-xs uppercase tracking-[0.2em] text-ink">
             
               <Sparkle size={12} aria-hidden="true" />

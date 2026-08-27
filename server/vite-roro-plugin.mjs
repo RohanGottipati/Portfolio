@@ -6,7 +6,7 @@ async function readJson(request) {
 
   for await (const chunk of request) {
     size += chunk.length;
-    if (size > 24_000) {
+    if (size > 2_000_000) {
       const error = new Error('Request is too large.');
       error.statusCode = 413;
       throw error;
@@ -17,18 +17,27 @@ async function readJson(request) {
   return JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}');
 }
 
+function sendJson(response, status, payload) {
+  response.statusCode = status;
+  response.setHeader('Content-Type', 'application/json');
+  response.setHeader('Cache-Control', 'no-store');
+  response.end(JSON.stringify(payload));
+}
+
 export function roroDevApi({ apiKey, model }) {
   return {
     name: 'roro-dev-api',
     configureServer(server) {
-      server.middlewares.use('/api/roro', async (request, response) => {
-        response.setHeader('Content-Type', 'application/json');
-        response.setHeader('Cache-Control', 'no-store');
+      server.middlewares.use(async (request, response, next) => {
+        const url = request.url?.split('?')[0];
+        if (url !== '/api/roro') {
+          next();
+          return;
+        }
 
         if (request.method !== 'POST') {
-          response.statusCode = 405;
           response.setHeader('Allow', 'POST');
-          response.end(JSON.stringify({ error: 'Method not allowed.' }));
+          sendJson(response, 405, { error: 'Method not allowed.' });
           return;
         }
 
@@ -38,20 +47,17 @@ export function roroDevApi({ apiKey, model }) {
             apiKey,
             model
           });
-          response.statusCode = 200;
-          response.end(JSON.stringify(result));
+          sendJson(response, 200, result);
         } catch (error) {
-          response.statusCode = Number.isInteger(error?.statusCode)
+          const status = Number.isInteger(error?.statusCode)
             ? error.statusCode
             : 500;
-          response.end(
-            JSON.stringify({
-              error:
-                response.statusCode === 503
-                  ? 'RoRo is not configured yet.'
-                  : 'RoRo could not answer right now.'
-            })
-          );
+          sendJson(response, status, {
+            error:
+              status === 503
+                ? 'RoRo is not configured yet.'
+                : 'RoRo could not answer right now.'
+          });
         }
       });
     }

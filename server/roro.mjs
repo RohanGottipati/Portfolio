@@ -7,10 +7,10 @@ const GREETING_REPLY =
   "Hi, I'm RoRo, the assistant for my portfolio. Ask me about my projects, experience, skills, education, or contact details.";
 
 const namedPortfolioTerms = /\b(rohan(?: gottipati)?|wilfrid laurier|laurier|toronto|waterloo|intact|doubl|onechart|averto|stealth startup|dmz|varsity tutors|greenlens|techto|scotiacheck|scotiabank|tangerine|a\.u\.r\.a|aura|scout|playground|spar|caresync|spectra|movemind|medalyze|letterly)\b/i;
-const portfolioTopics = /\b(portfolio|projects?|work|working on|built|build|shipped|experience|roles?|internships?|jobs?|career|skills?|stack|technologies|tech|languages?|frameworks?|resume|résumé|education|school|university|degree|coursework|awards?|hackathons?|wins?|devpost|contact|email|github|linkedin|location|based|hire|design process|product strategy|workflow|favourite|favorite|proudest)\b/i;
+const portfolioTopics = /\b(portfolio|projects?|work(?:ing)?|working on|built|build|shipped|experience|roles?|internships?|jobs?|career|employer|company|skills?|stack|technologies|tech|languages?|frameworks?|resume|résumé|education|school|university|degree|coursework|awards?|hackathons?|wins?|devpost|contact|email|github|linkedin|location|based|hire|design process|product strategy|workflow|favourite|favorite|proudest)\b/i;
 const technicalTopics = /\b(type(?:script)?|python|javascript|sql|java|c\+\+|react|next\.js|node\.js|fastapi|express|three\.js|websockets?|tailwind|gcp|google cloud|aws|kubernetes|ci\/cd|postgresql|firebase|mongodb|bigquery|supabase|gemini|openai|pandas|numpy|scikit-learn|statsmodels|ggplot2|ai|machine learning|ml)\b/i;
 const unrelatedIntents = /\b(capital of|recipe|weather|sports score|stock price|latest news|write (?:me )?code|solve this|translate this|write (?:a|an) (?:poem|essay)|medical advice|legal advice)\b/i;
-const directPersonalQuestions = /\b(who are you|tell me about yourself|what can you do|what are you working on|where are you based|how can i reach you|how do i get in touch|how (?:can|do) i contact you|are you open to|are you available)\b/i;
+const directPersonalQuestions = /\b(who are you|tell me about yourself|what can you do|what are you working on|where (?:are you|do you)(?: currently)? work(?:ing)?|who do you work for|what(?:'s| is) your current (?:job|role|employer)|where are you based|how can i reach you|how do i get in touch|how (?:can|do) i contact you|are you open to|are you available)\b/i;
 const continuationQuestion = /^(why|why that|how so|tell me more|go on|can you (?:expand|elaborate)|what about (?:that|it|this)|what did you do there|which one|and why)[?.! ]*$/i;
 
 const portfolioFacts = `
@@ -137,12 +137,12 @@ function isGreeting(question) {
   );
 }
 
-function conversationText(history) {
+function conversationText(history, maxChars = 700) {
   return history
     .slice(-6)
     .map((message) => {
       const role = message?.role === 'assistant' ? 'RoRo' : 'Visitor';
-      return `${role}: ${normalize(message?.text, 700)}`;
+      return `${role}: ${normalize(message?.text, maxChars)}`;
     })
     .filter((line) => !line.endsWith(': '))
     .join('\n');
@@ -175,7 +175,9 @@ export async function answerPortfolioQuestion(
 ) {
   const question = normalize(payload?.question, 600);
   const selection = normalize(payload?.selection, 800);
-  const history = Array.isArray(payload?.history) ? payload.history.slice(-6) : [];
+  const history = Array.isArray(payload?.history)
+    ? payload.history.slice(-6)
+    : [];
 
   if (!question) {
     return { answer: 'Ask me something about my portfolio.' };

@@ -24,6 +24,11 @@ describe('RoRo portfolio boundary', () => {
     expect(isPortfolioQuestion('How can I reach you?')).toBe(true);
     expect(isPortfolioQuestion('How do I get in touch?')).toBe(true);
     expect(isPortfolioQuestion('Do you know Python?')).toBe(true);
+    expect(isPortfolioQuestion('Where are you currently working?')).toBe(true);
+    expect(isPortfolioQuestion('Where are you currently working')).toBe(true);
+    expect(isPortfolioQuestion('Where do you work?')).toBe(true);
+    expect(isPortfolioQuestion('Who do you work for?')).toBe(true);
+    expect(isPortfolioQuestion("What's your current role?")).toBe(true);
     expect(
       isPortfolioQuestion('Is this accurate?', "I'm Rohan, a software engineer.")
     ).toBe(true);
@@ -97,5 +102,33 @@ describe('RoRo portfolio boundary', () => {
       'each item on its own line beginning with "• "'
     );
     expect(body.input).toContain("I'm Rohan, a software engineer.");
+  });
+
+  it('answers current-work questions instead of treating them as off-topic', async () => {
+    const fetchImpl = vi.fn(async () => ({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        steps: [
+          {
+            type: 'model_output',
+            content: [
+              {
+                type: 'text',
+                text: "I'm an IT Technical Advisor Intern at Intact."
+              }
+            ]
+          }
+        ]
+      })
+    }));
+
+    const result = await answerPortfolioQuestion(
+      { question: 'Where are you currently working?' },
+      { apiKey: 'test-key', fetchImpl }
+    );
+
+    expect(result.answer).toContain('Intact');
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
   });
 });

@@ -58,6 +58,10 @@ vi.stubGlobal(
     ({
       ok: true,
       status: 200,
+      headers: {
+        get: (name: string) =>
+          name.toLowerCase() === "content-type" ? "application/json" : null,
+      },
       json: async () => ({
         answer: "Yes, that's correct. This is part of Rohan's portfolio.",
       }),

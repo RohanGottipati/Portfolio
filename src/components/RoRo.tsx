@@ -391,8 +391,9 @@ export function RoRo() {
                     <div className="flex gap-3 px-5 py-3.5 sm:px-8">
                       <span className="mt-1 h-2 w-2 shrink-0 bg-tangerine" aria-hidden="true" />
                       <p className="text-[13px] leading-relaxed text-ink-soft">
-                        I answer questions about my portfolio using its
-                        projects, experience, education, and contact details only.
+                        I answer only from this portfolio&apos;s projects, experience,
+                        education, and contact details. Type a question, or
+                        highlight page text and ask me about it.
                       </p>
                     </div>
                   </motion.div>
@@ -417,9 +418,8 @@ export function RoRo() {
                     </h2>
                     <div className="relative mt-5 border border-ink/15 bg-peach/55 px-4 py-4 shadow-paper">
                       <p className="max-w-sm text-[14px] leading-relaxed text-ink-soft sm:text-[15px]">
-                        I&apos;m RoRo, the AI guide for this portfolio. Ask me
-                        about my projects, experience, skills, education, or
-                        anything you highlight on the page.
+                        I&apos;m RoRo, Rohan&apos;s portfolio AI. Ask about his work,
+                        projects, or highlighted text.
                       </p>
                       <span
                         className="absolute bottom-0 right-0 h-0 w-0 border-b-[14px] border-l-[14px] border-b-tangerine border-l-transparent"
