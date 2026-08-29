@@ -65,7 +65,7 @@ cat src/constants/index.js
 - **Hero.jsx**: Landing page with ProfileCard and about information
 - **Projects.jsx**: Project showcase with ProjectCards and TechBalls sections
 - **Experience.jsx**: Vertical timeline of work experience
-- **Resume.jsx**: Resume display component
+- **Resume.jsx**: Résumé display component
 
 #### 3D/Canvas Components (`src/components/canvas/`)
 - **Ball.jsx**: Interactive 3D technology balls
@@ -175,4 +175,4 @@ Edit skills array in `src/components/TechBalls.jsx` and logoMap for 3D ball disp
 - 3D Assets: `public/` directory (referenced absolutely)
 - Static assets: `src/assets/`
 - Logo files: `public/logos/`
-- Resume PDF: `public/resume.pdf`
+- Résumé PDF: `public/resume.pdf`

@@ -43,7 +43,7 @@ describe("redesigned portfolio", () => {
     const experienceLink = within(primaryNav).getByRole("link", {
       name: "Experience",
     });
-    const resumeLink = within(primaryNav).getByRole("link", { name: "Resume" });
+    const resumeLink = within(primaryNav).getByRole("link", { name: "Résumé" });
     const roroButton = within(primaryNav).getByRole("button", { name: "RoRo" });
 
     expect(projectsLink).toHaveAttribute(
@@ -131,7 +131,7 @@ describe("redesigned portfolio", () => {
     expect(mobileNavigation).not.toBeNull();
 
     const resume = within(mobileNavigation!).getByRole("link", {
-      name: "Resume",
+      name: "Résumé",
     });
     const roro = within(mobileNavigation!).getByRole("button", {
       name: "RoRo",
@@ -159,7 +159,7 @@ describe("redesigned portfolio", () => {
     expect(screen.getAllByText("Waterloo, ON")).toHaveLength(3);
     expect(
       screen.getByText(
-        /Built scalable data pipelines to evaluate affective-computing models/,
+        /Processed 10K\+ labeled sentiment data points by building Python\/NLP pipelines/,
       ),
     ).toBeInTheDocument();
     expect(

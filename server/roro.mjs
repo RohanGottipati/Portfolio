@@ -1,3 +1,4 @@
+import { clubs, education, experience } from '../src/data/experience.mjs';
 import { projects } from '../src/data/projects.mjs';
 
 const DEFAULT_MODEL = 'gemini-3.5-flash-lite';
@@ -6,36 +7,47 @@ const OFF_TOPIC_REPLY =
 const GREETING_REPLY =
   "Hi, I'm RoRo, the assistant for my portfolio. Ask me about my projects, experience, skills, education, or contact details.";
 
-const namedPortfolioTerms = /\b(rohan(?: gottipati)?|wilfrid laurier|laurier|toronto|waterloo|intact|doubl|onechart|averto|stealth startup|dmz|varsity tutors|greenlens|techto|scotiacheck|scotiabank|tangerine|a\.u\.r\.a|aura|scout|playground|spar|caresync|spectra|movemind|medalyze|letterly)\b/i;
+const namedPortfolioTerms = /\b(rohan(?: gottipati)?|wilfrid laurier|laurier|toronto|waterloo|intact|doubl|onechart|averto|stealth startup|teachtrack|dmz|varsity tutors|greenlens|techto|scotiacheck|scotiabank|tangerine|a\.u\.r\.a|aura|scout|playground|spar|caresync|spectra|movemind|medalyze|letterly)\b/i;
 const portfolioTopics = /\b(portfolio|projects?|work(?:ing)?|working on|built|build|shipped|experience|roles?|internships?|jobs?|career|employer|company|skills?|stack|technologies|tech|languages?|frameworks?|resume|résumé|education|school|university|degree|coursework|awards?|hackathons?|wins?|devpost|contact|email|github|linkedin|location|based|hire|design process|product strategy|workflow|favourite|favorite|proudest)\b/i;
-const technicalTopics = /\b(type(?:script)?|python|javascript|sql|java|c\+\+|react|next\.js|node\.js|fastapi|express|three\.js|websockets?|tailwind|gcp|google cloud|aws|kubernetes|ci\/cd|postgresql|firebase|mongodb|bigquery|supabase|gemini|openai|pandas|numpy|scikit-learn|statsmodels|ggplot2|ai|machine learning|ml)\b/i;
+const technicalTopics = /\b(type(?:script)?|python|javascript|sql|java|c\+\+|react|next\.js|node\.js|fastapi|express|three\.js|websockets?|tailwind|gcp|google cloud|aws|kubernetes|ci\/cd|postgresql|firebase|firestore|mongodb|bigquery|supabase|gemini|openai|pandas|numpy|scikit-learn|statsmodels|ggplot2|nlp|ai|machine learning|ml)\b/i;
 const unrelatedIntents = /\b(capital of|recipe|weather|sports score|stock price|latest news|write (?:me )?code|solve this|translate this|write (?:a|an) (?:poem|essay)|medical advice|legal advice)\b/i;
 const directPersonalQuestions = /\b(who are you|tell me about yourself|what can you do|what are you working on|where (?:are you|do you)(?: currently)? work(?:ing)?|who do you work for|what(?:'s| is) your current (?:job|role|employer)|where are you based|how can i reach you|how do i get in touch|how (?:can|do) i contact you|are you open to|are you available)\b/i;
 const continuationQuestion = /^(why|why that|how so|tell me more|go on|can you (?:expand|elaborate)|what about (?:that|it|this)|what did you do there|which one|and why)[?.! ]*$/i;
+
+function roleAlias(role) {
+  return role.slug === 'stealth-startup-cofounder' ? ' (TeachTrack)' : '';
+}
+
+function formatRole(role) {
+  const location = role.location ? `, ${role.location}` : '';
+  const tech = role.techUsed?.length ? ` Tech: ${role.techUsed.join(', ')}.` : '';
+  const highlights = role.highlights.map((highlight) => `  • ${highlight}`).join('\n');
+  return `- ${role.title} at ${role.organization}${roleAlias(role)}, ${role.dateRange}${location}.${tech}${highlights ? `\n${highlights}` : ''}`;
+}
 
 const portfolioFacts = `
 Rohan Gottipati is a software engineer based in Toronto, Ontario. Speak in first person as Rohan when answering visitors.
 
 Current work and experience:
-- IT Technical Advisor Intern, Software Engineering & Integrations at Intact Financial Corporation, Sep 2026 to present, Toronto. Focus: multi-system integrations, architecture, cloud tooling, Java, Python, AWS, Kubernetes, and CI/CD.
-- AI/ML Research Assistant at Wilfrid Laurier University, Jan 2026 to present, Waterloo. Built affective-computing data pipelines over 10,000+ labeled sentiment points, personality classification, agent simulations, and reproducible research visualizations.
-- Junior Software Engineer Intern at DOUBL, Jan to Aug 2026, Toronto. Top contributor with 465 commits across a Next.js shopping platform, recommendation systems, Shopify, Firebase/GCP, analytics, a role-gated CMS, and production security work.
-- Software Engineer Intern at OneChart, Jan to Apr 2026, Waterloo. Built a Scribe platform used by 50+ clinicians, sub-400ms Deepgram and Gemini transcription, and PDF EMR autofill that cut manual entry by 85%.
-- Forward Deployed Engineer Intern at AvertoAI, May to Dec 2025, Toronto. Built a Python/FastAPI supplier-data platform that helped cut excess inventory by nearly 25% and removed 1,200+ duplicate records.
-- Co-Founder and Software Engineer at a Stealth Startup, Apr to Dec 2025. Built an AI EdTech assessment platform that cut assessment and reporting effort by 40%.
-- DMZ Basecamp Sprint + Voyage Fellow, May to Aug 2025. Refined and presented an AI prototype through iterative product and architecture work.
-- Computer Science Instructor at Varsity Tutors, Nov 2024 to Dec 2025. Taught Python, Java, OOP, data structures, algorithms, debugging, recursion, and complexity analysis.
+${experience.map(formatRole).join('\n')}
 
 Education and campus:
-- Completing a Bachelor of Computer Science with a Big Data Concentration at Wilfrid Laurier University, expected Apr 2028, Waterloo.
-- Relevant coursework: Data Structures I & II, OOP, Data Visualization, Discrete Structures, and Linear Algebra.
-- Campus leadership includes VP of Technology for Laurier Analytics Society and roles with Laurier Computing Society.
+- Completing a ${education.degree} with a ${education.concentration} at ${education.school}, ${education.dateRange}, ${education.location}.
+- Relevant coursework: ${education.coursework.join(', ')}.
+- Campus leadership: ${clubs.map((club) => `${club.title} at ${club.organization} (${club.dateRange})`).join('; ')}.
 
 Technical toolkit:
 - Languages: TypeScript, Python, JavaScript, SQL, Java, C++, C, R, HTML, CSS.
 - Frameworks and platforms: React, Next.js, Node.js, FastAPI, Express, Three.js, WebSockets, Tailwind CSS.
-- Cloud and data: Google Cloud Platform, AWS, PostgreSQL, Firebase, MongoDB Atlas, BigQuery, Supabase.
+- Cloud and data: Google Cloud Platform, AWS, PostgreSQL, Firebase, Firestore, MongoDB Atlas, BigQuery, Supabase.
 - AI and analysis: OpenAI API, Gemini API, pandas, NumPy, scikit-learn, statsmodels, ggplot2.
+- Developer tools: Git, Docker, GitHub Actions, Claude Code, Codex, Jira, Linear.
+
+Résumé:
+- PDF path: /Rohan_Gottipati_Resume.pdf
+- The résumé PDF highlights Intact, DOUBL, OneChart, AvertoAI, education, GreenLens AI, TechTO, A.U.R.A., Scout, and technical skills.
+- The experience page also includes AI/ML research at Laurier, TeachTrack (listed as Stealth Startup), DMZ, and Varsity Tutors.
+- If asked about the résumé, describe the PDF contents. If asked about experience, use the full role list above.
 
 Highlights and contact:
 - My teams and I have earned 10 hackathon placements and awards, including 2nd Place at the Scotiabank x Tangerine Student Hackathon, S:\\HA<KS 2026, with ScotiaCheck.

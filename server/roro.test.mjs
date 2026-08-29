@@ -19,6 +19,7 @@ describe('RoRo portfolio boundary', () => {
 
   it('allows portfolio questions and highlighted portfolio text', () => {
     expect(isPortfolioQuestion('What did you build at DOUBL?')).toBe(true);
+    expect(isPortfolioQuestion('Tell me about TeachTrack.')).toBe(true);
     expect(isPortfolioQuestion('Tell me about ScotiaCheck.')).toBe(true);
     expect(isPortfolioQuestion('What React projects have you built?')).toBe(true);
     expect(isPortfolioQuestion('How can I reach you?')).toBe(true);
@@ -102,6 +103,12 @@ describe('RoRo portfolio boundary', () => {
       'each item on its own line beginning with "• "'
     );
     expect(body.input).toContain("I'm Rohan, a software engineer.");
+    expect(body.system_instruction).toContain('802 commits');
+    expect(body.system_instruction).toContain('4,283 missing analytics rows');
+    expect(body.system_instruction).toContain('TeachTrack');
+    expect(body.system_instruction).toContain('/Rohan_Gottipati_Resume.pdf');
+    expect(body.system_instruction).not.toContain('465 commits');
+    expect(body.system_instruction).not.toContain('role-gated');
   });
 
   it('answers current-work questions instead of treating them as off-topic', async () => {

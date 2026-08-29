@@ -57,7 +57,7 @@ export function SiteNav() {
               rel="noreferrer"
               className="border border-ink/25 bg-ink px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-paper-2 transition-colors hover:bg-tangerine">
               
-              Resume
+              Résumé
             </a>
           </li>
           <li>
@@ -109,7 +109,7 @@ export function SiteNav() {
             rel="noreferrer"
             className="block w-full py-3 font-mono text-xs uppercase tracking-[0.2em] text-ink">
             
-              Resume
+              Résumé
             </a>
           </li>
           <li>

@@ -27,5 +27,18 @@ describe('RoRo local fallback boundary', () => {
     expect(askRoRo('Tell me about ScotiaCheck').text).toContain(
       '2nd Place'
     );
+    expect(askRoRo('What did you build at DOUBL?').text).toContain('802 commits');
+    expect(askRoRo('What did you build at DOUBL?').text).toContain(
+      '4,283 missing analytics rows'
+    );
+    expect(askRoRo('Tell me about TeachTrack').text).toContain(
+      'Cut assessment and reporting effort by 40%'
+    );
+    expect(askRoRo("What's on your resume?").text).toContain(
+      'My résumé PDF covers Intact, DOUBL, OneChart, and AvertoAI'
+    );
+    expect(askRoRo('Tell me about your research').text).toContain(
+      '10K+ labeled sentiment data points'
+    );
   });
 });

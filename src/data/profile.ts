@@ -21,7 +21,7 @@ export const profile = {
 
   highlights: [
   'IT Technical Advisor Intern at Intact Financial Corporation',
-  'Top contributor on DOUBL’s Next.js platform - 465 commits',
+  'Top contributor on DOUBL’s Next.js platform - 802 commits',
   'Built AI integrations and backend systems at OneChart; worked in forward-deployed engineering at AvertoAI',
   'Leadership across Laurier Analytics Society and Laurier Computing Society'],
 
