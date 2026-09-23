@@ -30,7 +30,7 @@
     @apply border-border;
   }
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     scroll-padding-top: 5rem;
     scrollbar-gutter: stable;
     overflow-x: hidden;
@@ -155,7 +155,7 @@
 [data-roro-scroll-region] {
   -webkit-overflow-scrolling: touch;
   overflow-anchor: none;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   scrollbar-gutter: stable;
 }
 

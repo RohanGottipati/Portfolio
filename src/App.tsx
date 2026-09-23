@@ -21,17 +21,19 @@ import { Experience } from './pages/Experience';
 import { About } from './pages/About';
 import { Contact } from './pages/Contact';
 import { NotFound } from "./pages/NotFound";
+import { SmoothScroll, useSmoothScroll } from "./components/SmoothScroll";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
+  const smoothScroll = useSmoothScroll();
   const previousPathname = useRef(pathname);
 
   useEffect(() => {
     if (previousPathname.current === pathname) return;
 
     previousPathname.current = pathname;
-    window.scrollTo({ top: 0, behavior: 'auto' });
-  }, [pathname]);
+    smoothScroll?.scrollTo(0, 0);
+  }, [pathname, smoothScroll]);
   return null;
 }
 
@@ -95,11 +97,13 @@ function PortfolioShell({ paperGrain }: Required<AppProps>) {
 export function App({ paperGrain = true }: AppProps) {
   return (
     <BrowserRouter>
-      <MotionConfig reducedMotion="user">
-        <AskBotProvider>
-          <PortfolioShell paperGrain={paperGrain} />
-        </AskBotProvider>
-      </MotionConfig>
+      <SmoothScroll>
+        <MotionConfig reducedMotion="user">
+          <AskBotProvider>
+            <PortfolioShell paperGrain={paperGrain} />
+          </AskBotProvider>
+        </MotionConfig>
+      </SmoothScroll>
     </BrowserRouter>
   );
 }
