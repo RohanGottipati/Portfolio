@@ -103,7 +103,8 @@ describe('RoRo portfolio boundary', () => {
       'each item on its own line beginning with "• "'
     );
     expect(body.input).toContain("I'm Rohan, a software engineer.");
-    expect(body.system_instruction).toContain('802 commits');
+    expect(body.system_instruction).toContain('800+ commits');
+    expect(body.system_instruction).toContain('Molecule');
     expect(body.system_instruction).toContain('4,283 missing analytics rows');
     expect(body.system_instruction).toContain('TeachTrack');
     expect(body.system_instruction).toContain('/Rohan_Gottipati_Resume.pdf');
@@ -122,7 +123,7 @@ describe('RoRo portfolio boundary', () => {
             content: [
               {
                 type: 'text',
-                text: "I'm an IT Technical Advisor Intern at Intact."
+                text: "I'm a Software Architecture Intern at Intact."
               }
             ]
           }

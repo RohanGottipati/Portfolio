@@ -63,7 +63,7 @@ export function Contact() {
           Contact
         </p>
         <h1 className="mt-3 font-display text-5xl leading-[1.02] md:text-7xl">
-          Say hi - I reply fast.
+          Have something in mind? Reach out.
         </h1>
         <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink-soft">
           I&apos;m open to software engineering internships and new-grad roles,

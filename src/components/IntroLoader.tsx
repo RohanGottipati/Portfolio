@@ -2,6 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { profile } from '../data/profile';
+import { recognitionLabel } from '../data/recognition.mjs';
+import { projects } from '../data/projects.mjs';
+import { useSmoothScroll } from './SmoothScroll';
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -12,8 +15,8 @@ const TYPE_START = 220;
 const phrases = [
 'production systems',
 'agent pipelines',
-'15 shipped projects',
-'10 hackathon awards',
+`${projects.length} projects on this site`,
+recognitionLabel,
 'and a lot of coffee'];
 
 
@@ -26,13 +29,14 @@ const scraps = [
 { color: 'bg-blush', w: 62, h: 62, x: 128, y: -196, rotate: 16, from: { x: 260, y: -420 } }];
 
 
-const PHRASE_START = 2200;
-const PHRASE_HOLD = 900;
+const PHRASE_START = 1450;
+const PHRASE_HOLD = 480;
 const LEAVE_AT = PHRASE_START + phrases.length * PHRASE_HOLD + 300;
 const COUNT_MS = LEAVE_AT - 400;
 
 export function IntroLoader() {
   const reduceMotion = useReducedMotion();
+  const smoothScroll = useSmoothScroll();
 
   const location = useLocation();
 
@@ -44,6 +48,10 @@ export function IntroLoader() {
   const [count, setCount] = useState(0);
   const timers = useRef<number[]>([]);
   const skipRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (location.pathname !== '/') setVisible(false);
+  }, [location.pathname]);
 
   const dismiss = useCallback(() => {
     setLeaving((current) => {
@@ -65,10 +73,11 @@ export function IntroLoader() {
 
   // Typing, phrase cycling, counter and the scheduled exit.
   useEffect(() => {
-    if (!visible) return;
+    if (!visible || location.pathname !== '/') return;
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    smoothScroll?.setPaused(true);
     window.requestAnimationFrame(() =>
       skipRef.current?.focus({ preventScroll: true })
     );
@@ -123,10 +132,11 @@ export function IntroLoader() {
       timers.current = [];
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = previousOverflow;
+      smoothScroll?.setPaused(false);
     };
-  }, [visible, reduceMotion, dismiss]);
+  }, [visible, location.pathname, reduceMotion, dismiss, smoothScroll]);
 
-  if (!visible) return null;
+  if (!visible || location.pathname !== '/') return null;
 
   const shutter = 'absolute inset-x-0 h-1/2 bg-paper';
 

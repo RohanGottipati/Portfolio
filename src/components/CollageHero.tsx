@@ -121,7 +121,7 @@ const ExperienceIndex = memo(function ExperienceIndex() {
       <Link
         to="/experience"
         className="block border-t border-ink/20 px-5 py-3 font-hand text-xl leading-none text-ink-soft hover:text-tangerine">
-        full history on the experience page ↗
+        See all experience ↗
       </Link>
     </motion.div>
   );
@@ -173,6 +173,11 @@ export function CollageHero() {
                 className="absolute -bottom-[1px] right-0 h-0 w-0 border-b-[20px] border-l-[20px] border-b-tangerine border-l-transparent" />
               
             </motion.div>
+
+            <Link to="/brief" className="group mt-7 inline-flex items-center gap-3 border-b border-ink/40 pb-1 font-mono text-[11px] uppercase tracking-[0.18em] text-ink hover:border-tangerine hover:text-tangerine">
+              Quick View <span aria-hidden="true" className="text-tangerine">↗</span>
+              <span className="font-hand text-lg normal-case tracking-normal text-ink-soft">the short version</span>
+            </Link>
 
           </div>
 

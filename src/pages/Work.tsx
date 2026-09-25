@@ -39,7 +39,7 @@ const interactiveProjects = new Set([
 
 const views: ProjectView[] = [
   { label: 'All projects', matches: () => true },
-  { label: 'Award winners', matches: (project) => Boolean(project.impact) },
+  { label: 'Recognized', matches: (project) => Boolean(project.impact) },
   {
     label: 'AI + ML',
     matches: (project) => project.tags.some((tag) => aiTags.has(tag))
@@ -67,8 +67,8 @@ export function Work() {
       <SectionHeading
         index="01"
         label="Projects"
-        title="15 so far, more in progress."
-        note="I built them during hackathon sprints, internships and side experiments." />
+        title={`${projects.length} projects. Pick one.`}
+        note="Some were solo projects. Others came out of hackathons and team work." />
       
 
       <div className="mt-8 flex flex-col gap-4 border-y border-ink/15 py-4 sm:flex-row sm:items-center sm:justify-between">
@@ -116,7 +116,7 @@ export function Work() {
 
       {visible.length === 0 ?
       <p className="mt-12 font-hand text-3xl text-ink-soft">
-          Nothing filed under that one yet.
+          No projects in this group yet.
         </p> :
 
       <div className="mt-8 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">

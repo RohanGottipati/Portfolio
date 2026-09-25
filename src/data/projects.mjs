@@ -28,6 +28,27 @@ export const projects = [
   featured: false
 },
 {
+  slug: 'molecule',
+  name: 'Molecule',
+  year: '2026',
+  date: 'September 2026',
+  summary:
+  'AI commerce system that turns requests into validated workflows across Shopify stores.',
+  description:
+  'At Hack the North 2026, I architected Molecule to compile user requests into CP-SAT-certified graphs for 8 Shopify stores. The runtime used crash replay, worker locks, supplier failover, and duplicate-safe writes. I scaled its PostgreSQL data to 5 million order lines and 1.2 million fulfillment samples, achieving 196x speedups and 9.9x compression.',
+  stack: ['TypeScript', 'Python', 'PostgreSQL', 'OR-Tools', 'OpenAI API'],
+  features: [
+  'Compiled user requests into CP-SAT-certified workflows for 8 Shopify stores',
+  'Hardened the runtime with crash replay, worker locks, supplier failover, and zero duplicate Shopify writes',
+  'Scaled PostgreSQL to 5 million order lines and 1.2 million fulfillment samples, achieving 196x speedups and 9.9x compression'],
+  role: 'Developer',
+  event: 'Hack the North 2026',
+  links: [],
+  tags: ['AI Agents', 'Commerce', 'Optimization', 'PostgreSQL'],
+  accent: 'peach',
+  featured: false
+},
+{
   slug: 'greenlens-ai',
   name: 'GreenLens AI',
   year: '2026',
@@ -45,11 +66,18 @@ export const projects = [
   links: [
   { label: 'GitHub', href: 'https://github.com/RohanGottipati/Greenlens' }],
 
-  impact: '1st Overall, Data Minds Challenge 2.0',
+  impact: '1st Overall, Laurier Analytics Society x Sun Life Hackathon',
+  recognitionResult: '1st Overall',
+  event: 'Laurier Analytics Society x Sun Life Hackathon',
   tags: ['ESG', 'AI Agents', 'Analytics', 'Next.js'],
   accent: 'lime',
   image: "/15958fba-0eb9-4d42-9c49-c72e86d80c5b.jpg",
-
+  caseStudy: {
+    context: 'Enterprise AI usage leaves carbon, water, license waste and ROI signals in separate systems. The project brought those signals into one audit workflow.',
+    hardPart: 'Turning disparate Microsoft Graph, Google Workspace and OpenAI signals into a report that could flag outliers and show trends.',
+    flow: ['Enterprise signals', 'Six-agent evaluation', 'Z-score + OLS analysis', 'ESG PDF report'],
+    metrics: [{ value: '6', label: 'specialized agents' }],
+  },
   featured: true
 },
 {
@@ -83,7 +111,12 @@ export const projects = [
   tags: ['Digital Twin', 'AI Agents', 'Civic Tech', 'Next.js'],
   accent: 'sky',
   image: "/dad7ed1a-9bb3-474d-9bc6-f96c477d641e.jpg",
-
+  caseStudy: {
+    context: 'City planning questions need both a map and an explanation of the assumptions behind any modeled answer.',
+    hardPart: 'Keeping measured Toronto inputs separate from modeled day-one acceptance. The tool does not claim to predict physical or economic consequences.',
+    flow: ['Planning question', 'Census + TTC grounding', 'Python analysis + simulation', 'Map actions + report'],
+    metrics: [{ value: '158', label: 'neighbourhood boundaries' }, { value: '100K+', label: 'simulated citizens' }],
+  },
   featured: true
 },
 {
@@ -94,19 +127,20 @@ export const projects = [
   summary:
   'An AI-powered financial advice checker that weighs online money advice against a Gen Z user’s real financial context before they act.',
   description:
-  'I built ScotiaCheck for the Scotiabank x Tangerine Student Hackathon: S:\\HA<KS 2026. It lets Gen Z paste or upload financial advice, extracts the action and assumptions behind it, and compares the recommendation with balances, spending, debt, income and upcoming obligations. The Alex demo showed why a headline $400 car payment did not fit an 18-year-old with roughly $10.8K saved and a $6,000 tuition payment due in six weeks. ScotiaCheck provides personalized context and a useful next step without reducing nuanced advice to a universal good-or-bad verdict.',
+  'We built ScotiaCheck as a team for the Scotiabank x Tangerine Student Hackathon: S:\\HA<KS 2026. It lets Gen Z paste or upload financial advice, extracts the action and assumptions behind it, and compares the recommendation with balances, spending, debt, income and upcoming obligations. Our Alex demo showed why a headline $400 car payment did not fit an 18-year-old with roughly $10.8K saved and a $6,000 tuition payment due in six weeks. ScotiaCheck provides personalized context and a useful next step without reducing nuanced advice to a universal good-or-bad verdict.',
   stack: ['React', 'Vite', 'Tailwind CSS', 'Framer Motion', 'React Router'],
   features: [
   'Accepts pasted advice or screenshots from social platforms, AI tools and friends',
   'Extracts the recommended action and surfaces the assumptions behind it',
   'Compares the advice with real financial context and shows hidden costs visually',
   'Suggests an appropriate next step without labelling advice universally good or bad'],
-  role: 'Developer',
+  role: 'Developer on a team',
   event: 'Scotiabank x Tangerine Student Hackathon: S:\\HA<KS 2026',
   challenge: 'Financial Confidence in an AI World: “When everyone has advice, who do you trust?”',
   tagline: 'Don’t just take financial advice. Check it.',
   links: [],
   impact: '2nd Place at S:\\HA<KS 2026',
+  recognitionResult: '2nd Place',
   tags: [
   'AI',
   'FinTech',
@@ -117,6 +151,11 @@ export const projects = [
   'Hackathon'],
   accent: 'blush',
   image: '/f924dd4c-4bcd-4e4c-9c5f-5824883194f4.jpg',
+  caseStudy: {
+    context: 'Gen Z users encounter financial advice online that rarely accounts for their balances, debt, income or upcoming obligations.',
+    hardPart: 'Showing why an apparently affordable $400 car payment did not fit the demo user with tuition due in six weeks, without making a universal good-or-bad judgment.',
+    flow: ['Advice or screenshot', 'Action + assumptions', 'Personal financial context', 'Hidden costs + next step'],
+  },
   featured: true
 },
 {
@@ -151,7 +190,12 @@ export const projects = [
   tags: ['AI Agents', 'Three.js', '3D', 'Hackathon'],
   accent: 'tangerine',
   image: "/ca04a1bb-f5cc-4571-8ad0-490d773503a8.jpg",
-
+  caseStudy: {
+    context: 'Detailed 2D floor plans are difficult to explore as spaces. A.U.R.A. converts them into editable 3D environments.',
+    hardPart: 'Automating the modeling stages while keeping the Three.js viewer responsive during walking and object edits.',
+    flow: ['2D floor plan', 'Three-agent pipeline', '3D environment', 'Walk + edit viewer'],
+    metrics: [{ value: '<50ms', label: 'frame render time' }, { value: '100+', label: 'concurrent renders supported' }],
+  },
   featured: true
 },
 {
@@ -219,7 +263,12 @@ export const projects = [
   tags: ['Computer Vision', 'Games', 'AI Agents', 'Next.js'],
   accent: 'peach',
   image: "/9eb2df58-4f36-40d9-9a51-6c7a2a29b212.jpg",
-
+  caseStudy: {
+    context: 'Playground starts with ordinary objects on a desk and turns one photo into a publishable platformer.',
+    hardPart: 'The model identifies objects, but deterministic mapping controls mechanics. Every level is checked with BFS reachability and auto-repaired before play.',
+    flow: ['Arrange + photograph', 'JSON object detection', 'Deterministic mechanics', 'BFS validation', 'Play + publish'],
+    metrics: [{ value: '4', label: 'seeded game modes' }],
+  },
   featured: true
 },
 {
@@ -450,3 +499,9 @@ export const featuredProjects = featuredProjectSlugs.flatMap((slug) => {
   const project = projects.find((entry) => entry.slug === slug);
   return project ? [project] : [];
 });
+
+// Quick View includes the latest résumé project alongside the featured five.
+export const quickViewProjects = [
+  ...featuredProjects,
+  ...projects.filter((project) => project.slug === 'molecule'),
+];

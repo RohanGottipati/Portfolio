@@ -3,17 +3,19 @@
 /** @type {Role[]} */
 export const experience = [
 {
-  slug: 'intact-it-technical-advisor-intern',
-  title: 'IT Technical Advisor Intern, Software Engineering & Integrations',
+  slug: 'intact-software-architecture-intern',
+  title: 'Software Architecture Intern, Software Engineering & Integrations',
   organization: 'Intact Financial Corporation',
   dateRange: 'Sep 2026 - Present',
   location: 'Toronto, ON',
   summary:
-  'Focus on multi-system integrations, architecture, and cloud tooling.',
+  'Work across multi-system integrations, solution architecture, and cloud infrastructure.',
+  briefSummary:
+  'Building enterprise integrations and cloud workflows with Java, Python, AWS, Azure, Kubernetes, and CI/CD.',
   highlights: [
-  'Focus on multi-system integrations, architecture, and cloud tooling across Java, Python, AWS, Kubernetes, and CI/CD.'],
+  'Work across multi-system integrations, solution architecture, and cloud infrastructure using Java, Python, AWS, Azure, Kubernetes, and CI/CD to support production integration workflows.'],
 
-  techUsed: ['Java', 'Python', 'AWS', 'Kubernetes', 'CI/CD'],
+  techUsed: ['Java', 'Python', 'AWS', 'Azure', 'Kubernetes', 'CI/CD'],
   kind: 'work'
 },
 {
@@ -24,6 +26,8 @@ export const experience = [
   location: 'Waterloo, ON',
   summary:
   'Build research infrastructure for affective-computing models across personality-driven trading strategies and experimental scenarios.',
+  briefSummary:
+  'Built Python/NLP pipelines for 10K+ sentiment records and simulations evaluating 10+ personality-driven agent strategies.',
   highlights: [
   'Processed 10K+ labeled sentiment data points by building Python/NLP pipelines for personality detection and classification, enabling scalable evaluation of affective-computing models across trading scenarios.',
   'Evaluated 10+ agent strategies by engineering simulation environments that measured personality-weighted performance across repeated experiments and experimental conditions.',
@@ -40,10 +44,13 @@ export const experience = [
   location: 'Toronto, ON',
   summary:
   "Top contributor on DOUBL's Next.js platform, spanning recommendations, Shopify, Firebase/GCP and analytics.",
+  briefSummary:
+  'Led full-stack work across four repositories, authored 120+ PRs, and recovered 4,283 missing analytics rows.',
   highlights: [
-  'Led full-stack development of the Next.js platform as its top contributor, authoring 802 commits across 4 repositories spanning recommendation, Shopify, Firebase/GCP, and analytics systems powering a shopping engine with Shopify data.',
+  'Led development of the personalized shopping platform as its top contributor, making 800+ commits across 4 repositories, authoring 120+ PRs, and reviewing 190+ PRs across recommendation, Shopify, cloud, and analytics systems.',
   'Strengthened overall production security and reliability by remediating 2 critical and 32 high-severity vulnerabilities, enforcing TLS 1.3, and root-causing and resolving a purchase-attribution failure affecting 3 Shopify partner stores.',
-  'Recovered 4,283 missing analytics rows and repaired datasets missing up to 59% of events by building a self-healing Firestore/BigQuery reconciler with scheduled automated repair workflows across five production analytics tables.'],
+  'Recovered 4,283 missing analytics rows and repaired datasets missing up to 59% of events by building a self-healing Firestore/BigQuery reconciler with scheduled automated repair workflows across five production analytics tables.',
+  'Prevented a catalog failure from hiding 8 live Shopify products again by replacing manual publishing with an OIDC-authenticated Cloud Scheduler pipeline, validation, Slack alerts, and duplicate-safe syncing.'],
 
   techUsed: ['Next.js', 'TypeScript', 'Shopify', 'Firebase', 'GCP'],
   kind: 'work'
@@ -56,12 +63,14 @@ export const experience = [
   location: 'Waterloo, ON',
   summary:
   'Built the clinician-facing Scribe platform, real-time transcription pipeline and PDF EMR autofill.',
+  briefSummary:
+  'Built an AI scribe platform for 100+ clinicians, with sub-400ms transcription and PDF autofill that cut manual entry by 85%.',
   highlights: [
-  'Built a production Scribe web platform and Chrome extension used by 50+ clinicians, with role-based permissions, session isolation, and HIPAA-aligned handling of protected health data, reducing daily administrative work across clinical workflows.',
-  'Integrated Deepgram and Gemini APIs into a real-time WebSocket transcription pipeline achieving sub-400ms latency, automatically drafting structured clinical notes that clinicians could review and edit instead of typing them from scratch.',
-  'Cut manual clinician data entry by 85% by engineering a PDF EMR autofill system using semantic matching to map patient-note content onto form fields, paired with a live edit UI that syncs clinician changes back to the PDF in real time.'],
+  'Built and shipped an AI scribe platform and Chrome extension serving 100+ clinicians, with authenticated serverless APIs, multi-tenant access controls, and clinic-admin workflows.',
+  'Achieved sub-400ms transcription latency by integrating Deepgram Nova Medical and Gemini, adding diarization, multilingual transcription, and model fallbacks to clinical-note generation.',
+  'Cut manual clinician data entry by 85% with a Gemini-powered PDF EMR autofill system that mapped notes to form fields, saved reusable templates, and synced edits back to generated PDFs.'],
 
-  techUsed: ['TypeScript', 'React', 'Deepgram', 'Gemini API', 'WebSockets'],
+  techUsed: ['TypeScript', 'React', 'Deepgram', 'Gemini API', 'Serverless APIs'],
   kind: 'work'
 },
 {
@@ -72,6 +81,8 @@ export const experience = [
   location: 'Toronto, ON',
   summary:
   'Deployed a full-stack food-waste platform and supplier-data backend across client sites.',
+  briefSummary:
+  'Unified three supplier feeds in a FastAPI food-waste platform that helped cut excess inventory by nearly 25% across client sites.',
   highlights: [
   'Cut excess inventory by nearly 25% across client sites by building a full-stack food-waste platform using Python/FastAPI that unified 3 disparate supplier data sources, helping teams right-size supplier orders and reduce waste across operations.',
   'Improved data consistency across client rollouts by designing a PostgreSQL schema that removed 1,200+ duplicate supplier records, enforced referential integrity, and exposed reliable data to downstream production services through RESTful APIs.',
@@ -87,6 +98,8 @@ export const experience = [
   dateRange: 'Apr 2025 - Dec 2025',
   summary:
   'Co-founded and engineered an AI EdTech platform focused on identifying student learning gaps.',
+  briefSummary:
+  'Co-founded an AI EdTech platform and automated scoring and reporting with pandas and SQL, cutting assessment effort by 40%.',
   highlights: [
   'Built an AI EdTech platform using Python, Flask, and React to identify student learning gaps and personalize assessment workflows based on performance data.',
   'Cut assessment and reporting effort by 40% by engineering pandas/SQL data pipelines that automated scoring, analysis, and report generation.',
@@ -102,6 +115,8 @@ export const experience = [
   dateRange: 'May 2025 - Aug 2025',
   summary:
   'Refined an AI prototype through iterative architecture, product improvements, technical demos, and mentor feedback.',
+  briefSummary:
+  'Turned an AI prototype into React demos and API-backed workflows, improving scalability and validation speed by 60%.',
   highlights: [
   'Improved AI prototype scalability and validation speed by 60% by iterating on core architecture, product workflows, and MVP functionality.',
   'Accelerated user and stakeholder validation by building interactive React demos that transformed core AI functionality into testable end-to-end product experiences.',
@@ -117,6 +132,8 @@ export const experience = [
   dateRange: 'Nov 2024 - Dec 2025',
   summary:
   'Taught core computer science topics through individual and group instruction.',
+  briefSummary:
+  'Taught Python, Java, data structures and algorithms in individual sessions and classes of 10+, using hands-on exercises.',
   highlights: [
   'Taught Python, Java, OOP, data structures, and algorithms to individual students and classes of 10+, translating core CS concepts into practical coding exercises and guided problem solving.',
   'Strengthened students’ data-structure fundamentals by developing custom implementations and exercises for arrays, linked lists, stacks, queues, and trees, reinforcing both conceptual understanding and implementation skills.',

@@ -1,8 +1,9 @@
 import { profile } from '../data/profile';
-import { projects } from '../data/projects.mjs';
+import { featuredProjects, projects, quickViewProjects } from '../data/projects.mjs';
 import { clubs, education, experience } from '../data/experience';
 import { skills } from '../data/skills';
 import type { Role } from '../types/portfolio';
+import { recognitionLabel } from '../data/recognition.mjs';
 
 export interface BotLink {
   label: string;
@@ -18,7 +19,7 @@ export interface BotAnswer {
 const has = (q: string, words: string[]) => words.some((w) => q.includes(w));
 
 const roleSearchTerms: Array<{ slug: string; terms: string[] }> = [
-  { slug: 'intact-it-technical-advisor-intern', terms: ['intact'] },
+  { slug: 'intact-software-architecture-intern', terms: ['intact'] },
   { slug: 'doubl-junior-software-engineer-intern', terms: ['doubl'] },
   { slug: 'onechart-software-engineer-intern', terms: ['onechart'] },
   { slug: 'avertoai-forward-deployed-engineer-intern', terms: ['averto'] },
@@ -47,6 +48,8 @@ const workLink: BotLink = { label: 'See all my projects', to: '/work' };
 const aboutLink: BotLink = { label: 'Read my about page', to: '/about' };
 const experienceLink: BotLink = { label: 'View my experience', to: '/experience' };
 const contactLink: BotLink = { label: 'Contact', to: '/contact' };
+const recognitionLink: BotLink = { label: 'View recognition', to: '/recognition' };
+const briefLink: BotLink = { label: 'Open Quick View', to: '/brief' };
 const offTopicReply =
   "I can only help with questions about my portfolio, projects, experience, skills, education, or how to reach me.";
 
@@ -60,8 +63,8 @@ function roleAnswer(role: Role): BotAnswer {
   };
 }
 
-const localPortfolioNames = /\b(rohan(?: gottipati)?|laurier|intact|doubl|onechart|averto|stealth startup|teachtrack|dmz|varsity tutors|greenlens|techto|scotiacheck|scotiabank|tangerine|a\.u\.r\.a|aura|scout|playground|spar|caresync|spectra|movemind|medalyze|letterly)\b/i;
-const localPortfolioIntent = /\b(your|portfolio|projects?|working on|you built|you build|you shipped|your work|your experience|experience do you have|your roles?|your internships?|your career|your skills?|skills do you have|your stack|stack do you use|your tech|tech do you use|languages do you use|your resume|your résumé|your education|your degree|your coursework|your awards?|your hackathons?|what have you won|your contact|your email|your github|your linkedin|reach you|get in touch|hire you|where are you based|who are you|about yourself)\b/i;
+const localPortfolioNames = /\b(rohan(?: gottipati)?|laurier|intact|doubl|onechart|averto|stealth startup|teachtrack|dmz|varsity tutors|molecule|greenlens|techto|scotiacheck|scotiabank|tangerine|a\.u\.r\.a|aura|scout|playground|spar|caresync|spectra|movemind|medalyze|letterly)\b/i;
+const localPortfolioIntent = /\b(your|his|rohan|portfolio|projects?|working on|you built|you build|you shipped|experience|skills?|resume|résumé|education|awards?|hackathons?|recognition|quick view|contact|email|github|linkedin|reach you|get in touch|hire you|who are you|about yourself)\b/i;
 const localUnrelatedIntent = /\b(capital of|recipe|weather|sports score|stock price|latest news|write (?:me )?code|solve this|translate this|medical advice|legal advice)\b/i;
 
 function projectAnswer(slug: string): BotAnswer {
@@ -80,7 +83,7 @@ export const suggestedPrompts = [
 'What are you working on?',
 'Show me your best project',
 'What tech do you use?',
-'What have you won?',
+'What hackathon results have you earned?',
 'How do I get in touch?'];
 
 
@@ -118,22 +121,21 @@ export function askRoRo(input: string): BotAnswer {
   const role = matchedRole(q);
   if (role) return roleAnswer(role);
 
+  if (has(q, ['quick view', 'quick version', 'short version', 'summary of experience', 'brief'])) {
+    return { text: `Quick View is the concise version of my portfolio: roles, research, education, ${quickViewProjects.length} selected projects, ${recognitionLabel}, skills and contact links.`, links: [briefLink] };
+  }
+
   if (has(q, ['who', 'about', 'yourself', 'bio', 'story'])) {
     return {
-      text: `${profile.intro} I'm based in ${profile.location}, working at Intact Financial Corporation as an IT Technical Advisor Intern, and completing a ${education.degree} with a ${education.concentration} at ${education.school}.`,
+      text: `${profile.intro} I'm based in ${profile.location}, working at Intact Financial Corporation as a ${experience[0].title.split(',')[0]}, and completing a ${education.degree} with a ${education.concentration} at ${education.school}.`,
       links: [aboutLink]
     };
   }
 
   if (has(q, ['best', 'favourite', 'favorite', 'proudest', 'strongest'])) {
     return {
-      text: `My featured five are TechTO, GreenLens AI, ScotiaCheck, A.U.R.A. and Playground. Together they cover a Census-grounded Toronto digital twin, multi-agent ESG auditing, personalized financial-advice context, floor-plan-to-3D generation and a photo-to-platformer game engine.`,
-      links: [
-      { label: 'Open TechTO', to: '/work/techto' },
-      { label: 'Open GreenLens AI', to: '/work/greenlens-ai' },
-      { label: 'Open ScotiaCheck', to: '/work/scotiacheck' },
-      { label: 'Open A.U.R.A.', to: '/work/aura' },
-      { label: 'Open Playground', to: '/work/playground' }]
+      text: `My featured ${featuredProjects.length} are ${featuredProjects.map(project => project.name).join(', ')}. Together they cover civic technology, ESG auditing, financial-advice context, floor-plan-to-3D generation and a photo-to-platformer game engine.`,
+      links: featuredProjects.map(project => ({ label: `Open ${project.name}`, to: `/work/${project.slug}` }))
 
     };
   }
@@ -149,24 +151,21 @@ export function askRoRo(input: string): BotAnswer {
   ))
   {
     return {
-      text: `I'm currently an IT Technical Advisor Intern in Software Engineering & Integrations at Intact Financial Corporation (Sep 2026–Present), where I focus on multi-system integrations, architecture and cloud tooling across Java, Python, AWS, Kubernetes and CI/CD.`,
+      text: `I'm currently a ${experience[0].title} at ${experience[0].organization} (${experience[0].dateRange}). ${experience[0].briefSummary}`,
       links: [experienceLink]
     };
   }
 
   if (has(q, ['project', 'work', 'built', 'build', 'portfolio', 'shipped'])) {
     return {
-      text: `I've filed ${projects.length} builds in my portfolio. My featured projects are ${projects.
-      filter((p) => p.featured).
-      map((p) => p.name).
-      join(', ')} - spanning civic digital twins, ESG auditing, personalized financial context, 3D generation and a photo-to-platformer game engine.`,
+      text: `There are ${projects.length} projects on this site. The five featured ones are ${featuredProjects.map((p) => p.name).join(', ')} - spanning city planning, ESG auditing, financial advice, 3D generation, and a photo-to-platformer game.`,
       links: [workLink]
     };
   }
 
   if (has(q, ['resume', 'résumé', 'cv'])) {
     return {
-      text: `My résumé PDF covers Intact, DOUBL, OneChart, and AvertoAI, plus GreenLens AI, TechTO, A.U.R.A., and Scout. The experience page has the full history, including AI/ML research at Laurier, TeachTrack, DMZ, and Varsity Tutors.`,
+      text: `My résumé PDF covers Intact, DOUBL, OneChart, and AvertoAI, plus Molecule, GreenLens AI, and TechTO. The experience page has the full history, including AI/ML research at Laurier, TeachTrack, DMZ, and Varsity Tutors.`,
       links: [
       experienceLink,
       { label: 'Résumé PDF', href: profile.contact.resume }]
@@ -201,8 +200,8 @@ export function askRoRo(input: string): BotAnswer {
 
   if (has(q, ['hackathon', 'win', 'won', 'award', 'prize', 'devpost'])) {
     return {
-      text: `My teams and I have earned 10 hackathon placements and awards. Highlights include 2nd Place at the Scotiabank x Tangerine Student Hackathon, S:\\HA<KS 2026, with ScotiaCheck, 1st Overall at Data Minds Challenge 2.0 with GreenLens AI, Best Use of MongoDB Atlas at Hack the 6ix with TechTO, two sponsor awards at BearHacks with A.U.R.A., a sponsor award at HuskyHacks with Scout, 3rd Place Overall at SumerHacks with Playground, Best Use of Solana at uOttaHack with Spectra, a sponsor award at Hack Canada with CareSync, and an Honourable Mention at DDC x IgnitionHacks with Spar.`,
-      links: [workLink]
+      text: `I have ${recognitionLabel}. The recognition page shows the result and the project behind it, including placements, sponsor awards, and an Honourable Mention.`,
+      links: [recognitionLink]
     };
   }
 
@@ -262,7 +261,7 @@ export function askRoRo(input: string): BotAnswer {
 
   if (has(q, ['ai', 'ml', 'agent', 'llm', 'machine learning', 'model'])) {
     return {
-      text: `AI systems are the main thread in my work: I built multi-agent pipelines in GreenLens AI, A.U.R.A. and Scout, contextualized outside financial advice with real customer circumstances in ScotiaCheck, fine-tuned a Qwen model to predict citizen reactions in TechTO, integrated real-time Deepgram + Gemini transcription at OneChart, researched affective computing at Laurier, and built TeachTrack, an AI EdTech platform for identifying learning gaps.`,
+      text: `AI systems are the main thread in my work: I built multi-agent pipelines in GreenLens AI, A.U.R.A. and Scout; my team and I built ScotiaCheck to check outside financial advice against personal context; I fine-tuned a Qwen model for TechTO, integrated real-time Deepgram + Gemini transcription at OneChart, researched affective computing at Laurier, and built TeachTrack, an AI EdTech platform for identifying learning gaps.`,
       links: [
       { label: 'Open TechTO', to: '/work/techto' },
       workLink]
@@ -278,7 +277,7 @@ export function askRoRo(input: string): BotAnswer {
   }
 
   return {
-    text: `I don't have a note filed on that one. Try asking about my projects, experience, stack, hackathon wins, or how to get in touch with me.`,
+    text: `I don't have an answer for that one. Try asking about my projects, experience, skills, hackathon results, or how to reach me.`,
     links: [workLink, aboutLink, contactLink]
   };
 }

@@ -83,17 +83,17 @@ describe("redesigned portfolio", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        "IT Technical Advisor Intern, Software Engineering & Integrations",
+        "Software Architecture Intern, Software Engineering & Integrations",
       ),
     ).toBeInTheDocument();
     expect(
       screen.getByText("Building multi-system integrations across enterprise systems."),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Supporting application architecture in Java and Python."),
+      screen.getByText("Working on solution architecture with Java and Python."),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Working with AWS, Kubernetes, and CI/CD cloud tooling."),
+      screen.getByText("Using AWS, Azure, Kubernetes, and CI/CD across cloud environments."),
     ).toBeInTheDocument();
     expect(screen.getByText("Big Data Concentration")).toBeInTheDocument();
     expect(screen.getByText("AI/ML systems")).toBeInTheDocument();
@@ -113,7 +113,7 @@ describe("redesigned portfolio", () => {
       name: "I'm at Intact Financial.",
     });
     const selectedProjects = screen.getByRole("heading", {
-      name: "Things I built, shipped and broke.",
+      name: "Projects I'd show you first.",
     });
     expect(
       nextStop.compareDocumentPosition(selectedProjects) &
@@ -138,7 +138,7 @@ describe("redesigned portfolio", () => {
     });
 
     expect(resume.closest("li")).not.toBe(roro.closest("li"));
-    expect(mobileNavigation?.children).toHaveLength(5);
+    expect(mobileNavigation?.children).toHaveLength(6);
   });
 
   it("keeps experience and about on separate pages", async () => {
@@ -148,7 +148,7 @@ describe("redesigned portfolio", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "What I've built across roles.",
+        name: "Where I've worked and what I did.",
       }),
     ).toBeInTheDocument();
     expect(
@@ -179,7 +179,7 @@ describe("redesigned portfolio", () => {
     await user.click(screen.getByRole("link", { name: "About" }));
     expect(
       await screen.findByRole("heading", {
-        name: "I like turning half-formed ideas into working software.",
+        name: "I turn ideas into useful software.",
       }),
     ).toBeInTheDocument();
     expect(
@@ -189,7 +189,7 @@ describe("redesigned portfolio", () => {
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("heading", {
-        name: "What I've built across roles.",
+        name: "Where I've worked and what I did.",
       }),
     ).not.toBeInTheDocument();
   });
@@ -201,7 +201,7 @@ describe("redesigned portfolio", () => {
 
     expect(
       await screen.findByRole("heading", {
-        name: "15 so far, more in progress.",
+        name: "16 projects. Pick one.",
       }),
     ).toBeInTheDocument();
 
@@ -216,7 +216,7 @@ describe("redesigned portfolio", () => {
 
     expect(screen.queryByText("Next.js")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "AI + ML" }));
-    expect(screen.getByText("10 projects shown")).toBeInTheDocument();
+    expect(screen.getByText("11 projects shown")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "GreenLens AI" })).toBeInTheDocument();
     expect(
       screen.getByText("Best Use of MongoDB Atlas, Hack the 6ix"),
@@ -233,6 +233,8 @@ describe("redesigned portfolio", () => {
     expect(
       await screen.findByRole("heading", { name: "GreenLens AI" }),
     ).toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: /Preview of my GreenLens AI project/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "GreenLens AI" }).closest("header")).toHaveClass("text-center");
 
     await waitFor(() => {
       expect(document.title).toBe("GreenLens AI | Rohan Gottipati");
@@ -250,6 +252,7 @@ describe("redesigned portfolio", () => {
       await screen.findByRole("heading", { name: "ScotiaCheck" }),
     ).toBeInTheDocument();
     expect(screen.getByText("2nd Place at S:\\HA<KS 2026")).toBeInTheDocument();
+    expect(screen.getByText(/We built ScotiaCheck as a team/)).toBeInTheDocument();
     expect(screen.queryByText("Links")).not.toBeInTheDocument();
   });
 

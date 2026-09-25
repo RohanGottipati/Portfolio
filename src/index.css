@@ -178,6 +178,9 @@
   transform: translateY(0);
 }
 
+.ticket-card { transform: rotate(var(--card-rotation, 0deg)); }
+.ticket-card:hover, .ticket-card:focus-visible { transform: rotate(0deg) translateY(-4px); }
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

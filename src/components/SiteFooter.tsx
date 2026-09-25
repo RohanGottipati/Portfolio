@@ -1,4 +1,5 @@
 import { ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { profile } from '../data/profile';
 
 const socials = [
@@ -15,7 +16,7 @@ export function SiteFooter() {
       <div className="mx-auto flex max-w-[1240px] flex-col gap-6 px-5 py-10 md:flex-row md:items-end md:justify-between md:px-10">
         <div>
           <p className="font-display text-3xl italic leading-none">
-            Let&apos;s build something.
+            Want to talk about a project?
           </p>
           <a
             href={`mailto:${profile.contact.email}`}
@@ -26,6 +27,7 @@ export function SiteFooter() {
           </a>
         </div>
         <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <li><Link to="/brief" className="font-mono text-[11px] uppercase tracking-[0.2em] text-tangerine hover:underline">Quick View ↗</Link></li>
           {socials.map((s) =>
           <li key={s.label}>
               <a
@@ -42,7 +44,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-ink/10 px-5 py-4 md:px-10">
         <p className="mx-auto max-w-[1240px] font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft/70">
-          I cut, taped and shipped this in Toronto · {new Date().getFullYear()}
+          Made in Toronto · {new Date().getFullYear()}
         </p>
       </div>
     </footer>);

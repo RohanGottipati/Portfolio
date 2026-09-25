@@ -13,7 +13,7 @@ export function NotFound() {
         noIndex
       />
       <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-tangerine">
-        404 - misfiled
+        404 / Page not found
       </p>
       <h1 className="mt-3 font-display text-5xl">
         I couldn&apos;t find that page.

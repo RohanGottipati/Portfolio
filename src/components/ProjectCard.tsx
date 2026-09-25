@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight, Award } from 'lucide-react';
 import type { Project } from '../types/portfolio';
 import { accent } from '../utils/accents';
@@ -16,15 +16,15 @@ export function ProjectCard({
   compact = false
 }: ProjectCardProps) {
   const tone = accent(project.accent);
+  const reduceMotion = useReducedMotion();
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={reduceMotion ? false : { opacity: .72, y: 8, rotate: rotate + (rotate >= 0 ? 1 : -1) }}
+      whileInView={{ opacity: 1, y: 0, rotate }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      style={{ rotate }}
-      whileHover={{ rotate: 0, y: -6 }}
+      whileHover={reduceMotion ? undefined : { rotate: 0, y: -4 }}
       className="h-full">
       
       <Link

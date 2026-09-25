@@ -4,14 +4,15 @@ export const skills: SkillGroup[] = [
 {
   key: 'languages',
   label: 'Languages',
-  summary: 'Programming and markup languages.',
+  summary: 'For product code, backend work, and data analysis.',
   items: [
   'TypeScript',
   'Python',
   'JavaScript',
-  'SQL',
   'Java',
-  'C++',
+  'Go',
+  'SQL',
+  'Ruby',
   'C',
   'R',
   'HTML',
@@ -21,7 +22,7 @@ export const skills: SkillGroup[] = [
 {
   key: 'frameworks',
   label: 'Frameworks & Technologies',
-  summary: 'How the products get built.',
+  summary: 'For interfaces, APIs, and real-time features.',
   items: [
   'React',
   'Next.js',
@@ -36,10 +37,11 @@ export const skills: SkillGroup[] = [
 {
   key: 'cloud',
   label: 'Cloud & Databases',
-  summary: 'Where applications run and data lives.',
+  summary: 'For deployment, storage, and analytics.',
   items: [
   'Google Cloud Platform',
   'AWS',
+  'Azure',
   'PostgreSQL',
   'Firebase',
   'MongoDB Atlas',
@@ -50,21 +52,25 @@ export const skills: SkillGroup[] = [
 {
   key: 'devtools',
   label: 'Developer Tools',
-  summary: 'Day-to-day workflow.',
+  summary: 'For building, testing, and shipping code.',
   items: [
   'Git',
   'Docker',
+  'Podman',
   'GitHub Actions',
+  'Power Automate',
+  'Jira',
+  'Confluence',
+  'Devin',
   'Claude Code',
   'Codex',
-  'Jira',
   'Linear']
 
 },
 {
   key: 'ai-data',
   label: 'AI APIs & Data',
-  summary: 'Models, pipelines and analysis tools.',
+  summary: 'For model integrations, experiments, and analysis.',
   items: [
   'OpenAI API',
   'Gemini API',

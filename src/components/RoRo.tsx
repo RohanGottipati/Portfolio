@@ -81,7 +81,7 @@ function followUps(question: string, hasSelection: boolean): string[] {
   if (/project|built|build|hackathon|award|win/.test(query)) {
     return [
       'Which project are you most proud of?',
-      'What have you won at hackathons?',
+      'Which hackathon results stand out?',
       'What tech do you use most?'
     ];
   }
@@ -94,7 +94,7 @@ function followUps(question: string, hasSelection: boolean): string[] {
   }
   if (/skill|stack|tech|language/.test(query)) {
     return [
-      'Which stack do you reach for most?',
+      'What tools do you use in your projects?',
       'How do you use AI in your projects?',
       'Which cloud platforms have you used?'
     ];
@@ -404,6 +404,7 @@ export function RoRo() {
                 ref={scrollRef}
                 layoutScroll
                 data-roro-scroll-region
+                data-lenis-prevent
                 className="grid-paper flex-1 overflow-y-auto overscroll-contain px-5 py-7 sm:px-8 sm:py-10"
                 aria-live="polite"
                 aria-busy={thinking}>

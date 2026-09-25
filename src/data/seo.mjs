@@ -1,3 +1,5 @@
+import { projects } from './projects.mjs';
+
 export const SITE_URL = "https://rohangottipati.com";
 export const DEFAULT_SOCIAL_IMAGE =
   "/c7482166-3a87-4a04-8b46-94156b0b0e28.jpg";
@@ -12,7 +14,7 @@ export const PAGE_SEO = {
   work: {
     title: "Projects | Rohan Gottipati",
     description:
-      "Explore 15 software projects I've built across portfolio design, AI agents, FinTech, civic technology, 3D, analytics, healthcare, games, and full-stack development.",
+      `Explore ${projects.length} software projects across AI agents, commerce, FinTech, civic technology, 3D, analytics, healthcare, games, and full-stack development.`,
     path: "/work",
   },
   about: {
@@ -32,6 +34,16 @@ export const PAGE_SEO = {
     description:
       "Contact me by email, phone, LinkedIn, or GitHub, and view my current software engineering résumé.",
     path: "/contact",
+  },
+  brief: {
+    title: "Quick View | Rohan Gottipati",
+    description: "A concise view of Rohan Gottipati's software engineering experience, selected projects, research, education and hackathon recognition.",
+    path: "/brief",
+  },
+  recognition: {
+    title: "Recognition | Rohan Gottipati",
+    description: "Explore Rohan Gottipati's hackathon placements and awards, with links to the projects behind each result.",
+    path: "/recognition",
   },
 };
 

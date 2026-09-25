@@ -17,6 +17,7 @@ export interface Project {
   role: string;
   links: ProjectLink[];
   impact?: string;
+  recognitionResult?: string;
   event?: string;
   challenge?: string;
   tagline?: string;
@@ -24,6 +25,13 @@ export interface Project {
   accent: AccentColor;
   image?: string;
   featured: boolean;
+  caseStudy?: {
+    context: string;
+    hardPart: string;
+    flow: string[];
+    metrics?: { value: string; label: string }[];
+    media?: { src: string; alt: string; caption?: string; layout?: 'full' | 'half' | 'portrait' }[];
+  };
 }
 
 export interface Role {
@@ -33,6 +41,7 @@ export interface Role {
   dateRange: string;
   location?: string;
   summary: string;
+  briefSummary?: string;
   highlights: string[];
   techUsed: string[];
   kind: 'work' | 'research' | 'founder' | 'teaching' | 'leadership';

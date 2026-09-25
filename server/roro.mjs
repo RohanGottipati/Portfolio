@@ -1,5 +1,6 @@
 import { clubs, education, experience } from '../src/data/experience.mjs';
-import { projects } from '../src/data/projects.mjs';
+import { projects, quickViewProjects } from '../src/data/projects.mjs';
+import { recognitionLabel } from '../src/data/recognition.mjs';
 
 const DEFAULT_MODEL = 'gemini-3.5-flash-lite';
 const OFF_TOPIC_REPLY =
@@ -7,8 +8,8 @@ const OFF_TOPIC_REPLY =
 const GREETING_REPLY =
   "Hi, I'm RoRo, the assistant for my portfolio. Ask me about my projects, experience, skills, education, or contact details.";
 
-const namedPortfolioTerms = /\b(rohan(?: gottipati)?|wilfrid laurier|laurier|toronto|waterloo|intact|doubl|onechart|averto|stealth startup|teachtrack|dmz|varsity tutors|greenlens|techto|scotiacheck|scotiabank|tangerine|a\.u\.r\.a|aura|scout|playground|spar|caresync|spectra|movemind|medalyze|letterly)\b/i;
-const portfolioTopics = /\b(portfolio|projects?|work(?:ing)?|working on|built|build|shipped|experience|roles?|internships?|jobs?|career|employer|company|skills?|stack|technologies|tech|languages?|frameworks?|resume|résumé|education|school|university|degree|coursework|awards?|hackathons?|wins?|devpost|contact|email|github|linkedin|location|based|hire|design process|product strategy|workflow|favourite|favorite|proudest)\b/i;
+const namedPortfolioTerms = /\b(rohan(?: gottipati)?|wilfrid laurier|laurier|toronto|waterloo|intact|doubl|onechart|averto|stealth startup|teachtrack|dmz|varsity tutors|molecule|greenlens|techto|scotiacheck|scotiabank|tangerine|a\.u\.r\.a|aura|scout|playground|spar|caresync|spectra|movemind|medalyze|letterly)\b/i;
+const portfolioTopics = /\b(portfolio|projects?|work(?:ing)?|working on|built|build|shipped|experience|roles?|internships?|jobs?|career|employer|company|skills?|stack|technologies|tech|languages?|frameworks?|resume|résumé|education|school|university|degree|coursework|awards?|hackathons?|placements?|recognition|brief|quick view|wins?|devpost|contact|email|github|linkedin|location|based|hire|design process|product strategy|workflow|favourite|favorite|proudest)\b/i;
 const technicalTopics = /\b(type(?:script)?|python|javascript|sql|java|c\+\+|react|next\.js|node\.js|fastapi|express|three\.js|websockets?|tailwind|gcp|google cloud|aws|kubernetes|ci\/cd|postgresql|firebase|firestore|mongodb|bigquery|supabase|gemini|openai|pandas|numpy|scikit-learn|statsmodels|ggplot2|nlp|ai|machine learning|ml)\b/i;
 const unrelatedIntents = /\b(capital of|recipe|weather|sports score|stock price|latest news|write (?:me )?code|solve this|translate this|write (?:a|an) (?:poem|essay)|medical advice|legal advice)\b/i;
 const directPersonalQuestions = /\b(who are you|tell me about yourself|what can you do|what are you working on|where (?:are you|do you)(?: currently)? work(?:ing)?|who do you work for|what(?:'s| is) your current (?:job|role|employer)|where are you based|how can i reach you|how do i get in touch|how (?:can|do) i contact you|are you open to|are you available)\b/i;
@@ -37,20 +38,23 @@ Education and campus:
 - Campus leadership: ${clubs.map((club) => `${club.title} at ${club.organization} (${club.dateRange})`).join('; ')}.
 
 Technical toolkit:
-- Languages: TypeScript, Python, JavaScript, SQL, Java, C++, C, R, HTML, CSS.
+- Languages: TypeScript, Python, JavaScript, Java, Go, SQL, Ruby, C, R, HTML, CSS.
 - Frameworks and platforms: React, Next.js, Node.js, FastAPI, Express, Three.js, WebSockets, Tailwind CSS.
-- Cloud and data: Google Cloud Platform, AWS, PostgreSQL, Firebase, Firestore, MongoDB Atlas, BigQuery, Supabase.
+- Cloud and data: Google Cloud Platform, AWS, Azure, PostgreSQL, Firebase, Firestore, MongoDB Atlas, BigQuery, Supabase.
 - AI and analysis: OpenAI API, Gemini API, pandas, NumPy, scikit-learn, statsmodels, ggplot2.
-- Developer tools: Git, Docker, GitHub Actions, Claude Code, Codex, Jira, Linear.
+- Developer tools: Git, Docker, Podman, GitHub Actions, Power Automate, Jira, Confluence, Devin, Claude Code, Codex, Linear.
 
 Résumé:
 - PDF path: /Rohan_Gottipati_Resume.pdf
-- The résumé PDF highlights Intact, DOUBL, OneChart, AvertoAI, education, GreenLens AI, TechTO, A.U.R.A., Scout, and technical skills.
+- The résumé PDF highlights Intact, DOUBL, OneChart, AvertoAI, education, Molecule, GreenLens AI, TechTO, and technical skills.
 - The experience page also includes AI/ML research at Laurier, TeachTrack (listed as Stealth Startup), DMZ, and Varsity Tutors.
 - If asked about the résumé, describe the PDF contents. If asked about experience, use the full role list above.
 
 Highlights and contact:
-- My teams and I have earned 10 hackathon placements and awards, including 2nd Place at the Scotiabank x Tangerine Student Hackathon, S:\\HA<KS 2026, with ScotiaCheck.
+- The recognition page records ${recognitionLabel}, with one entry per recognized project, including 2nd Place at the Scotiabank x Tangerine Student Hackathon, S:\\HA<KS 2026, with ScotiaCheck. A.U.R.A.'s entry records two sponsor awards; Honourable Mentions are placements, not wins.
+- Recognition page: /recognition. Quick View: /brief. Quick View presents ${quickViewProjects.length} selected projects, including Molecule.
+- ScotiaCheck was a team project for S:\\HA<KS 2026. Say "we" or "my team and I" when describing its build and demo.
+- Featured projects: ${projects.filter(project => project.featured).map(project => project.name).join(', ')}.
 - Email: rohan.gottipati@gmail.com. GitHub: github.com/RohanGottipati. LinkedIn: linkedin.com/in/rohangottipati.
 `.trim();
 
@@ -96,7 +100,7 @@ export function isPortfolioQuestion(question, selection = '', history = []) {
   if (directPersonalQuestions.test(normalizedQuestion)) return true;
   if (namedPortfolioTerms.test(normalizedQuestion)) return true;
 
-  const asksAboutRohan = /\b(rohan(?:'s)?|your|yours)\b/i.test(
+  const asksAboutRohan = /\b(rohan(?:'s)?|your|yours|his)\b/i.test(
     normalizedQuestion
   );
   const asksWhatRohanDid =
@@ -227,6 +231,7 @@ Rules:
 1. First decide whether the visitor is asking about Rohan or something documented in this portfolio. A generic question about coding, technology, a company, current events, or an unrelated topic is not a portfolio question.
 2. Answer only questions about Rohan, this portfolio, its projects, experience, education, skills, awards, work process, or contact information.
 3. Speak as Rohan in first person. Sound friendly, direct, warm, and confident, as if Rohan is answering through his assistant.
+   Use plain, specific language. Avoid stock portfolio lines about "shipping," "the journey," or "what I reach for."
 4. Use only the portfolio facts below. Never invent details. If the facts do not support an answer, say you do not have that detail in the portfolio.
 5. Give clear and precise answers. Most answers should be 2 to 4 short sentences. Include only details that directly help with the question, while still answering list or breakdown requests completely. Do not restate the question or add a long introduction.
 6. If highlighted text is a simple factual statement such as "I'm Rohan, a software engineer," briefly confirm it, for example: "Yes, that's correct. I'm a software engineer..." Add at most one useful detail.

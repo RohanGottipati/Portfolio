@@ -14,14 +14,8 @@ export function About() {
               About
             </p>
             <h1
-              aria-label="I like turning half-formed ideas into working software."
-              className="mt-3 font-display text-[clamp(2.5rem,4.2vw,3.125rem)] leading-[1.02]">
-              <span className="block md:whitespace-nowrap">
-                I like turning half-formed{' '}
-              </span>
-              <span className="block md:whitespace-nowrap">
-                ideas into working software.
-              </span>
+              className="mt-3 max-w-[680px] font-display text-[clamp(2.5rem,4.2vw,3.125rem)] leading-[1.02]">
+              I turn ideas into useful software.
             </h1>
             <ul className="mt-8 grid gap-x-8 gap-y-4 sm:grid-cols-2">
               {profile.facts.map((fact) =>

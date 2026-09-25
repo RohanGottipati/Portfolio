@@ -2,20 +2,31 @@ import { createContext, useContext, useEffect, useRef, type ReactNode } from "re
 import Lenis from "lenis";
 
 type SmoothScrollContextValue = {
-  scrollTo: (target: string | HTMLElement | number, offset?: number) => void;
+  scrollTo: (target: string | HTMLElement | number, offset?: number, immediate?: boolean) => void;
+  setPaused: (paused: boolean) => void;
 };
 
 const SmoothScrollContext = createContext<SmoothScrollContextValue | null>(null);
+const scrollSubscribers = new Set<() => void>();
+
+export function subscribeToSmoothScroll(callback: () => void) {
+  scrollSubscribers.add(callback);
+  return () => scrollSubscribers.delete(callback);
+}
 
 export function useSmoothScroll() {
   return useContext(SmoothScrollContext);
+}
+
+export function shouldUseLenis(matches: (query: string) => boolean) {
+  return !matches('(prefers-reduced-motion: reduce), (pointer: coarse)');
 }
 
 export function SmoothScroll({ children }: { children: ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!shouldUseLenis(query => window.matchMedia(query).matches)) return;
 
     const lenis = new Lenis({
       duration: 1.1,
@@ -23,6 +34,8 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       smoothWheel: true,
     });
     lenisRef.current = lenis;
+    if (document.body.style.overflow === 'hidden') lenis.stop();
+    lenis.on('scroll', () => scrollSubscribers.forEach(callback => callback()));
 
     let raf = 0;
     const loop = (time: number) => {
@@ -54,10 +67,14 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
   }, []);
 
   const value = {
-    scrollTo: (target: string | HTMLElement | number, offset = -getHeaderOffset()) => {
-      if (lenisRef.current) lenisRef.current.scrollTo(target, { offset });
+    scrollTo: (target: string | HTMLElement | number, offset = -getHeaderOffset(), immediate = false) => {
+      if (lenisRef.current) lenisRef.current.scrollTo(target, { offset, immediate });
       else if (typeof target === "number") window.scrollTo({ top: target, behavior: "auto" });
-      else document.querySelector<HTMLElement>(typeof target === "string" ? target : "")?.scrollIntoView({ block: "start" });
+      else (typeof target === 'string' ? document.querySelector<HTMLElement>(target) : target)?.scrollIntoView({ block: "start" });
+    },
+    setPaused: (paused: boolean) => {
+      if (paused) lenisRef.current?.stop();
+      else lenisRef.current?.start();
     },
   };
 
@@ -65,5 +82,5 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
 }
 
 function getHeaderOffset() {
-  return document.querySelector<HTMLElement>("header")?.getBoundingClientRect().height ?? 64;
+  return document.querySelector<HTMLElement>("[data-site-nav]")?.getBoundingClientRect().height ?? 0;
 }

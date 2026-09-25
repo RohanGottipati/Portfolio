@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import type { Role } from '../types/portfolio';
 
 const kindLabel: Record<Role['kind'], string> = {
@@ -16,13 +15,9 @@ interface RoleListProps {
 export function RoleList({ roles }: RoleListProps) {
   return (
     <ol className="mt-8 border-t border-ink/15">
-      {roles.map((role, i) =>
-      <motion.li
+      {roles.map((role) =>
+      <li
         key={role.slug}
-        initial={{ opacity: 0, y: 14 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-40px' }}
-        transition={{ duration: 0.4, delay: i % 4 * 0.05 }}
         className="group grid gap-4 border-b border-ink/15 py-7 md:grid-cols-[190px_1fr]">
         
           <div>
@@ -61,7 +56,7 @@ export function RoleList({ roles }: RoleListProps) {
               </ul>
           }
           </div>
-        </motion.li>
+        </li>
       )}
     </ol>);
 

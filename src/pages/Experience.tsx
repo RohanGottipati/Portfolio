@@ -14,8 +14,8 @@ export function Experience() {
         <SectionHeading
           index="01"
           label="Roles"
-          title="What I&apos;ve built across roles."
-          note="I list the newest first - internships, research and founding."
+          title="Where I've worked and what I did."
+          note="Internships, research, founding, and teaching. Newest first."
           headingLevel="h1" />
         <RoleList roles={experience} />
       </section>
@@ -61,8 +61,8 @@ export function Experience() {
           <SectionHeading
             index="03"
             label="Campus"
-            title="How I lead on campus."
-            note="Laurier Analytics Society + Laurier Computing Society." />
+            title="The groups I help lead at Laurier."
+            note="Laurier Analytics Society and Laurier Computing Society." />
           <RoleList roles={clubs} />
         </div>
       </section>

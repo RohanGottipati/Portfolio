@@ -4,12 +4,15 @@ import { CollageHero } from '../components/CollageHero';
 import { ProjectCard } from '../components/ProjectCard';
 import { SectionHeading } from '../components/SectionHeading';
 import { Paper } from '../components/Paper';
+import { TapedReveal } from '../components/TapedReveal';
+import { MarkerDraw } from '../components/MarkerDraw';
 import { featuredProjects, projects } from '../data/projects.mjs';
 import { experience } from '../data/experience';
 import { profile } from '../data/profile';
 import { skills } from '../data/skills';
 import { Seo } from "../components/Seo";
 import { PAGE_SEO } from "../data/seo.mjs";
+import { recognition, recognitionLabel } from '../data/recognition.mjs';
 
 const rotations = [-1.4, 1.2, -0.8, 1.6, -1.2];
 const toolkitPlacement = [
@@ -23,8 +26,8 @@ const projectCount = projects.length;
 const currentRole = experience[0];
 const currentFocus = [
   'Building multi-system integrations across enterprise systems.',
-  'Supporting application architecture in Java and Python.',
-  'Working with AWS, Kubernetes, and CI/CD cloud tooling.'
+  'Working on solution architecture with Java and Python.',
+  'Using AWS, Azure, Kubernetes, and CI/CD across cloud environments.'
 ];
 
 export function Home() {
@@ -65,7 +68,7 @@ export function Home() {
           </div>
 
           <div className="flex flex-col gap-6">
-            <Paper rotate={-1.6} tape="single" className="bg-lime p-6">
+            <TapedReveal rotate={-1.6} className="bg-lime p-6">
               <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink/70">
                 Studying
               </p>
@@ -73,7 +76,7 @@ export function Home() {
                 {profile.studying}
                 <span className="block">{profile.concentration}</span>
               </p>
-            </Paper>
+            </TapedReveal>
             <Paper rotate={1.4} className="p-6">
               <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-soft">
                 Exploring
@@ -95,8 +98,8 @@ export function Home() {
         <SectionHeading
           index="02"
           label="Selected work"
-          title="Things I built, shipped and broke."
-          note="Five favourites - I filed the rest on the projects page." />
+          title="Projects I'd show you first."
+          note="From city planning tools to a game built from desk photos." />
         
         <div className="mt-10 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
           {featuredProjects.map((project, i) =>
@@ -111,7 +114,7 @@ export function Home() {
             className="flex min-h-[220px] flex-col justify-between bg-paper p-6">
             
             <p className="font-display text-3xl leading-tight">
-              {`+ ${projectCount - featuredProjects.length} more experiments`}
+              {`+ ${projectCount - featuredProjects.length} more projects`}
             </p>
             <Link
               to="/work"
@@ -124,13 +127,20 @@ export function Home() {
         </div>
       </section>
 
+      <section className="border-y border-ink/15 bg-paper-2">
+        <div className="mx-auto grid max-w-[1240px] gap-7 px-5 py-12 md:grid-cols-[1fr_1.2fr] md:items-center md:px-10">
+          <div><p className="font-mono text-[10px] uppercase tracking-[0.2em] text-tangerine">Hackathon results / 03</p><h2 className="mt-2 font-display text-4xl"><MarkerDraw>Recognition</MarkerDraw></h2><p className="mt-2 font-hand text-2xl text-ink-soft">{recognitionLabel}</p><Link to="/recognition" className="mt-4 inline-flex items-center gap-2 border-b border-ink pb-1 font-mono text-[11px] uppercase tracking-widest hover:text-tangerine">See every result <ArrowRight size={13}/></Link></div>
+          <div className="grid gap-3 sm:grid-cols-3">{recognition.filter(entry => ['greenlens-ai','techto','scotiacheck'].includes(entry.project.slug)).map(entry => <Link key={entry.project.slug} to={`/work/${entry.project.slug}`} className="border border-ink/15 bg-paper p-4 shadow-paper transition-transform hover:-translate-y-1"><span className="font-mono text-[9px] uppercase tracking-wider text-tangerine">{entry.project.name}</span><strong className="mt-2 block font-display text-xl font-normal leading-tight">{entry.result}</strong><span className="mt-2 block font-mono text-[9px] uppercase tracking-wider text-ink-soft">{entry.event}</span></Link>)}</div>
+        </div>
+      </section>
+
       {/* Toolkit */}
       <section className="mx-auto max-w-[1240px] px-5 py-16 md:px-10 md:py-24">
         <SectionHeading
-          index="03"
+          index="04"
           label="Toolkit"
-          title="What I reach for."
-          note="Sorted by how often I reach for it in a repo." />
+          title="The tools behind the work."
+          note="React interfaces, Python pipelines, databases, and cloud infrastructure." />
         
         <div className="mt-10 grid gap-7 md:grid-cols-2 lg:grid-cols-6">
           {skills.map((group, i) =>
