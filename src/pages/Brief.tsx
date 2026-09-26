@@ -7,7 +7,7 @@ import { PAGE_SEO } from '../data/seo.mjs';
 import { profile } from '../data/profile';
 import { education, experience } from '../data/experience';
 import { quickViewProjects } from '../data/projects.mjs';
-import { recognition, recognitionLabel } from '../data/recognition.mjs';
+import { recognitionLabel } from '../data/recognition.mjs';
 import { skills } from '../data/skills';
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -107,7 +107,6 @@ export function Brief() {
         <h3 className="mt-7 font-display text-2xl leading-tight">{current.title}</h3>
         <p className="mt-1 text-base">{current.organization}</p>
         <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-soft">{current.dateRange}</p>
-        <p className="mx-auto mt-5 max-w-[590px] text-[15px] leading-relaxed text-ink-soft">{current.briefSummary ?? current.summary}</p>
       </BriefSection>
 
       <BriefSection index="02 / Roles" title="Experience & research">
@@ -117,7 +116,6 @@ export function Brief() {
               <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-tangerine">{role.dateRange} · {role.kind}</p>
               <h3 className="mt-2 font-display text-2xl leading-tight">{role.organization}</h3>
               <p className="mt-1 text-sm text-ink">{role.title}</p>
-              <p className="mx-auto mt-3 max-w-[580px] text-sm leading-relaxed text-ink-soft">{role.briefSummary ?? role.summary}</p>
             </li>
           ))}
         </ol>
@@ -137,8 +135,7 @@ export function Brief() {
                 <h3 className="inline-flex items-center gap-1.5 font-display text-2xl leading-tight group-hover:text-tangerine">
                   {project.name}<ArrowUpRight size={16} aria-hidden="true" className="text-tangerine transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </h3>
-                <p className="mx-auto mt-2 max-w-[550px] text-sm leading-relaxed text-ink-soft">{project.summary}</p>
-                <p className="mt-3 font-mono text-[10px] uppercase leading-relaxed tracking-[0.12em] text-ink-soft">
+                <p className={`mt-3 font-mono text-[10px] uppercase leading-relaxed tracking-[0.12em] text-ink-soft ${project.slug === 'greenlens-ai' ? 'md:whitespace-nowrap md:text-[9px] md:tracking-[0.06em]' : ''}`}>
                   {project.impact && <span className="text-tangerine">{project.impact} <span aria-hidden="true">·</span> </span>}
                   {project.stack.slice(0, 3).join(' / ')}
                 </p>
@@ -146,13 +143,13 @@ export function Brief() {
             </li>
           ))}
         </ul>
+        <Link to="/work" className="mt-6 inline-flex items-center gap-2 border border-ink/25 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.16em] transition-colors hover:border-tangerine hover:text-tangerine">
+          View all projects <ArrowUpRight size={14} aria-hidden="true" />
+        </Link>
       </BriefSection>
 
       <BriefSection index="05 / Results" title="Recognition">
         <p className="mt-6 font-mono text-xs uppercase tracking-[0.16em] text-tangerine">{recognitionLabel}</p>
-        <p className="mx-auto mt-4 max-w-[530px] text-sm leading-relaxed text-ink-soft">
-          {recognition.slice(0, 4).map(entry => `${entry.result} · ${entry.project.name}`).join(' / ')}
-        </p>
         <Link to="/recognition" className="mt-5 inline-block border-b border-ink/40 pb-1 font-mono text-[10px] uppercase tracking-[0.16em] hover:border-tangerine hover:text-tangerine">See every result ↗</Link>
       </BriefSection>
 
@@ -161,7 +158,7 @@ export function Brief() {
           {skills.map(group => (
             <li key={group.key} className="text-sm leading-relaxed">
               <h3 className="font-mono text-[10px] uppercase tracking-[0.15em] text-tangerine">{group.label}</h3>
-              <p className="mt-1 text-ink-soft">{group.items.slice(0, 5).join(' · ')}</p>
+              <p className={`mt-1 text-ink-soft ${group.key === 'devtools' ? 'md:whitespace-nowrap md:text-[13px]' : ''}`}>{group.items.join(' · ')}</p>
             </li>
           ))}
         </ul>

@@ -1,6 +1,8 @@
 import { clubs, education, experience } from '../src/data/experience.mjs';
-import { projects, quickViewProjects } from '../src/data/projects.mjs';
-import { recognitionLabel } from '../src/data/recognition.mjs';
+import { featuredProjects, projects, quickViewProjects } from '../src/data/projects.mjs';
+import { recognition, recognitionLabel } from '../src/data/recognition.mjs';
+import { skills } from '../src/data/skills.mjs';
+import { profile } from '../src/data/profile.mjs';
 
 const DEFAULT_MODEL = 'gemini-3.5-flash-lite';
 const OFF_TOPIC_REPLY =
@@ -8,8 +10,8 @@ const OFF_TOPIC_REPLY =
 const GREETING_REPLY =
   "Hi, I'm RoRo, the assistant for my portfolio. Ask me about my projects, experience, skills, education, or contact details.";
 
-const namedPortfolioTerms = /\b(rohan(?: gottipati)?|wilfrid laurier|laurier|toronto|waterloo|intact|doubl|onechart|averto|stealth startup|teachtrack|dmz|varsity tutors|molecule|greenlens|techto|scotiacheck|scotiabank|tangerine|a\.u\.r\.a|aura|scout|playground|spar|caresync|spectra|movemind|medalyze|letterly)\b/i;
-const portfolioTopics = /\b(portfolio|projects?|work(?:ing)?|working on|built|build|shipped|experience|roles?|internships?|jobs?|career|employer|company|skills?|stack|technologies|tech|languages?|frameworks?|resume|résumé|education|school|university|degree|coursework|awards?|hackathons?|placements?|recognition|brief|quick view|wins?|devpost|contact|email|github|linkedin|location|based|hire|design process|product strategy|workflow|favourite|favorite|proudest)\b/i;
+const namedPortfolioTerms = /\b(rohan(?: gottipati)?|wilfrid laurier|laurier|las|lcs|toronto|waterloo|intact|doubl|onechart|averto|stealth startup|teachtrack|dmz|varsity tutors|molecule|greenlens|techto|scotiacheck|scotiabank|tangerine|a\.u\.r\.a|aura|scout|playground|spar|caresync|spectra|movemind|medalyze|letterly)\b/i;
+const portfolioTopics = /\b(campus|clubs?|leadership|open source|toolkit|portfolio|projects?|work(?:ing)?|working on|built|build|shipped|experience|roles?|internships?|jobs?|career|employer|company|skills?|stack|technologies|tech|languages?|frameworks?|resume|résumé|education|school|university|degree|coursework|awards?|hackathons?|placements?|recognition|brief|quick view|wins?|devpost|contact|email|github|linkedin|location|based|hire|design process|product strategy|workflow|favourite|favorite|proudest)\b/i;
 const technicalTopics = /\b(type(?:script)?|python|javascript|sql|java|c\+\+|react|next\.js|node\.js|fastapi|express|three\.js|websockets?|tailwind|gcp|google cloud|aws|kubernetes|ci\/cd|postgresql|firebase|firestore|mongodb|bigquery|supabase|gemini|openai|pandas|numpy|scikit-learn|statsmodels|ggplot2|nlp|ai|machine learning|ml)\b/i;
 const unrelatedIntents = /\b(capital of|recipe|weather|sports score|stock price|latest news|write (?:me )?code|solve this|translate this|write (?:a|an) (?:poem|essay)|medical advice|legal advice)\b/i;
 const directPersonalQuestions = /\b(who are you|tell me about yourself|what can you do|what are you working on|where (?:are you|do you)(?: currently)? work(?:ing)?|who do you work for|what(?:'s| is) your current (?:job|role|employer)|where are you based|how can i reach you|how do i get in touch|how (?:can|do) i contact you|are you open to|are you available)\b/i;
@@ -35,27 +37,26 @@ ${experience.map(formatRole).join('\n')}
 Education and campus:
 - Completing a ${education.degree} with a ${education.concentration} at ${education.school}, ${education.dateRange}, ${education.location}.
 - Relevant coursework: ${education.coursework.join(', ')}.
-- Campus leadership: ${clubs.map((club) => `${club.title} at ${club.organization} (${club.dateRange})`).join('; ')}.
+- Campus leadership:
+${clubs.map((club) => `${formatRole(club)}\n  ${club.summary}`).join('\n')}
 
 Technical toolkit:
-- Languages: TypeScript, Python, JavaScript, Java, Go, SQL, Ruby, C, R, HTML, CSS.
-- Frameworks and platforms: React, Next.js, Node.js, FastAPI, Express, Three.js, WebSockets, Tailwind CSS.
-- Cloud and data: Google Cloud Platform, AWS, Azure, PostgreSQL, Firebase, Firestore, MongoDB Atlas, BigQuery, Supabase.
-- AI and analysis: OpenAI API, Gemini API, pandas, NumPy, scikit-learn, statsmodels, ggplot2.
-- Developer tools: Git, Docker, Podman, GitHub Actions, Power Automate, Jira, Confluence, Devin, Claude Code, Codex, Linear.
+${skills.map((group) => `- ${group.label}: ${group.items.join(', ')}.`).join('\n')}
 
 Résumé:
-- PDF path: /Rohan_Gottipati_Resume.pdf
+- PDF path: ${profile.contact.resume}
 - The résumé PDF highlights Intact, DOUBL, OneChart, AvertoAI, education, Molecule, GreenLens AI, TechTO, and technical skills.
 - The experience page also includes AI/ML research at Laurier, TeachTrack (listed as Stealth Startup), DMZ, and Varsity Tutors.
 - If asked about the résumé, describe the PDF contents. If asked about experience, use the full role list above.
 
 Highlights and contact:
-- The recognition page records ${recognitionLabel}, with one entry per recognized project, including 2nd Place at the Scotiabank x Tangerine Student Hackathon, S:\\HA<KS 2026, with ScotiaCheck. A.U.R.A.'s entry records two sponsor awards; Honourable Mentions are placements, not wins.
-- Recognition page: /recognition. Quick View: /brief. Quick View presents ${quickViewProjects.length} selected projects, including Molecule.
+- The recognition page records ${recognitionLabel}. Honourable Mentions are placements, not wins.
+${recognition.map((entry) => `- ${entry.project.name}: ${entry.result}. ${entry.project.event ?? entry.project.impact ?? ''}`).join('\n')}
+- Recognition page: /recognition. Quick View: /brief. Quick View shows role titles, organizations and dates without work summaries or bullets; education; ${quickViewProjects.length} selected projects starting with ${quickViewProjects[0].name}; a recognition total and link; the complete toolkit; and contact links. Its projects section links to all projects at /work.
+- The Projects page at /work lists ${projects.length} projects, starting with ${projects.slice(0, 2).map((project) => project.name).join(', ')}. Cards show images, names, years and awards when present. There is no search or filter bar. Project detail pages contain descriptions, technologies and implementation details.
 - ScotiaCheck was a team project for S:\\HA<KS 2026. Say "we" or "my team and I" when describing its build and demo.
-- Featured projects: ${projects.filter(project => project.featured).map(project => project.name).join(', ')}.
-- Email: rohan.gottipati@gmail.com. GitHub: github.com/RohanGottipati. LinkedIn: linkedin.com/in/rohangottipati.
+- Featured projects: ${featuredProjects.map(project => project.name).join(', ')}.
+- Email: ${profile.contact.email}. Phone: ${profile.contact.phone}. GitHub: ${profile.contact.github}. LinkedIn: ${profile.contact.linkedin}.
 `.trim();
 
 function normalize(value, maxLength) {
@@ -68,7 +69,8 @@ function projectLine(project) {
   const award = project.impact ? ` Award: ${project.impact}.` : '';
   const event = project.event ? ` Event: ${project.event}.` : '';
   const challenge = project.challenge ? ` Challenge: ${project.challenge}.` : '';
-  return `- ${project.name} (${project.date ?? project.year}): ${project.summary}${award}${event}${challenge} Stack: ${project.stack.join(', ')}.`;
+  const caseStudy = project.caseStudy ? ` Context: ${project.caseStudy.context} Hard part: ${project.caseStudy.hardPart} System: ${project.caseStudy.flow.join(' → ')}. Metrics: ${(project.caseStudy.metrics ?? []).map((metric) => `${metric.value} ${metric.label}`).join('; ')}.` : '';
+  return `- ${project.name} (${project.date ?? project.year}): ${project.description}${award}${event}${challenge} Stack: ${project.stack.join(', ')}. Features: ${project.features.join('; ')}.${caseStudy} Page: /work/${project.slug}.`;
 }
 
 function relevantProjectContext(question, selection) {
@@ -76,7 +78,8 @@ function relevantProjectContext(question, selection) {
   const directlyMatched = projects.filter((project) => {
     const name = project.name.toLowerCase().replace(/\./g, '');
     const slug = project.slug.replace(/-/g, ' ');
-    return query.includes(name) || query.includes(slug);
+    if (project.slug === 'portfolio') return /\b(this portfolio|this website|this site)\b/.test(query);
+    return query.replace(/\./g, '').includes(name) || query.includes(slug) || query.includes(project.slug);
   });
 
   if (directlyMatched.length > 0) {

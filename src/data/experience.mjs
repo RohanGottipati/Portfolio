@@ -167,9 +167,11 @@ export const clubs = [
   organization: 'Laurier Analytics Society',
   dateRange: 'May 2026 - Present',
   summary:
-  'Lead technical planning and tooling for Laurier Analytics Society initiatives.',
-  highlights: [],
-  techUsed: ['Leadership', 'Technology', 'Analytics'],
+  'Run the Laurier Analytics Society open source program, leading a developer team to build an end-to-end analytics project each semester.',
+  highlights: [
+  'Run the society’s open source program and lead a team of developers.',
+  'Guide the team through building an end-to-end analytics project each semester.'],
+  techUsed: ['Leadership', 'Open Source', 'Analytics'],
   kind: 'leadership'
 },
 {

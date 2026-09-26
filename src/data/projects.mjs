@@ -46,6 +46,7 @@ export const projects = [
   links: [],
   tags: ['AI Agents', 'Commerce', 'Optimization', 'PostgreSQL'],
   accent: 'peach',
+  image: '/molecule.jpg',
   featured: false
 },
 {
@@ -139,8 +140,8 @@ export const projects = [
   challenge: 'Financial Confidence in an AI World: “When everyone has advice, who do you trust?”',
   tagline: 'Don’t just take financial advice. Check it.',
   links: [],
-  impact: '2nd Place at S:\\HA<KS 2026',
-  recognitionResult: '2nd Place',
+  impact: '2nd Overall at S:\\HA<KS 2026',
+  recognitionResult: '2nd Overall',
   tags: [
   'AI',
   'FinTech',
@@ -502,6 +503,6 @@ export const featuredProjects = featuredProjectSlugs.flatMap((slug) => {
 
 // Quick View includes the latest résumé project alongside the featured five.
 export const quickViewProjects = [
-  ...featuredProjects,
   ...projects.filter((project) => project.slug === 'molecule'),
+  ...featuredProjects,
 ];

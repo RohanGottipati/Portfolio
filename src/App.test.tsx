@@ -194,8 +194,7 @@ describe("redesigned portfolio", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("navigates to work and filters projects", async () => {
-    const user = userEvent.setup();
+  it("renders all projects on the work page", async () => {
     window.history.replaceState({}, "", "/work");
     render(<App paperGrain={false} />);
 
@@ -215,15 +214,13 @@ describe("redesigned portfolio", () => {
     );
 
     expect(screen.queryByText("Next.js")).not.toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "AI + ML" }));
-    expect(screen.getByText("11 projects shown")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "GreenLens AI" })).toBeInTheDocument();
     expect(
       screen.getByText("Best Use of MongoDB Atlas, Hack the 6ix"),
     ).not.toHaveClass("truncate");
     expect(
-      screen.queryByRole("heading", { name: "Letterly" }),
-    ).not.toBeInTheDocument();
+      screen.getByRole("heading", { name: "Letterly" }),
+    ).toBeInTheDocument();
   });
 
   it("renders a project case study and updates route metadata", async () => {
@@ -251,7 +248,7 @@ describe("redesigned portfolio", () => {
     expect(
       await screen.findByRole("heading", { name: "ScotiaCheck" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("2nd Place at S:\\HA<KS 2026")).toBeInTheDocument();
+    expect(screen.getByText("2nd Overall at S:\\HA<KS 2026")).toBeInTheDocument();
     expect(screen.getByText(/We built ScotiaCheck as a team/)).toBeInTheDocument();
     expect(screen.queryByText("Links")).not.toBeInTheDocument();
   });
@@ -446,18 +443,18 @@ describe("redesigned portfolio", () => {
       name: "GreenLens AI",
     });
     const card = heading.closest("a");
-    const summary = card?.querySelector("p");
+    const projectLink = within(card!).getByText("View project");
     expect(card).not.toBeNull();
-    expect(summary).not.toBeNull();
+    expect(projectLink).toBeInTheDocument();
 
     const range = document.createRange();
     range.setStartBefore(heading);
-    range.setEndAfter(summary!);
+    range.setEndAfter(projectLink);
     const selection = window.getSelection();
     selection?.removeAllRanges();
     selection?.addRange(range);
 
-    fireEvent.pointerUp(summary!, {
+    fireEvent.pointerUp(projectLink, {
       clientX: 260,
       clientY: 180,
       pointerType: "mouse",

@@ -61,8 +61,8 @@ export function Experience() {
           <SectionHeading
             index="03"
             label="Campus"
-            title="The groups I help lead at Laurier."
-            note="Laurier Analytics Society and Laurier Computing Society." />
+            title="Building and leading at Laurier."
+            note="Open source at the Analytics Society. Finance at the Computing Society." />
           <RoleList roles={clubs} />
         </div>
       </section>

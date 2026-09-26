@@ -83,12 +83,14 @@ export const suggestedPrompts = [
 'What are you working on?',
 'Show me your best project',
 'What tech do you use?',
+'What do you lead at Laurier?',
 'What hackathon results have you earned?',
 'How do I get in touch?'];
 
 
 export function askRoRo(input: string): BotAnswer {
   const q = input.toLowerCase().trim();
+  const normalizedProjectQuery = q.replace(/\./g, '');
 
   if (!q) {
     return {
@@ -98,12 +100,13 @@ export function askRoRo(input: string): BotAnswer {
 
   // Direct project lookups
   const matched = projects.find(
-    (p) =>
-    q.includes(p.name.toLowerCase().replace(/\./g, '')) ||
-    q.includes(p.slug.replace(/-/g, ' ')) ||
-    q.includes(p.slug)
+    (p) => {
+      if (p.slug === 'portfolio') return /\b(this portfolio|this website|this site)\b/.test(q) && !/quick view|brief/.test(q);
+      return normalizedProjectQuery.includes(p.name.toLowerCase().replace(/\./g, '')) ||
+        q.includes(p.slug.replace(/-/g, ' ')) || q.includes(p.slug);
+    }
   );
-  if (matched) return projectAnswer(matched.slug);
+  if (matched && !localUnrelatedIntent.test(q)) return projectAnswer(matched.slug);
 
   if (has(q, ['hi ', 'hey', 'hello', 'yo ']) || q === 'hi') {
     return {
@@ -113,16 +116,29 @@ export function askRoRo(input: string): BotAnswer {
 
   if (
     localUnrelatedIntent.test(q) ||
-    (!localPortfolioNames.test(q) && !localPortfolioIntent.test(q))
+    (!localPortfolioNames.test(q) && !localPortfolioIntent.test(q) && !/\b(las|lcs|toolkit|campus|clubs?|leadership|open source)\b/.test(q))
   ) {
     return { text: offTopicReply };
+  }
+
+  if (/\b(las|analytics society|open source|vp of tech(?:nology)?)\b/.test(q)) {
+    return roleAnswer(clubs[0]);
+  }
+  if (/\b(lcs|computing society|vp of finance)\b/.test(q)) {
+    return roleAnswer(clubs[1]);
+  }
+  if (/\b(campus|clubs?|leadership|lead at laurier)\b/.test(q)) {
+    return {
+      text: clubs.filter((club) => /present/i.test(club.dateRange)).map((club) => `${club.title} at ${club.organization}: ${club.summary}`).join(' '),
+      links: [experienceLink]
+    };
   }
 
   const role = matchedRole(q);
   if (role) return roleAnswer(role);
 
   if (has(q, ['quick view', 'quick version', 'short version', 'summary of experience', 'brief'])) {
-    return { text: `Quick View is the concise version of my portfolio: roles, research, education, ${quickViewProjects.length} selected projects, ${recognitionLabel}, skills and contact links.`, links: [briefLink] };
+    return { text: `Quick View is the concise version of my portfolio: role titles, organizations and dates, education, ${quickViewProjects.length} selected projects starting with ${quickViewProjects[0].name}, ${recognitionLabel}, the full toolkit and contact links. It also links to all projects.`, links: [briefLink] };
   }
 
   if (has(q, ['who', 'about', 'yourself', 'bio', 'story'])) {
@@ -153,13 +169,6 @@ export function askRoRo(input: string): BotAnswer {
     return {
       text: `I'm currently a ${experience[0].title} at ${experience[0].organization} (${experience[0].dateRange}). ${experience[0].briefSummary}`,
       links: [experienceLink]
-    };
-  }
-
-  if (has(q, ['project', 'work', 'built', 'build', 'portfolio', 'shipped'])) {
-    return {
-      text: `There are ${projects.length} projects on this site. The five featured ones are ${featuredProjects.map((p) => p.name).join(', ')} - spanning city planning, ESG auditing, financial advice, 3D generation, and a photo-to-platformer game.`,
-      links: [workLink]
     };
   }
 
@@ -194,11 +203,11 @@ export function askRoRo(input: string): BotAnswer {
   {
     return {
       text: `Here's what I use. ${skills.map((g) => `${g.label}: ${g.items.join(', ')}.`).join(' ')}`,
-      links: [workLink]
+      links: [briefLink]
     };
   }
 
-  if (has(q, ['hackathon', 'win', 'won', 'award', 'prize', 'devpost'])) {
+  if (has(q, ['hackathon', 'win', 'won', 'award', 'prize', 'devpost', 'recognition'])) {
     return {
       text: `I have ${recognitionLabel}. The recognition page shows the result and the project behind it, including placements, sponsor awards, and an Honourable Mention.`,
       links: [recognitionLink]
@@ -271,8 +280,15 @@ export function askRoRo(input: string): BotAnswer {
 
   if (has(q, ['game', 'fun', 'hobby', 'interest', 'outside', 'play'])) {
     return {
-      text: `Playground is my fun one - I can turn a photo of your desk into a playable 2D platformer you can publish. Outside of shipping, I spend most weekends at hackathons, lead clubs at Laurier, and teach computer science through Varsity Tutors.`,
+      text: `Playground is my fun one - I can turn a photo of your desk into a playable 2D platformer you can publish. Outside of shipping, I spend most weekends at hackathons, lead clubs at Laurier, and previously taught computer science through Varsity Tutors.`,
       links: [{ label: 'Open Playground', to: '/work/playground' }]
+    };
+  }
+
+  if (has(q, ['project', 'work', 'built', 'build', 'portfolio', 'shipped'])) {
+    return {
+      text: `There are ${projects.length} projects on this site. The ${featuredProjects.length} featured ones are ${featuredProjects.map((p) => p.name).join(', ')} - spanning city planning, ESG auditing, financial advice, 3D generation, and a photo-to-platformer game.`,
+      links: [workLink]
     };
   }
 

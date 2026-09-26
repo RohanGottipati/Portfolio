@@ -2,6 +2,16 @@ import { describe, expect, it } from 'vitest';
 import { askRoRo } from './askRoRo';
 
 describe('RoRo local fallback boundary', () => {
+  it('reflects current campus leadership, Quick View, and toolkit', () => {
+    expect(askRoRo('What do you do as VP of Tech at LAS?').text).toContain('end-to-end analytics project each semester');
+    expect(askRoRo('Tell me about LCS').text).toContain('annual budget');
+    expect(askRoRo('What do you lead at Laurier?').text).toContain('open source program');
+    expect(askRoRo('Show me the quick view of your portfolio').text).toContain('starting with Molecule');
+    expect(askRoRo('What tools do you use in your projects?').text).toContain('Linear');
+    expect(askRoRo('What awards has your portfolio earned?').links?.[0].to).toBe('/recognition');
+    expect(askRoRo('Tell me about A.U.R.A.').text).toContain('2x Sponsor Award Winner');
+  });
+
   it('rejects unrelated and generic requests', () => {
     expect(askRoRo('What is the capital of France?').text).toContain(
       'I can only help with questions about my portfolio'
@@ -25,7 +35,7 @@ describe('RoRo local fallback boundary', () => {
       'without reducing nuanced advice'
     );
     expect(askRoRo('Tell me about ScotiaCheck').text).toContain(
-      '2nd Place'
+      '2nd Overall'
     );
     expect(askRoRo('What did you build at DOUBL?').text).toContain('800+ commits');
     expect(askRoRo('What did you build at DOUBL?').text).toContain(

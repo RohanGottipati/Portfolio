@@ -29,7 +29,8 @@ describe('new portfolio routes', () => {
     expect(screen.queryByRole('navigation', {name: 'Primary'})).not.toBeInTheDocument();
     expect(quickViewProjects).toHaveLength(6);
     expect(screen.getByRole('link', {name: /Molecule/})).toHaveAttribute('href', '/work/molecule');
-    expect(screen.getByText(/recovered 4,283 missing analytics rows/)).toBeInTheDocument();
+    expect(screen.queryByText(/recovered 4,283 missing analytics rows/i)).not.toBeInTheDocument();
+    expect(screen.getByRole('link', {name: /View all projects/})).toHaveAttribute('href', '/work');
     await waitFor(() => expect(document.title).toBe(PAGE_SEO.brief.title));
   });
 

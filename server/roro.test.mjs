@@ -1,4 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
+import { skills } from '../src/data/skills.mjs';
+import { profile } from '../src/data/profile.mjs';
 import {
   answerPortfolioQuestion,
   isPortfolioQuestion,
@@ -18,6 +20,9 @@ describe('RoRo portfolio boundary', () => {
   });
 
   it('allows portfolio questions and highlighted portfolio text', () => {
+    expect(isPortfolioQuestion('What do you do at LAS?')).toBe(true);
+    expect(isPortfolioQuestion('Tell me about your open source program')).toBe(true);
+    expect(isPortfolioQuestion('Show me your toolkit')).toBe(true);
     expect(isPortfolioQuestion('What did you build at DOUBL?')).toBe(true);
     expect(isPortfolioQuestion('Tell me about TeachTrack.')).toBe(true);
     expect(isPortfolioQuestion('Tell me about ScotiaCheck.')).toBe(true);
@@ -105,6 +110,15 @@ describe('RoRo portfolio boundary', () => {
     expect(body.input).toContain("I'm Rohan, a software engineer.");
     expect(body.system_instruction).toContain('800+ commits');
     expect(body.system_instruction).toContain('Molecule');
+    expect(body.system_instruction).toContain('2nd Overall');
+    expect(body.system_instruction).not.toContain('2nd Place');
+    expect(body.system_instruction).toContain('end-to-end analytics project each semester');
+    expect(body.system_instruction).toContain('without work summaries or bullets');
+    expect(body.system_instruction).toContain('There is no search or filter bar');
+    expect(body.system_instruction).toContain(profile.contact.phone);
+    for (const group of skills) {
+      for (const skill of group.items) expect(body.system_instruction).toContain(skill);
+    }
     expect(body.system_instruction).toContain('4,283 missing analytics rows');
     expect(body.system_instruction).toContain('TeachTrack');
     expect(body.system_instruction).toContain('/Rohan_Gottipati_Resume.pdf');

@@ -70,9 +70,6 @@ export function ProjectCard({
               {project.year}
             </span>
           </div>
-          <p className="mt-2 text-[15px] leading-snug text-ink-soft">
-            {project.summary}
-          </p>
 
           <span className="mt-auto inline-flex items-center gap-1 pt-5 font-mono text-[10px] uppercase tracking-[0.2em] text-tangerine">
             View project

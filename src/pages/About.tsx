@@ -36,7 +36,7 @@ export function About() {
               <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink/70">
                 Highlights
               </p>
-              <ul className="mt-3 space-y-2.5">
+              <ul className="mt-3 list-disc space-y-2.5 pl-4 marker:text-ink/40">
                 {profile.highlights.map((h) =>
                 <li key={h} className="text-[15px] leading-snug">
                     {h}

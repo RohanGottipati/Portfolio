@@ -16,7 +16,7 @@ export function SiteFooter() {
       <div className="mx-auto flex max-w-[1240px] flex-col gap-6 px-5 py-10 md:flex-row md:items-end md:justify-between md:px-10">
         <div>
           <p className="font-display text-3xl italic leading-none">
-            Want to talk about a project?
+            Let’s talk.
           </p>
           <a
             href={`mailto:${profile.contact.email}`}
@@ -44,7 +44,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-ink/10 px-5 py-4 md:px-10">
         <p className="mx-auto max-w-[1240px] font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft/70">
-          Made in Toronto · {new Date().getFullYear()}
+          © {new Date().getFullYear()} Rohan Gottipati. All rights reserved.
         </p>
       </div>
     </footer>);
