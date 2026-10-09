@@ -50,7 +50,7 @@ describe('portfolio redesign', () => {
     expect(screen.getByRole('img', { name: /Toronto skyline/ })).toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: 'Rohan Gottipati' })).not.toBeInTheDocument();
     expect(screen.queryByRole('navigation', { name: 'Social links' })).not.toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'work' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'experience' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'leadership' })).toBeInTheDocument();
     expect(screen.getByText('Intact Financial')).toBeInTheDocument();
     expect(screen.getByText('Google Developers Group, WLU')).toBeInTheDocument();
@@ -87,6 +87,9 @@ describe('portfolio redesign', () => {
       'href', 'https://github.com/RohanGottipati/Molecule',
     );
     expect(screen.getByText('GitHub Universe finalist, Hack the North 2026')).toBeInTheDocument();
+    expect(screen.getByText('Best Use of MongoDB, Hack the 6ix')).toBeInTheDocument();
+    expect(screen.getByText('3rd overall, SummerHacks')).toBeInTheDocument();
+    expect(screen.getByText('Best Use of Solana, uOttaHack')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Visit This Portfolio live site' })).toHaveAttribute('href', 'https://rohangottipati.com');
   });
 });

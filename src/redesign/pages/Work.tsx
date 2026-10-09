@@ -6,7 +6,7 @@ import type { Entry, Role } from '../types/portfolio';
 export function Work() {
   return (
     <SubpageLayout>
-      <EntryList title="work" headingLevel="h1" entries={experience.map(toEntry)} delay={0.08} />
+      <EntryList title="experience" headingLevel="h1" entries={experience.map(toEntry)} delay={0.08} />
       <EntryList title="leadership" entries={leadership.map(toEntry)} singleLine delay={0.22} />
     </SubpageLayout>);
 

@@ -19,7 +19,7 @@ const greenLens: Project = {
 const techTO: Project = {
   name: 'TechTO',
   year: '2026',
-  note: 'best use of MongoDB, Hack the 6ix',
+  note: 'Best Use of MongoDB, Hack the 6ix',
   href: 'https://github.com/RohanGottipati/TechTO',
   githubUrl: 'https://github.com/RohanGottipati/TechTO',
   liveUrl: 'https://tech-to.vercel.app'
@@ -28,7 +28,7 @@ const techTO: Project = {
 const playground: Project = {
   name: 'Playground',
   year: '2026',
-  note: '3rd overall, SumerHacks',
+  note: '3rd overall, SummerHacks',
   href: 'https://github.com/RohanGottipati/Playground',
   githubUrl: 'https://github.com/RohanGottipati/Playground',
   liveUrl: 'https://playground-gaming.vercel.app'
@@ -76,7 +76,7 @@ export const allProjects: Project[] = [
 {
   name: 'Spectra',
   year: '2026',
-  note: 'best use of Solana, uOttaHack',
+  note: 'Best Use of Solana, uOttaHack',
   href: 'https://github.com/RohanGottipati/Spectra',
   githubUrl: 'https://github.com/RohanGottipati/Spectra'
 },
