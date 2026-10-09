@@ -1,10 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import { projects } from "../src/data/projects.mjs";
 import {
-  createProjectSeo,
-  createProjectStructuredData,
   DEFAULT_SOCIAL_IMAGE,
   PAGE_SEO,
   SITE_URL,
@@ -105,14 +102,9 @@ export async function generateRouteHtml(outputDirectory = "dist") {
     "utf8",
   );
 
-  const pageRoutes = Object.values(PAGE_SEO).map((seo) => ({ seo }));
-  const projectRoutes = projects.map((project) => ({
-    seo: createProjectSeo(project),
-    structuredData: createProjectStructuredData(project),
-  }));
-
+  const pageRoutes = ['home', 'work', 'projects'].map((key) => ({ seo: PAGE_SEO[key] }));
   await Promise.all(
-    [...pageRoutes, ...projectRoutes].map(({ seo, structuredData }) =>
+    pageRoutes.map(({ seo, structuredData }) =>
       writeRoute(
         resolvedOutput,
         seo.path,

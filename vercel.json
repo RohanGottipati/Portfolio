@@ -33,26 +33,22 @@
       ]
     }
   ],
+  "redirects": [
+    { "source": "/work/:slug", "destination": "/projects", "permanent": false },
+    { "source": "/experience", "destination": "/work", "permanent": false },
+    { "source": "/recognition", "destination": "/projects", "permanent": false },
+    { "source": "/about", "destination": "/", "permanent": false },
+    { "source": "/contact", "destination": "/", "permanent": false },
+    { "source": "/brief", "destination": "/", "permanent": false }
+  ],
   "rewrites": [
     {
       "source": "/work",
       "destination": "/work.html"
     },
     {
-      "source": "/work/:slug",
-      "destination": "/work/:slug.html"
-    },
-    {
-      "source": "/experience",
-      "destination": "/experience.html"
-    },
-    {
-      "source": "/about",
-      "destination": "/about.html"
-    },
-    {
-      "source": "/contact",
-      "destination": "/contact.html"
+      "source": "/projects",
+      "destination": "/projects.html"
     }
   ]
 }

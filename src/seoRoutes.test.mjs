@@ -10,17 +10,17 @@ it('generates indexable route shells with canonical and social metadata', async 
   try {
     await writeFile(join(directory, 'index.html'), await readFile(join(process.cwd(), 'index.html')));
     await generateRouteHtml(directory);
-    for (const key of ['brief', 'recognition']) {
+    for (const key of ['work', 'projects']) {
       const seo = PAGE_SEO[key];
       const html = await readFile(join(directory, key, 'index.html'), 'utf8');
       expect(html).toContain(`<title>${seo.title}</title>`);
       expect(html).toContain(`href="${SITE_URL}/${key}"`);
       expect(html).toContain(`property="og:url" content="${SITE_URL}/${key}"`);
+      expect(html).toContain(`property="og:image:alt" content="${seo.imageAlt}"`);
       expect(html).toContain('content="index, follow');
     }
-    const molecule = await readFile(join(directory, 'work', 'molecule', 'index.html'), 'utf8');
-    expect(molecule).toContain('<title>Molecule | Rohan Gottipati</title>');
-    expect(molecule).toContain(`href="${SITE_URL}/work/molecule"`);
+    const home = await readFile(join(directory, 'index.html'), 'utf8');
+    expect(home).toContain(PAGE_SEO.home.image);
   } finally {
     await rm(directory, { recursive: true, force: true });
   }

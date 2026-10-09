@@ -1,197 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #f5f1e8;
-  --foreground: #17140f;
-  --card: #fbf8f1;
-  --card-foreground: #17140f;
-  --popover: #fbf8f1;
-  --popover-foreground: #17140f;
-  --primary: #e8471a;
-  --primary-foreground: #fbf8f1;
-  --secondary: #ffc6a6;
-  --secondary-foreground: #17140f;
-  --muted: #ece6d8;
-  --muted-foreground: #4a443c;
-  --accent: #c7dd52;
-  --accent-foreground: #17140f;
-  --destructive: #b3300c;
-  --destructive-foreground: #fbf8f1;
-  --border: #dcd5c6;
-  --input: #dcd5c6;
-  --ring: #e8471a;
-  --sidebar: #f5f1e8;
-  --radius: 0.25rem;
+  color-scheme: light;
+  font-synthesis: none;
 }
-@layer base {
-  * {
-    @apply border-border;
-  }
-  html {
-    scroll-behavior: auto;
-    scroll-padding-top: 5rem;
-    scrollbar-gutter: stable;
-    overflow-x: hidden;
-  }
-  body {
-    @apply bg-paper text-ink font-sans antialiased;
-    min-width: 320px;
-    overflow-x: hidden;
-    overscroll-behavior-x: none;
-  }
-  * {
-    scrollbar-color: rgba(23, 20, 15, 0.28) transparent;
-    scrollbar-width: thin;
-  }
-  *::-webkit-scrollbar {
-    width: 9px;
-    height: 9px;
-  }
-  *::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  *::-webkit-scrollbar-thumb {
-    border: 3px solid transparent;
-    background-clip: padding-box;
-    background-color: rgba(23, 20, 15, 0.28);
-  }
-  *::-webkit-scrollbar-thumb:hover {
-    background-color: #e8471a;
-  }
-  ::selection {
-    background: #c7dd52;
-    color: #17140f;
-  }
-  a:focus-visible,
-  button:focus-visible,
-  input:focus-visible,
-  [tabindex]:focus-visible {
-    outline: 2px solid #e8471a;
-    outline-offset: 3px;
-  }
-  img {
-    @apply bg-paper;
-  }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #fff;
 }
-/* Paper grain + faint grid on the page canvas */
-.canvas-grain::before {
+
+*:focus-visible {
+  outline: 2px solid #59564f;
+  outline-offset: 3px;
+}
+
+.paper {
+  background-color: #fff;
+  font-optical-sizing: auto;
+}
+
+.paper ::selection {
+  background: #e3ddd0;
+}
+
+.link {
+  position: relative;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: color 200ms ease;
+}
+.link:focus-visible {
+  outline: 1px solid #c9c4b9;
+  outline-offset: 3px;
+}
+.link-ink { color: #1c1b19; }
+.link-muted { color: #8a867e; }
+.link-anim::after,
+.link-static::after {
   content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 50;
-  opacity: 0.35;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
-  contain: strict;
-  transform: translateZ(0);
-}
-.grid-paper {
-  background-image: radial-gradient(#d3cbb8 1px, transparent 1px);
-  background-size: 22px 22px;
-}
-.ruled {
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 33px,
-    rgba(23, 20, 15, 0.14) 33px,
-    rgba(23, 20, 15, 0.14) 34px
-  );
-}
-.tape {
   position: absolute;
-  width: 88px;
-  height: 26px;
-  background: rgba(255, 255, 255, 0.45);
-  border-left: 1px solid rgba(23, 20, 15, 0.07);
-  border-right: 1px solid rgba(23, 20, 15, 0.07);
-  box-shadow: 0 1px 2px rgba(23, 20, 15, 0.12);
-  backdrop-filter: saturate(140%) blur(0.5px);
+  left: 0;
+  right: 0;
+  bottom: 0.02em;
+  height: 1px;
+  background-color: currentColor;
+  pointer-events: none;
 }
-.marker-underline {
-  background: linear-gradient(transparent 62%, #c7dd52 62%, #c7dd52 92%, transparent 92%);
+.link-anim::after {
+  opacity: 0.55;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-/* Custom paper cursor: hide the system pointer only on real pointers */
-@media (pointer: fine) {
-  html.paper-cursor,
-  html.paper-cursor *,
-  html.paper-cursor *::before,
-  html.paper-cursor *::after,
-  html.paper-cursor *:hover,
-  html.paper-cursor *:focus,
-  html.paper-cursor *:focus-visible,
-  html.paper-cursor *:active,
-  html.paper-cursor a,
-  html.paper-cursor a:active,
-  html.paper-cursor button,
-  html.paper-cursor button:active,
-  html.paper-cursor input,
-  html.paper-cursor textarea,
-  html.paper-cursor img,
-  html.paper-cursor svg {
-    cursor: none !important;
+.link-anim:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+.link-static::after {
+  opacity: 0.3;
+  transition: opacity 200ms ease;
+}
+.social-link { color: #0877f9; }
+.link-arrow,
+.link-arrow-back {
+  display: inline-block;
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .link-muted:hover { color: #1c1b19; }
+  .link-anim:hover::after {
+    transform: scaleX(1);
+    transform-origin: left center;
   }
-
-  html.paper-cursor img,
-  html.paper-cursor a {
-    -webkit-user-drag: none;
-  }
+  .link-static:hover::after { opacity: 0.75; }
+  .link:hover .link-arrow { transform: translateX(3px); }
+  .link:hover .link-arrow-back { transform: translateX(-3px); }
+  .social-link:hover { color: #0056bd; }
 }
-@keyframes float-slow {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-.float-slow {
-  animation: float-slow 7s ease-in-out infinite;
-}
-
-[data-roro-scroll-region] {
-  -webkit-overflow-scrolling: touch;
-  overflow-anchor: none;
-  scroll-behavior: auto;
-  scrollbar-gutter: stable;
-}
-
-.skip-link {
-  position: fixed;
-  left: 1rem;
-  top: 1rem;
-  z-index: 100;
-  transform: translateY(-160%);
-  background: #17140f;
-  color: #fbf8f1;
-  padding: 0.75rem 1rem;
-  font-family: "Space Mono", ui-monospace, monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.skip-link:focus {
-  transform: translateY(0);
-}
-
-.ticket-card { transform: rotate(var(--card-rotation, 0deg)); }
-.ticket-card:hover, .ticket-card:focus-visible { transform: rotate(0deg) translateY(-4px); }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+  .link, .link::after, .link-arrow, .link-arrow-back {
+    transition: none !important;
   }
 }

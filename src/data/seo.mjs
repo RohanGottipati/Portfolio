@@ -1,50 +1,33 @@
-import { projects } from './projects.mjs';
-
 export const SITE_URL = "https://rohangottipati.com";
 export const DEFAULT_SOCIAL_IMAGE =
-  "/c7482166-3a87-4a04-8b46-94156b0b0e28.jpg";
+  "/b8e2024f-be86-4bcd-95d3-e3775abd17d4.jpg";
 
 export const PAGE_SEO = {
   home: {
-    title: "Rohan Gottipati - Software Engineer",
+    title: "Rohan Gottipati | Software Engineer",
     description:
-      "I'm Rohan Gottipati, a software engineer building AI systems, full-stack products, data platforms, and cloud integrations. Explore my selected work and experience.",
+      "Rohan Gottipati is a Toronto-based software engineer and Software Architect Intern at Intact. Explore his work, projects, and nine hackathon wins.",
     path: "/",
+    image: "/b8e2024f-be86-4bcd-95d3-e3775abd17d4.jpg",
+    imageAlt: "The Toronto skyline and CN Tower seen across the water from Toronto Island",
   },
   work: {
-    title: "Projects | Rohan Gottipati",
-    description:
-      `Explore ${projects.length} software projects across AI agents, commerce, FinTech, civic technology, 3D, analytics, healthcare, games, and full-stack development.`,
+    title: "Work | Rohan Gottipati",
+    description: "Explore Rohan Gottipati's software engineering, research, and leadership experience.",
     path: "/work",
+    imageAlt: "The Toronto skyline and CN Tower seen across the water from Toronto Island",
   },
-  about: {
-    title: "About | Rohan Gottipati",
-    description:
-      "I'm a Toronto-based software engineer who builds useful products, AI systems, data platforms, and integrations. Learn more about me and what drives my work.",
-    path: "/about",
+  projects: {
+    title: "Projects | Rohan Gottipati",
+    description: "Projects and hackathon work by Rohan Gottipati.",
+    path: "/projects",
+    imageAlt: "The Toronto skyline and CN Tower seen across the water from Toronto Island",
   },
-  experience: {
-    title: "Experience | Rohan Gottipati",
-    description:
-      "Explore my software engineering experience, education, research, and leadership across Intact, DOUBL, OneChart, AvertoAI, and Wilfrid Laurier University.",
-    path: "/experience",
-  },
-  contact: {
-    title: "Contact | Rohan Gottipati",
-    description:
-      "Contact me by email, phone, LinkedIn, or GitHub, and view my current software engineering résumé.",
-    path: "/contact",
-  },
-  brief: {
-    title: "Quick View | Rohan Gottipati",
-    description: "A concise view of Rohan Gottipati's software engineering experience, selected projects, research, education and hackathon recognition.",
-    path: "/brief",
-  },
-  recognition: {
-    title: "Recognition | Rohan Gottipati",
-    description: "Explore Rohan Gottipati's hackathon placements and awards, with links to the projects behind each result.",
-    path: "/recognition",
-  },
+  about: { title: "About | Rohan Gottipati", description: "About Rohan Gottipati.", path: "/about" },
+  experience: { title: "Experience | Rohan Gottipati", description: "Experience of Rohan Gottipati.", path: "/experience" },
+  contact: { title: "Contact | Rohan Gottipati", description: "Contact Rohan Gottipati.", path: "/contact" },
+  brief: { title: "Quick View | Rohan Gottipati", description: "A quick view of Rohan Gottipati's work.", path: "/brief" },
+  recognition: { title: "Recognition | Rohan Gottipati", description: "Recognition of Rohan Gottipati's projects.", path: "/recognition" },
 };
 
 export function createProjectSeo(project) {

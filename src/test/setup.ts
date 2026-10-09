@@ -40,6 +40,14 @@ class MockIntersectionObserver {
 
 vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
 
+class MockResizeObserver {
+  disconnect() {}
+  observe() {}
+  unobserve() {}
+}
+
+vi.stubGlobal("ResizeObserver", MockResizeObserver);
+
 vi.stubGlobal(
   "requestAnimationFrame",
   vi.fn((callback: FrameRequestCallback) => {

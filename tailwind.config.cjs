@@ -35,6 +35,7 @@ module.exports = {
         "paper-2": "#FBF8F1",
         ink: "#17140F",
         "ink-soft": "#4A443C",
+        faint: "#8a867e",
         rule: "#DCD5C6",
         tangerine: "#E8471A",
         lime: "#C7DD52",
@@ -43,6 +44,7 @@ module.exports = {
         blush: "#F3A0B8",
       },
       fontFamily: {
+        serif: ['Newsreader', 'Georgia', 'serif'],
         display: ['"Instrument Serif"', "Georgia", "serif"],
         hand: ["Caveat", "cursive"],
         mono: ['"Space Mono"', "ui-monospace", "monospace"],
