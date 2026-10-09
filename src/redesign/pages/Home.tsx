@@ -21,8 +21,8 @@ export function Home() {
     <PaperPage>
       <Banner />
 
-      <div ref={containerRef} className="relative mx-auto mt-9 w-full max-w-[760px] text-[15.5px] leading-[1.5]">
-        <div className="grid gap-x-[27px] gap-y-10 md:grid-cols-[280px_minmax(0,1fr)]">
+      <div ref={containerRef} className="relative mt-9 text-[15.5px] leading-[1.5]">
+        <div className="grid gap-x-[27px] gap-y-10 md:grid-cols-[242px_minmax(0,1fr)]">
           <ProfileHeader />
 
           <Reveal delay={0.1} className="md:pt-0.5">
@@ -34,7 +34,7 @@ export function Home() {
           </Reveal>
         </div>
 
-        <div className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 md:mt-[85px] md:grid-cols-[140px_minmax(0,1fr)_210px]">
+        <div className="mt-10 grid gap-x-6 gap-y-10 sm:grid-cols-2 md:mt-[140px] md:grid-cols-[150px_minmax(0,1fr)_170px]">
           <Reveal delay={0.16}>
             <section aria-labelledby="previously-heading">
               <h2 id="previously-heading" className="mb-1.5 text-faint">
@@ -99,7 +99,7 @@ export function Home() {
                     <span className="text-ink">{school.organization}</span>
                     <span className="tabular-nums text-faint">{school.year}</span>
                   </div>
-                  <p className="whitespace-nowrap text-faint">{school.role}</p>
+                  <p className="whitespace-nowrap text-[14px] tracking-[-0.02em] text-faint">{school.role}</p>
                 </div>
               )}
             </section>
