@@ -13,6 +13,7 @@ export type ArrowSpec = {
   toAlign?: 'center' | 'end';
   /** Override the direction the line comes in from (pointing away from the target). */
   approach?: {x: number;y: number;};
+  targetOffset?: {x?: number;y?: number;};
   delay?: number;
 };
 
@@ -60,7 +61,11 @@ export function SketchArrows({ containerRef, arrows }: SketchArrowsProps) {
       if (!fromEl || !toEl) return;
 
       const start = anchorPoint(fromEl, arrow.fromSide, origin, 'center');
-      const end = anchorPoint(toEl, arrow.toSide, origin, arrow.toAlign ?? 'center');
+      const target = anchorPoint(toEl, arrow.toSide, origin, arrow.toAlign ?? 'center');
+      const end = {
+        x: target.x + (arrow.targetOffset?.x ?? 0),
+        y: target.y + (arrow.targetOffset?.y ?? 0)
+      };
       const dist = Math.hypot(end.x - start.x, end.y - start.y);
       const k = Math.min(Math.max(dist * 0.45, 30), 220);
       const out = OUTWARD[arrow.fromSide];

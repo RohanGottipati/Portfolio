@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from './App';
 
@@ -8,6 +8,18 @@ function open(path: string) {
 }
 
 describe('portfolio redesign', () => {
+  it('shows a complete mobile description without arrows', async () => {
+    open('/');
+    await act(async () => {
+      await new Promise((resolve) => window.setTimeout(resolve, 700));
+    });
+
+    const arrows = document.querySelector('svg[aria-hidden="true"]');
+    expect(screen.getByText('Currently at Wilfrid Laurier University.')).toHaveClass('md:hidden');
+    expect(arrows).toHaveClass('hidden');
+    expect(arrows?.querySelectorAll('g')).toHaveLength(0);
+  });
+
   it('shows the supplied home content and navigates to both lists', async () => {
     const user = userEvent.setup();
     open('/');
@@ -26,13 +38,15 @@ describe('portfolio redesign', () => {
     expect(screen.queryByRole('heading', { name: 'hackathons' })).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'education' })).toBeInTheDocument();
     expect(document.querySelector('[data-anchor="education"]')).toHaveTextContent('education');
-    expect(screen.getByText('computer science, big data')).toBeInTheDocument();
+    expect(screen.getByText('computer science, big data')).toHaveClass('text-ink');
     expect(screen.getByText('Currently')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'GreenLens AI' })).toHaveAttribute('href', 'https://github.com/RohanGottipati/Greenlens');
+    expect(screen.getByRole('heading', { name: 'experience' })).toHaveClass('font-normal', 'text-ink');
+    expect(screen.queryByText('1st overall, Sun Life Hackathon')).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Molecule' })).toHaveAttribute('href', 'https://github.com/RohanGottipati/Molecule');
     expect(screen.getByRole('link', { name: 'TechTO' })).toHaveAttribute('href', 'https://github.com/RohanGottipati/TechTO');
-    expect(screen.getByRole('link', { name: 'Playground' })).toHaveAttribute('href', 'https://github.com/RohanGottipati/Playground');
+    expect(screen.getByRole('link', { name: 'A.U.R.A.' })).toHaveAttribute('href', 'https://github.com/RohanGottipati/A.U.R.A');
 
-    await user.click(screen.getByRole('link', { name: /view all work/i }));
+    await user.click(screen.getByRole('link', { name: 'experience' }));
     expect(screen.getByRole('img', { name: /Toronto skyline/ })).toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: 'Rohan Gottipati' })).not.toBeInTheDocument();
     expect(screen.queryByRole('navigation', { name: 'Social links' })).not.toBeInTheDocument();
@@ -40,16 +54,16 @@ describe('portfolio redesign', () => {
     expect(screen.getByRole('heading', { name: 'leadership' })).toBeInTheDocument();
     expect(screen.getByText('Intact Financial')).toBeInTheDocument();
     expect(screen.getByText('Google Developers Group, WLU')).toBeInTheDocument();
-    expect(screen.getByText('Finance Executive')).toBeInTheDocument();
+    expect(screen.getByText('finance executive')).toBeInTheDocument();
     expect(screen.getByText('Laurier Analytics Society')).toBeInTheDocument();
-    expect(screen.getByText('Vice President of Technology')).toBeInTheDocument();
+    expect(screen.getByText('vice president of technology')).toBeInTheDocument();
     expect(screen.getByText('Laurier Computing Society')).toBeInTheDocument();
-    expect(screen.getByText('Vice President of Finance')).toBeInTheDocument();
-    expect(screen.getByText('Software Architecture Intern, Software Engineering & Integrations')).toBeInTheDocument();
+    expect(screen.getByText('vice president of finance')).toBeInTheDocument();
+    expect(screen.getByText('software architecture intern, software engineering & integrations')).toBeInTheDocument();
     expect(document.title).toBe('Work | Rohan Gottipati');
 
     await user.click(screen.getByRole('link', { name: 'back' }));
-    await user.click(screen.getByRole('link', { name: /view all projects/i }));
+    await user.click(screen.getByRole('link', { name: 'projects' }));
     expect(screen.getByRole('img', { name: /Toronto skyline/ })).toBeInTheDocument();
     expect(screen.queryByRole('navigation', { name: 'Social links' })).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'projects' })).toBeInTheDocument();
@@ -72,7 +86,7 @@ describe('portfolio redesign', () => {
     expect(screen.getByRole('link', { name: 'Molecule on GitHub' })).toHaveAttribute(
       'href', 'https://github.com/RohanGottipati/Molecule',
     );
-    expect(screen.getByText('hack the north 2026')).toBeInTheDocument();
+    expect(screen.getByText('GitHub Universe finalist, Hack the North 2026')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Visit This Portfolio live site' })).toHaveAttribute('href', 'https://rohangottipati.com');
   });
 });

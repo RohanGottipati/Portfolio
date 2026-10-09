@@ -23,12 +23,12 @@ export function EntryList({ title, entries, headingLevel = 'h2', singleLine = fa
     <section aria-labelledby={headingId}>
       <Heading
         id={headingId}
-        className="mb-2.5 text-faint"
+        className="mb-2.5 text-[15.5px] font-normal text-ink"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, delay, ease: revealEase }}>
 
-        {title}
+        <span className="border-b border-dotted border-faint/70 pb-px">{title}</span>
       </Heading>
       <ul className="space-y-1">
         {entries.map((entry, i) =>

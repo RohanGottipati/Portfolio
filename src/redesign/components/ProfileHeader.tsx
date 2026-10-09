@@ -32,11 +32,11 @@ export function ProfileHeader({ showBack = false }: ProfileHeaderProps) {
       </Reveal>
       {showBack &&
       <Reveal delay={0.1}>
-          <TextLink href="/" muted className="mt-4 inline-block">
+          <TextLink href="/" plain className="mt-4 inline-flex items-baseline gap-1 text-[15.5px] font-normal text-ink">
             <span aria-hidden="true" className="link-arrow-back text-[13px]">
               ←
-            </span>{' '}
-            back
+            </span>
+            <span className="border-b border-dotted border-faint/70 pb-px">back</span>
           </TextLink>
         </Reveal>
       }

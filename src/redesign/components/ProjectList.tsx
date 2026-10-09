@@ -8,11 +8,11 @@ export function ProjectList() {
     <section aria-labelledby="projects-heading">
       <motion.h1
         id="projects-heading"
-        className="mb-2.5 text-faint"
+        className="mb-2.5 text-[15.5px] font-normal text-ink"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, delay: 0.1, ease: revealEase }}>
-        projects
+        <span className="border-b border-dotted border-faint/70 pb-px">projects</span>
       </motion.h1>
       <ul className="space-y-1">
         {allProjects.map((project, index) => (
