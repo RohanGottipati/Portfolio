@@ -13,7 +13,7 @@ export function PaperPage({ children }: PaperPageProps) {
 
   return (
     <div className="paper min-h-screen w-full font-serif text-ink antialiased">
-      <main className="mx-auto w-full max-w-[828px] px-6 pb-24 pt-10 md:pt-[11vh]">{children}</main>
+      <main className="mx-auto w-full max-w-[828px] px-6 pb-24 pt-8 md:pt-[7vh]">{children}</main>
     </div>);
 
 }

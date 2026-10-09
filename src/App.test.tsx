@@ -28,6 +28,9 @@ describe('portfolio redesign', () => {
     expect(document.querySelector('[data-anchor="education"]')).toHaveTextContent('education');
     expect(screen.getByText('computer science, big data')).toBeInTheDocument();
     expect(screen.getByText('Currently')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'GreenLens AI' })).toHaveAttribute('href', 'https://github.com/RohanGottipati/Greenlens');
+    expect(screen.getByRole('link', { name: 'TechTO' })).toHaveAttribute('href', 'https://github.com/RohanGottipati/TechTO');
+    expect(screen.getByRole('link', { name: 'Playground' })).toHaveAttribute('href', 'https://github.com/RohanGottipati/Playground');
 
     await user.click(screen.getByRole('link', { name: /view all work/i }));
     expect(screen.getByRole('img', { name: /Toronto skyline/ })).toBeInTheDocument();

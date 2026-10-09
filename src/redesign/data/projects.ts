@@ -12,7 +12,7 @@ export const featuredProjects: Project[] = [
   name: 'TechTO',
   year: '2026',
   note: 'best use of mongodb, hack the 6ix',
-  href: 'https://tech-to.vercel.app',
+  href: 'https://github.com/RohanGottipati/TechTO',
   githubUrl: 'https://github.com/RohanGottipati/TechTO',
   liveUrl: 'https://tech-to.vercel.app'
 },
@@ -20,7 +20,7 @@ export const featuredProjects: Project[] = [
   name: 'Playground',
   year: '2026',
   note: '3rd overall, sumerhacks',
-  href: 'https://playground-gaming.vercel.app',
+  href: 'https://github.com/RohanGottipati/Playground',
   githubUrl: 'https://github.com/RohanGottipati/Playground',
   liveUrl: 'https://playground-gaming.vercel.app'
 }];
