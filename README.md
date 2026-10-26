@@ -4,43 +4,102 @@ A minimal, responsive portfolio for Rohan Gottipati, a Toronto-based software en
 
 Live site: [rohangottipati.com](https://rohangottipati.com)
 
-## Current site
+## Features
 
-- `/` — Toronto skyline image, profile and contact links, introduction, featured work and projects, and education
-- `/work` — professional experience and leadership
-- `/projects` — project and hackathon index with GitHub links and live-site buttons where available
-- The résumé link opens `public/Rohan_Gottipati_Resume.pdf`.
+- `/`: Toronto skyline image, profile and social links (including X), a short introduction, featured work and projects, and education. Drawn arrows point at the sections.
+- `/work`: professional experience and leadership.
+- `/projects`: project and hackathon index with GitHub links and live-site buttons where available.
+- Résumé link that opens `public/Rohan_Gottipati_Resume.pdf` in a new tab.
+- Route-specific SEO: titles, descriptions, canonical URLs, Open Graph/Twitter tags, Person JSON-LD, a sitemap, and static HTML shells for `/work` and `/projects` generated at build time.
+- RoRo API (`POST /api/roro`): a serverless endpoint that answers questions about the portfolio with Google Gemini and rejects unrelated questions. No page in the current UI calls it.
 
-The site uses React 18, TypeScript, Vite, React Router, Tailwind CSS, and Framer Motion. Its white background, Newsreader typography, blue profile links, reveal animations, and drawn arrows are implemented in the active `src/redesign/` components. The arrow component measures its text anchors after layout and redraws on resize; arrows are hidden on narrow screens.
+## Tech stack
 
-## Develop and verify
+- React 18, TypeScript, Vite, and React Router
+- Tailwind CSS and Framer Motion, with the Newsreader font from Google Fonts
+- Vitest and Testing Library (jsdom), plus ESLint
+- Vercel for hosting and the `api/` serverless function
 
-Requires Node.js 20.19 or newer and npm.
+## Project structure
+
+```text
+index.html                    Baseline metadata, social image, Person JSON-LD
+src/
+  App.tsx                     Router (/, /work, /projects) and per-route metadata
+  index.css                   Global colors, typography, and link styles
+  redesign/
+    pages/                    Home, Work, and Projects pages
+    components/               Layout, lists, links, reveal animations, SketchArrows
+    data/                     Profile, experience, and project content
+    types/                    Content types
+  data/
+    seo.mjs                   Route metadata shared by the app and build script
+    *.mjs                     Portfolio data used by the RoRo API
+  types/portfolio.ts          Types for the RoRo data files
+scripts/generate-route-html.mjs  Writes route HTML shells after the Vite build
+server/
+  roro.mjs                    RoRo question filtering and Gemini call
+  vite-roro-plugin.mjs        Serves /api/roro from the Vite dev server
+api/roro.js                   Vercel serverless handler for /api/roro
+public/                       Résumé, images, favicons, sitemap, robots.txt, host fallbacks
+vercel.json                   Headers, legacy redirects, and route rewrites
+```
+
+## Prerequisites
+
+- Node.js 20.19 or newer
+- npm
+
+## Setup and development
 
 ```bash
 npm install
 npm run dev
-npm run typecheck
-npm run lint
-npm test
-npm run build
 ```
 
-The dev server runs at `http://localhost:3000`; `npm run preview` serves the production build at `http://localhost:4173`.
+The dev server runs at `http://localhost:3000`. To build and serve the production output:
 
-## Update content
+```bash
+npm run build
+npm run preview
+```
 
-- Profile, contact links (including X), and résumé URL: `src/redesign/data/profile.ts`
+The preview server runs at `http://localhost:4173`.
+
+## Environment variables
+
+You only need these for the RoRo API. The site runs without them, and `/api/roro` returns `503` until a key is set. Copy `.env.example` to `.env` for local development, or set the variables in the Vercel project.
+
+| Name | Purpose |
+| --- | --- |
+| `GEMINI_API_KEY` | Google Gemini API key used by `server/roro.mjs`. Keep it server-side and don't add a `VITE_` prefix. |
+| `GEMINI_MODEL` | Optional Gemini model name. Defaults to `gemini-3.5-flash-lite`. |
+
+## Scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the Vite dev server, including `/api/roro` |
+| `npm run build` | Build the production bundle into `dist/` and generate the route HTML shells |
+| `npm run preview` | Serve the production build |
+| `npm run typecheck` | Type-check with `tsc --noEmit` |
+| `npm run lint` | Run ESLint with zero warnings allowed |
+| `npm test` | Run the Vitest suite once |
+| `npm run test:watch` | Run Vitest in watch mode |
+
+## Updating content
+
+- Profile, social links, résumé URL, and banner image: `src/redesign/data/profile.ts`
 - Work, leadership, and education: `src/redesign/data/experience.ts`
 - Featured and full project lists: `src/redesign/data/projects.ts`
 - Page layout and navigation: `src/redesign/pages/` and `src/redesign/components/`
-- Global colors and link interactions: `src/index.css`
-- Résumé PDF and skyline image: `public/`
+- Route metadata: `src/data/seo.mjs`. Keep it in sync with `index.html` and `public/sitemap.xml`.
+- RoRo answers come from the data in `src/data/*.mjs`, which is separate from the data the pages render.
 
-The older `src/pages/`, `src/components/`, and related data remain in the repository but are not mounted by the active router in `src/App.tsx`.
+`SketchArrows.tsx` positions the homepage arrows from `data-anchor` elements. It measures them after layout and redraws on resize. The arrows are hidden on narrow screens.
 
 ## SEO and deployment
 
-The canonical origin is `https://rohangottipati.com`. The three live routes share metadata in `src/data/seo.mjs`. `src/App.tsx` updates it during client-side navigation, and `scripts/generate-route-html.mjs` writes route-specific HTML shells during the Vite build. Baseline metadata, the social image, and Person JSON-LD are in `index.html`. `public/sitemap.xml` lists the live routes, and `public/robots.txt` points to it.
+The canonical origin is `https://rohangottipati.com`. `src/App.tsx` updates the page metadata during client-side navigation. During `vite build`, `scripts/generate-route-html.mjs` writes `work.html`, `projects.html`, `work/index.html`, and `projects/index.html` into `dist/`. `public/sitemap.xml` lists the three live routes, and `public/robots.txt` points to the sitemap.
 
-Vercel serves the generated `/work.html` and `/projects.html` shells according to `vercel.json`. Legacy URLs redirect to the current pages. Netlify, Apache, and GitHub Pages fallback files remain in `public/`.
+The site is deployed on Vercel. `vercel.json` adds security and cache headers, rewrites `/work` and `/projects` to their generated shells, and redirects legacy URLs (`/work/:slug`, `/experience`, `/recognition`, `/about`, `/contact`, `/brief`) to the current pages. `api/roro.js` is deployed as a Vercel serverless function. `public/` also has fallback files for other hosts: `_redirects` for Netlify, `.htaccess` for Apache, and `404.html` for GitHub Pages.

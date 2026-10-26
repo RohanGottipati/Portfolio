@@ -6,7 +6,7 @@ Prefix shell commands with `rtk` when it is available. If it is not installed, u
 
 ## Active project
 
-This is a React 18, TypeScript, Vite, React Router, Tailwind CSS, and Framer Motion portfolio. The active routes are `/`, `/work`, and `/projects`. `src/App.tsx` mounts pages from `src/redesign/pages/`. Older components and pages elsewhere under `src/` are retained but are not part of the active UI.
+This is a React 18, TypeScript, Vite, React Router, Tailwind CSS, and Framer Motion portfolio. The active routes are `/`, `/work`, and `/projects`. `src/App.tsx` mounts pages from `src/redesign/pages/`. `src/data/*.mjs` and `src/types/portfolio.ts` hold the data and types for the RoRo API (`server/roro.mjs`, `api/roro.js`, and the Vite dev plugin `server/vite-roro-plugin.mjs`). No page in the current UI calls that API.
 
 The homepage shows a skyline image, profile links, a short introduction, featured work and projects, and education. Work and Projects retain the image and show a back link and the relevant list. The current résumé is `public/Rohan_Gottipati_Resume.pdf`.
 
@@ -22,6 +22,7 @@ The homepage shows a skyline image, profile links, a short introduction, feature
 - `scripts/generate-route-html.mjs`: build-time route shells
 - `index.html`, `public/sitemap.xml`, and `public/robots.txt`: baseline SEO
 - `vercel.json`: deployed route mapping and legacy redirects
+- `server/` and `api/roro.js`: RoRo Gemini endpoint (`GEMINI_API_KEY` and `GEMINI_MODEL`, see `.env.example`)
 
 ## Commands
 

@@ -6,5 +6,5 @@ export const recognition = projects.filter((project) => project.impact).map((pro
   result: project.recognitionResult ?? project.impact.split(', ')[0],
 }));
 
-export const recognitionCount = recognition.length;
+const recognitionCount = recognition.length;
 export const recognitionLabel = `${recognitionCount} hackathon placements & awards`;
